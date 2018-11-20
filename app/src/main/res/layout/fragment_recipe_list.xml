@@ -6,4 +6,9 @@
     tools:context=".fragment.RecipeListFragment">
 
 
+    <TextView
+        android:id="@+id/textView_temp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" />
 </LinearLayout>

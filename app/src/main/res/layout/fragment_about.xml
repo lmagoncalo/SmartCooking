@@ -23,7 +23,8 @@
             android:fontFeatureSettings="smcp"
             android:text="@string/aboutus_title"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/title_size" />
+            android:textSize="@dimen/title_size"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/aboutus_textview"
@@ -50,8 +51,10 @@
                 android:id="@+id/facebook_link_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_padding"
                 android:fontFamily="@font/montserrat"
-                android:textColor="@color/text_color" />
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -72,8 +75,10 @@
                 android:id="@+id/twitter_link_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_padding"
                 android:fontFamily="@font/montserrat"
-                android:textColor="@color/text_color" />
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
@@ -87,11 +92,13 @@
             android:id="@+id/partners_title_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:fontFamily="@font/montserrat"
             android:fontFeatureSettings="smcp"
             android:text="@string/partners_title"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/title_size" />
+            android:textSize="@dimen/title_size"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/partners_textview"
@@ -103,24 +110,27 @@
 
         <TextView
             android:id="@+id/partners_one_textview"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
-            android:textColor="@color/text_color" />
+            android:textColor="@color/text_color"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/partners_two_textview"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
-            android:textColor="@color/text_color" />
+            android:textColor="@color/text_color"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/partners_three_textview"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
-            android:textColor="@color/text_color" />
+            android:textColor="@color/text_color"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -132,11 +142,13 @@
             android:id="@+id/others_title_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:fontFamily="@font/montserrat"
             android:fontFeatureSettings="smcp"
             android:text="@string/others_title"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/title_size" />
+            android:textSize="@dimen/title_size"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -155,8 +167,10 @@
                 android:id="@+id/icons_link_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_padding"
                 android:fontFamily="@font/montserrat"
-                android:textColor="@color/text_color" />
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
