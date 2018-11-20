@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import smartcooking.developer.com.smartcooking.R;
 
@@ -46,9 +45,6 @@ public class RecipeListFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        TextView textView_temp = getActivity().findViewById(R.id.textView_temp);
-        String s = " " + getCategory() + " ";
-        textView_temp.setText(s);
     }
 
 }

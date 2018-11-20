@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import smartcooking.developer.com.smartcooking.R;
@@ -15,6 +13,9 @@ import smartcooking.developer.com.smartcooking.fragment.CategoriesFragment;
 import smartcooking.developer.com.smartcooking.fragment.FavoritesFragment;
 import smartcooking.developer.com.smartcooking.fragment.MainFragment;
 import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
+
+// TODO - Meter a pesquisa a andar para cima
+// TODO - Mudar para recyclerview
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
                         ft.replace(R.id.fragment, favoritesFragment).commit();
                     }
                     return true;
+                case R.id.navigation_about:
+                    if (open != R.id.navigation_about) {
+                        AboutFragment aboutFragment = new AboutFragment();
+                        ft = getFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        ft.replace(R.id.fragment, aboutFragment).commit();
+                    }
+                    return true;
             }
             return false;
         }
@@ -74,25 +82,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.menu_about: {
-                AboutFragment aboutFragment = new AboutFragment();
-                FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack("MAIN").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.replace(R.id.fragment, aboutFragment).commit();
-                return true;
-            }
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    public void onBackPressed() {
+        //Toast.makeText(this, "Back", Toast.LENGTH_SHORT).show();
+        super.onBackPressed();
     }
 }

@@ -21,4 +21,9 @@
         android:icon="@drawable/ic_dashboard_favorite"
         android:title="@string/dashboard_favorites" />
 
+    <item
+        android:id="@+id/navigation_about"
+        android:icon="@drawable/ic_dashboard_about"
+        android:title="@string/dashboard_about" />
+
 </menu>

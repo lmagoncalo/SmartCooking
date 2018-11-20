@@ -8,15 +8,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import smartcooking.developer.com.smartcooking.R;
+import smartcooking.developer.com.smartcooking.utils.Recipe;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class RecipeFragment extends Fragment {
-
+    private static String RECIPE = "get_recipe";
 
     public RecipeFragment() {
-        // Required empty public constructor
+    }
+
+    public static RecipeFragment newInstance(Recipe recipe) {
+        RecipeFragment fragment = new RecipeFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(RECIPE, recipe);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public Recipe getRecipe() {
+        if (getArguments() != null) {
+            return (Recipe) getArguments().getSerializable(RECIPE);
+        }
+        return null;
     }
 
 
@@ -25,6 +37,11 @@ public class RecipeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_recipe, container, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
 }

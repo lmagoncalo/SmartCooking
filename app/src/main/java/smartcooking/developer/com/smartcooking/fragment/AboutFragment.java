@@ -46,7 +46,7 @@ public class AboutFragment extends Fragment {
         links.add(fromHtml("<a href=\'http://hojeparajantar.blogspot.pt/'>Hoje para jantar</a>"));
         links.add(fromHtml("<a href=\'http://uc.pt/'>Universidade de Coimbra</a>"));
         links.add(fromHtml("<a href=\'https://twitter.com/smartcookingapp'>@smartcookingapp</a>"));
-        links.add(fromHtml("<a href='https://www.flaticon.com/authors/madebyoliver'>Madebyoliver</a>"));
+        links.add(fromHtml("<a href='https://smashicons.com/'>Smashicons</a>"));
 
         ArrayList<TextView> textViews = new ArrayList<>(6);
         textViews.add(0, (TextView) getActivity().findViewById(R.id.partners_one_textview));

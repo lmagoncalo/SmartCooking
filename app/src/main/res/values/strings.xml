@@ -272,5 +272,6 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="about">About</string>
+    <string name="dashboard_about">Sobre nós</string>
 
 </resources>

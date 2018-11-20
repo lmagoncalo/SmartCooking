@@ -16,7 +16,6 @@ import smartcooking.developer.com.smartcooking.R;
 public class CategoriesFragment extends Fragment {
 
     private ArrayList<Button> buttons = new ArrayList<>(6);
-    private int i;
 
     public CategoriesFragment() {
     }
@@ -40,7 +39,7 @@ public class CategoriesFragment extends Fragment {
         buttons.add(4, (Button) getActivity().findViewById(R.id.snack_btn));
         buttons.add(5, (Button) getActivity().findViewById(R.id.other_btn));
 
-        for (i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
             buttons.get(i).setTag(i);
             buttons.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override
