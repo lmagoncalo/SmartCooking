@@ -1,19 +1,24 @@
 <resources>
     <string name="app_name">SmartCooking</string>
 
-    <!-- Nome dos Botoes -->
-    <string name="carne_btn">carne</string>
-    <string name="peixe_btn">peixe</string>
+    <string name="dashboard_home">Início</string>
+    <string name="dashboard_search">Pesquisa</string>
+    <string name="dashboard_categories">Categorias</string>
+    <string name="dashboard_favorites">Favoritos</string>
+
+    <!-- CategoriesFragment -->
+    <string name="meat_btn">carne</string>
+    <string name="fish_btn">peixe</string>
     <string name="vegan_btn">vegetariano</string>
-    <string name="sobremesa_btn">sobremesa</string>
+    <string name="dessert_btn">sobremesa</string>
     <string name="snacks_btn">snacks</string>
-    <string name="outros_btn">outros</string>
+    <string name="other_btn">outros</string>
 
-    <!-- Pesquisa por nome -->
-    <string name="pesquisa">pesquisa</string>
-    <string name="nome_receita_hint">Insira o nome da receita</string>
+    <!-- SearchFragment -->
+    <string name="search">pesquisa</string>
+    <string name="search_hint">Insira o nome da receita</string>
 
-    <!-- Main -->
+    <!-- MainFragment -->
     <string name="search_btn">procurar Receitas</string>
     <string name="addIngr_btn">Mais Ingredientes</string>
     <string name="removeIngr_btn">Menos Ingredientes</string>
@@ -24,7 +29,7 @@
     <string name="min_ingr">Número mínimo de ingredientes !</string>
 
 
-    <!-- Receita Individual -->
+    <!-- RecipeFragment -->
     <string name="tempo_label">Tempo:</string>
     <string name="dif_label">Dificuldade:</string>
     <string name="fornecedor_label">Fornecedor:</string>
@@ -32,15 +37,15 @@
     <string name="prep_label"><u>Modo preparação:</u></string>
 
 
-    <!-- AcercaActivity -->
-    <string name="acercaNos_label">acerca de nós</string>
-    <string name="parceiros_label">parceiros</string>
-    <string name="outros_label">outro:</string>
-    <string name="icons_label">Icons feitos por: </string>
-    <string name="acercaNos_texto">A equipa que criou a SmartCooking é composta por 6 estudantes de Engenharia Informática da Universidade de Coimbra. Esta equipa tinha em mente criar uma aplicação que combata as dificuldades na escolha de receitas com os ingredientes disponíveis em casa.\n\tO objetivo da SmartCooking é ajudar todos os estudantes e todas as pessoas com dificuldades na escolha do que fazer para comer.\nBom apetite!</string>
-    <string name="parceiros_texto">Visitem as páginas dos nossos parceiros:</string>
-    <string name="fb_label">Facebook: </string>
-    <string name="twitter_label">Twitter: </string>
+    <!-- AboutFragment -->
+    <string name="aboutus_title">acerca de nós</string>
+    <string name="partners_title">parceiros</string>
+    <string name="others_title">outro:</string>
+    <string name="aboutus_text">A equipa que criou a SmartCooking é composta por 6 estudantes de Engenharia Informática da Universidade de Coimbra. Esta equipa tinha em mente criar uma aplicação que combata as dificuldades na escolha de receitas com os ingredientes disponíveis em casa.\n\tO objetivo da SmartCooking é ajudar todos os estudantes e todas as pessoas com dificuldades na escolha do que fazer para comer.\nBom apetite!</string>
+    <string name="partners_text">Visitem as páginas dos nossos parceiros:</string>
+    <string name="facebook_text">Facebook: </string>
+    <string name="twitter_text">Twitter: </string>
+    <string name="icons_text">Icons feitos por: </string>
 
 
     <!-- Menu -->
@@ -152,11 +157,6 @@
     </string-array>
 
 
-    <!-- Drawer Utils -->
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
-
-
     <!-- Images Content Descriptions -->
     <string name="image_list_description">Image of the Receipe in List</string>
     <string name="receita_image_description">Image of the Recipe</string>
@@ -168,6 +168,13 @@
     <string name="remove_btn_4_image_content">Remove Button 4</string>
     <string name="remove_btn_5_image_content">Remove Button 5</string>
     <string name="add_btn_image_content">Add Ingredient Button</string>
+
+    <string name="meat_btn_image_content">Meat Button Icon</string>
+    <string name="fish_btn_image_content">Fish Button Icon</string>
+    <string name="vegan_btn_image_content">Vegan Button Icon</string>
+    <string name="dessert_btn_image_content">Desert Button Icon</string>
+    <string name="snack_btn_image_content">Snack Button Icon</string>
+    <string name="other_btn_image_content">Other Button Icon</string>
 
 
     <!-- Cenas -->
@@ -260,5 +267,9 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
 </resources>

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#f1453d</color>
-    <color name="colorPrimaryDark">#d93831</color>
-    <color name="colorAccent">#DE000000</color>
+    <color name="colorPrimary">#E53935</color> <!-- Red 600 -->
+    <color name="colorPrimaryDark">#D32F2F</color> <!-- Red 700 -->
+    <color name="colorAccent">@color/aqua</color>
 
     <color name="text_color">#DE000000</color>
+
+    <color name="dashboard_color">#212121</color>
 
     <!-- Cores Default -->
 
@@ -29,11 +31,11 @@
 
     <!-- Cores dos Botoes das CategoriasActivity -->
 
-    <color name="button1">#f36660</color>
-    <color name="button2">#f2554e</color>
-    <color name="button3">#f1453d</color>
-    <color name="button4">#dc3f38</color>
-    <color name="button5">#c63932</color>
-    <color name="button6">#b0332d</color>
+    <color name="button1">#EF5350</color> <!-- Red 400 -->
+    <color name="button2">#F44336</color> <!-- Red 500 -->
+    <color name="button3">#E53935</color> <!-- Red 600 -->
+    <color name="button4">#D32F2F</color> <!-- Red 700 -->
+    <color name="button5">#C62828</color> <!-- Red 800 -->
+    <color name="button6">#B71C1C</color> <!-- Red 900 -->
 
 </resources>
