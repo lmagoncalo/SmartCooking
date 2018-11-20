@@ -9,24 +9,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Recipe implements Serializable, Comparable<Recipe> {
-    static Comparator<Recipe> RecipeNameComparator = new Comparator<Recipe>() {
-
-        public int compare(Recipe left, Recipe right) {
-
-            String leftName = left.getName().toUpperCase();
-            String rightName = right.getName().toUpperCase();
-
-            //ascending order
-            return leftName.compareTo(rightName);
-
-            //descending order
-            //return fruitName2.compareTo(fruitName1);
-
-            //Weight compare
-            //return left.getPesoPesquisa() - right.getPesoPesquisa();
-        }
-
-    };
     private long id;
     private String name;
     private int difficulty;
@@ -38,8 +20,6 @@ public class Recipe implements Serializable, Comparable<Recipe> {
     private String image;
     private String hash;
 
-    //TODO: apaguei a variável "n_ingredientes" e os respectivos 'get' e 'set'
-    //TODO: apaguei a variável "ingredientes_simples" e os respectivos 'get' e 'set'
     private boolean favorite;
 
     public Recipe() {
@@ -191,30 +171,35 @@ public class Recipe implements Serializable, Comparable<Recipe> {
         return prep.toString();
     }
 
-    //TODO: acrescentei esta função
-    public String getPreparationStringToDatabase() {
-        String res = "";
+    static Comparator<Recipe> RecipeNameComparator = new Comparator<Recipe>() {
+        public int compare(Recipe left, Recipe right) {
+
+            String leftName = left.getName().toUpperCase();
+            String rightName = right.getName().toUpperCase();
+
+            //ascending order
+            return leftName.compareTo(rightName);
+
+            //descending order
+            //return fruitName2.compareTo(fruitName1);
+
+            //Weight compare
+            //return left.getPesoPesquisa() - right.getPesoPesquisa();
+        }
+    };
+
+    private String getPreparationStringToDatabase() {
+        StringBuilder res = new StringBuilder();
         for (String p : preparation) {
-            if (!res.isEmpty()) {
-                res += "|";
+            if (res.length() > 0) {
+                res.append("|");
             }
-            res += p;
+            res.append(p);
         }
-        return res;
+        return res.toString();
     }
 
-    //TODO: acrescentei esta função
-    public String getIngredientsStringToDatabase() {
-        String res = "";
-        for (String i : ingredients) {
-            if (!res.isEmpty()) {
-                res += "|";
-            }
-            res += i;
-        }
-        return res;
-    }
-
+    @NonNull
     @Override
     public String toString() {
         return "Recipe{" +
@@ -233,5 +218,16 @@ public class Recipe implements Serializable, Comparable<Recipe> {
     @Override
     public int compareTo(@NonNull Recipe recipe) {
         return 0;
+    }
+
+    private String getIngredientsStringToDatabase() {
+        StringBuilder res = new StringBuilder();
+        for (String i : ingredients) {
+            if (res.length() > 0) {
+                res.append("|");
+            }
+            res.append(i);
+        }
+        return res.toString();
     }
 }
