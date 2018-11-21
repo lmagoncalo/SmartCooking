@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import smartcooking.developer.com.smartcooking.R;
-import smartcooking.developer.com.smartcooking.utils.Recipe;
+import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
 
 public class RecipeFragment extends Fragment {
     private static String RECIPE = "get_recipe";
@@ -36,12 +36,9 @@ public class RecipeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recipe, container, false);
-    }
+        View result = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-    @Override
-    public void onStart() {
-        super.onStart();
+        return result;
     }
 
 }

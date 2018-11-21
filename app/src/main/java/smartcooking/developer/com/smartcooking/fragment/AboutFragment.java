@@ -33,12 +33,7 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about, container, false);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
+        View result = inflater.inflate(R.layout.fragment_about, container, false);
 
         ArrayList<Spanned> links = new ArrayList<>(6);
         links.add(fromHtml("<a href=\'https://www.facebook.com/SmartCookingApp/'>SmartCookingApp</a>"));
@@ -49,17 +44,19 @@ public class AboutFragment extends Fragment {
         links.add(fromHtml("<a href='https://smashicons.com/'>Smashicons</a>"));
 
         ArrayList<TextView> textViews = new ArrayList<>(6);
-        textViews.add(0, (TextView) getActivity().findViewById(R.id.partners_one_textview));
-        textViews.add(1, (TextView) getActivity().findViewById(R.id.partners_two_textview));
-        textViews.add(2, (TextView) getActivity().findViewById(R.id.partners_three_textview));
-        textViews.add(3, (TextView) getActivity().findViewById(R.id.facebook_link_textview));
-        textViews.add(4, (TextView) getActivity().findViewById(R.id.twitter_link_textview));
-        textViews.add(5, (TextView) getActivity().findViewById(R.id.icons_link_textview));
+        textViews.add(0, (TextView) result.findViewById(R.id.partners_one_textview));
+        textViews.add(1, (TextView) result.findViewById(R.id.partners_two_textview));
+        textViews.add(2, (TextView) result.findViewById(R.id.partners_three_textview));
+        textViews.add(3, (TextView) result.findViewById(R.id.facebook_link_textview));
+        textViews.add(4, (TextView) result.findViewById(R.id.twitter_link_textview));
+        textViews.add(5, (TextView) result.findViewById(R.id.icons_link_textview));
 
         for (int i = 0; i < 6; i++) {
             textViews.get(i).setText(links.get(i));
             textViews.get(i).setMovementMethod(LinkMovementMethod.getInstance());
         }
+
+        return result;
     }
 
 }

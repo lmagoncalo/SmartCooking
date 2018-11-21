@@ -25,19 +25,14 @@ public class CategoriesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_categories, container, false);
-    }
+        View result = inflater.inflate(R.layout.fragment_categories, container, false);
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        buttons.add(0, (Button) getActivity().findViewById(R.id.meat_btn));
-        buttons.add(1, (Button) getActivity().findViewById(R.id.fish_btn));
-        buttons.add(2, (Button) getActivity().findViewById(R.id.vegan_btn));
-        buttons.add(3, (Button) getActivity().findViewById(R.id.dessert_btn));
-        buttons.add(4, (Button) getActivity().findViewById(R.id.snack_btn));
-        buttons.add(5, (Button) getActivity().findViewById(R.id.other_btn));
+        buttons.add(0, (Button) result.findViewById(R.id.meat_btn));
+        buttons.add(1, (Button) result.findViewById(R.id.fish_btn));
+        buttons.add(2, (Button) result.findViewById(R.id.vegan_btn));
+        buttons.add(3, (Button) result.findViewById(R.id.dessert_btn));
+        buttons.add(4, (Button) result.findViewById(R.id.snack_btn));
+        buttons.add(5, (Button) result.findViewById(R.id.other_btn));
 
         for (int i = 0; i < 6; i++) {
             buttons.get(i).setTag(i);
@@ -50,6 +45,15 @@ public class CategoriesFragment extends Fragment {
                 }
             });
         }
+
+        return result;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
     }
 
 }

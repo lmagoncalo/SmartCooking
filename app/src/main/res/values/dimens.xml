@@ -15,5 +15,6 @@
     <!-- Search -->
     <dimen name="clear_button_size">16dp</dimen>
 
+    <dimen name="long_text_size">14sp</dimen>
 
 </resources>
