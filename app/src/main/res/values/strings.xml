@@ -5,6 +5,7 @@
     <string name="dashboard_search">Pesquisa</string>
     <string name="dashboard_categories">Categorias</string>
     <string name="dashboard_favorites">Favoritos</string>
+    <string name="dashboard_about">Sobre nós</string>
 
     <!-- CategoriesFragment -->
     <string name="meat_btn">carne</string>
@@ -19,7 +20,7 @@
     <string name="search_hint">Insira o nome da receita</string>
 
     <!-- MainFragment -->
-    <string name="search_btn">procurar Receitas</string>
+    <string name="search_btn_text">procurar</string>
     <string name="addIngr_btn">Mais Ingredientes</string>
     <string name="removeIngr_btn">Menos Ingredientes</string>
     <string name="ingr_prompt">Escolha um ingrediente</string>
@@ -46,16 +47,6 @@
     <string name="facebook_text">Facebook: </string>
     <string name="twitter_text">Twitter: </string>
     <string name="icons_text">Icons feitos por: </string>
-
-
-    <!-- Menu -->
-    <string-array name="menu">
-        <item>ingredientes</item>
-        <item>pesquisa</item>
-        <item>categorias</item>
-        <item>todas</item>
-        <item>acerca</item>
-    </string-array>
 
 
     <!-- Array de ingredientes -->
@@ -168,13 +159,13 @@
     <string name="remove_btn_4_image_content">Remove Button 4</string>
     <string name="remove_btn_5_image_content">Remove Button 5</string>
     <string name="add_btn_image_content">Add Ingredient Button</string>
-
     <string name="meat_btn_image_content">Meat Button Icon</string>
     <string name="fish_btn_image_content">Fish Button Icon</string>
     <string name="vegan_btn_image_content">Vegan Button Icon</string>
     <string name="dessert_btn_image_content">Desert Button Icon</string>
     <string name="snack_btn_image_content">Snack Button Icon</string>
     <string name="other_btn_image_content">Other Button Icon</string>
+    <string name="recipe_details_image_content">Recipe Details Image</string>
 
 
     <!-- Cenas -->
@@ -267,11 +258,6 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="about">About</string>
-    <string name="dashboard_about">Sobre nós</string>
+
 
 </resources>

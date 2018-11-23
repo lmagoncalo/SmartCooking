@@ -77,7 +77,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_padding"
                 android:fontFamily="@font/montserrat"
-                android:textColor="@color/text_color"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -113,7 +112,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
-            android:textColor="@color/text_color"
             android:textStyle="bold" />
 
         <TextView
@@ -121,7 +119,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
-            android:textColor="@color/text_color"
             android:textStyle="bold" />
 
         <TextView
@@ -129,7 +126,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
-            android:textColor="@color/text_color"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -169,7 +165,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_padding"
                 android:fontFamily="@font/montserrat"
-                android:textColor="@color/text_color"
                 android:textStyle="bold" />
         </LinearLayout>
 

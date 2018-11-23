@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -71,8 +69,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 break;
         }
         viewHolder.getDifficulty().setText(difficulty);
-
-        Picasso.get().load(recipe.getImage()).placeholder(R.drawable.food).into(viewHolder.getImage());
     }
 
 

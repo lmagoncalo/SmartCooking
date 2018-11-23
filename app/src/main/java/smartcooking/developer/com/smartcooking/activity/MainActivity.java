@@ -17,12 +17,14 @@ import smartcooking.developer.com.smartcooking.fragment.FavoritesFragment;
 import smartcooking.developer.com.smartcooking.fragment.MainFragment;
 import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
 
-// TODO - Meter a pesquisa a andar para cima
+// TODO - Ecrã de detalhes, ecrã main
+// TODO - Carregar a imagem nas linhas
+// TODO - Meter a pesquisa a andar para cima - Talvez
 // TODO - Criar os onResume e onDelete
 // TODO - Filtragem por ingredientes
-// TODO - Carregar a imagem nas linhas
 // TODO - Responsiveness
 // TODO - Erro não se sabe porquê - Carregar search, abrir uma receita, carregar novamente no search e depois numa receita
+// TODO - Meter letras para pesquisar ingredientes
 
 public class MainActivity extends AppCompatActivity {
 
@@ -100,7 +102,13 @@ public class MainActivity extends AppCompatActivity {
         Recipe r3 = new Recipe(3, "Mais peixe", 15, 3, "Peixe", "SmartCooking", "Bota agua|Bota ao lume", "Agua|Lume", "https://smartcookingapp.files.wordpress.com/2015/10/receita_pgi.jpg");
         OperationsDb.recipeControlledInsert(r1,database);
         OperationsDb.recipeControlledInsert(r2,database);
-        OperationsDb.recipeControlledInsert(r3,database);*/
+        OperationsDb.recipeControlledInsert(r3,database);
+        Ingredient i1 = new Ingredient(1,"Carne");
+        Ingredient i2 = new Ingredient(2,"Peixe");
+        Ingredient i3 = new Ingredient(3,"Pão");
+        OperationsDb.insertIngredient(i1,database);
+        OperationsDb.insertIngredient(i2,database);
+        OperationsDb.insertIngredient(i3,database);*/
 
         MainFragment mainFragment = new MainFragment();
         getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).commit();

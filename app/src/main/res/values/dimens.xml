@@ -5,6 +5,7 @@
     <dimen name="activity_padding">8dp</dimen>
 
     <dimen name="title_size">20sp</dimen>
+    <dimen name="title_size_row">18sp</dimen>
     <dimen name="text_size">16sp</dimen>
 
     <!-- Categorias -->

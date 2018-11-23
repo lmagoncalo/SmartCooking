@@ -20,11 +20,9 @@ import smartcooking.developer.com.smartcooking.db.OperationsDb;
 import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
 import smartcooking.developer.com.smartcooking.utils.MyAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class RecipeListFragment extends Fragment implements AdapterView.OnItemClickListener {
     private static String CATEGORY = "get_category";
+    private static String INGREDIENTS = "get_ingredients";
 
     List<Recipe> recipeList;
     MyAdapter adapter;

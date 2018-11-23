@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/recipe_image"
-        android:layout_width="match_parent"
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+    android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/image_list_description"
-        android:scaleType="centerCrop"
-        android:src="@drawable/food" />
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/activity_padding"
+        android:elevation="3dp"
+        card_view:cardCornerRadius="4dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/row_background">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/recipe_image"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/image_list_description"
+                android:focusable="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/food" />
 
         <TextView
             android:id="@+id/recipe_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/recipe_image"
             android:layout_marginStart="@dimen/activity_padding"
             android:layout_marginTop="@dimen/activity_padding"
+            android:layout_marginEnd="@dimen/activity_padding"
             android:fontFamily="@font/montserrat"
             android:fontFeatureSettings="smcp"
-            android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -35,10 +48,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/recipe_name"
             android:layout_marginStart="@dimen/activity_padding"
+            android:layout_marginEnd="@dimen/activity_padding"
             android:layout_marginBottom="@dimen/activity_padding"
             android:fontFamily="@font/montserrat"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
-    </RelativeLayout>
-</RelativeLayout>
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/long_text_size" />
 
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
