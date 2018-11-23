@@ -45,6 +45,7 @@ public class MainFragment extends Fragment {
 
         for (int i = 0; i < 1; i++) {
             spinners.get(i).setAdapter(adapter);
+            spinners.get(i).setPrompt("Ingrediente");
         }
 
         Button search_button = result.findViewById(R.id.search_btn);

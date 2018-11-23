@@ -23,7 +23,6 @@ import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
 // TODO - Criar os onResume e onDelete
 // TODO - Filtragem por ingredientes
 // TODO - Responsiveness
-// TODO - Erro não se sabe porquê - Carregar search, abrir uma receita, carregar novamente no search e depois numa receita
 // TODO - Meter um indice com o alfabeto para pesquisar ingredientes - Talvez
 // TODO - Splashscreen com asynctask - Deixar para ultimo
 
