@@ -123,6 +123,20 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         openDetails(position);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        SQLiteDatabase database = ((MainActivity) getActivity()).getDatabase();
+        recipeList = OperationsDb.selectAllRecipes(database);
+
+        RecyclerView list = getActivity().findViewById(R.id.list_recipes_search);
+        adapter = new MyAdapter(recipeList, this);
+        list.setAdapter(adapter);
+        list.setHasFixedSize(true);
+        list.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
     private void openDetails(int index) {
         Recipe recipe = recipeList.get(index);
         RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe);
