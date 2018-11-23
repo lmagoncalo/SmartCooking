@@ -80,7 +80,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         recipe_name_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                if (!recipe_name_search.getText().toString().equals("")) { //if edittext include text
+                if (!recipe_name_search.getText().toString().isEmpty()) { //if edittext include text
                     cleat_btn.setVisibility(View.VISIBLE);
                 } else { //not include text
                     cleat_btn.setVisibility(View.GONE);
@@ -130,11 +130,16 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         SQLiteDatabase database = ((MainActivity) getActivity()).getDatabase();
         recipeList = OperationsDb.selectAllRecipes(database);
 
+        String text = recipe_name_search.getText().toString().toLowerCase(Locale.getDefault());
+
         RecyclerView list = getActivity().findViewById(R.id.list_recipes_search);
         adapter = new MyAdapter(recipeList, this);
         list.setAdapter(adapter);
         list.setHasFixedSize(true);
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        if (!text.isEmpty())
+            adapter.filter(text);
     }
 
     private void openDetails(int index) {
