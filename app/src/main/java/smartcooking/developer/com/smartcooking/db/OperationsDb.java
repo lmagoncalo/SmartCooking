@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 import smartcooking.developer.com.smartcooking.db.Ingredient.Ingredient;
@@ -309,11 +310,20 @@ public class OperationsDb {
     }
 
     public static ArrayList<Recipe> selectRecipesByIngredients(ArrayList<Ingredient> ingrs, SQLiteDatabase mDatabase) {
-        //TODO: testar se aqui não dá borrada por estar a converter o boolean para string e a comparar com o boolean da base de dados
+
+        /*TODO: falta fazer a verificação se o utilizador introduziu ingredientes repetidos
+               OPÇÕES:
+                    1 -->  na função "getIngredientArrayListToString" que é chamada aqui em baixo, ter em atenção para não repetir ingredientes
+                    2 -->  fazer uma verificação antes de chamar esta função, para não passar ingredientes repetidos
+                    3 -->  fazer uma verificação antes de chamar esta função, para aparecer uma mensagem de erro, caso haja ingredientes repetidos
+        */
 
         ArrayList<Recipe> list = new ArrayList<Recipe>();
         String ingredientsQueryStr = getIngredientArrayListToString(ingrs);
         // atenção que em SQLite, os valores boolean são 1 (true) e 0 (false). Não existe uma class boolean com valores "true" e "false"
+
+        // este hashMap vai fazer a contagem do número de ingredientes em comum entre as receitas e a lista de ingredientes pesquisados
+        HashMap<Long, Integer> hash = new HashMap<Long, Integer>();
 
         Cursor c = mDatabase.query(DatabaseScheme.RelationTable.NAME,
                 null,
@@ -335,10 +345,17 @@ public class OperationsDb {
             Recipe recipe = selectRecipeByID(relation.getID_recipe(), mDatabase);
 
             if (recipe == null) {
-                return list;
+                //TODO: o return aqui é diferente porque se chegar aqui, quer dizer está alguma coisa mal com a database porque há ID's de receitas nas Relations que naõ existem na tabela Receitas
+                return null;
             }
 
-            list.add(recipe);
+            // é feita esta verificação porque 1 receita pode ter mais do que 1 dos ingredientes pesquisados e assim ia ser adicionada mais do que 1 vez
+            if (!list.contains(recipe)) {
+                list.add(recipe);
+                hash.put(recipe.getId(), 1);
+            }else{
+                hash.put(recipe.getId(), hash.get(recipe.getId())+1);
+            }
             cursor.moveToNext();
         }
 
