@@ -18,7 +18,6 @@ import smartcooking.developer.com.smartcooking.fragment.MainFragment;
 import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
 
 // TODO - Ecrã de detalhes, ecrã main
-// TODO - Carregar a imagem nas linhas
 // TODO - Meter a pesquisa a andar para cima - Talvez
 // TODO - Criar os onResume e onDelete
 // TODO - Filtragem por ingredientes

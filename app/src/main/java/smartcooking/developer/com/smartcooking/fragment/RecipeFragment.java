@@ -87,6 +87,7 @@ public class RecipeFragment extends Fragment {
         recipe_ingredients.setText(recipe.getIngredientsString());
         recipe_preparation.setText(recipe.getPreparationString());
 
+
         Toolbar toolbar = result.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ActionBar actionbar = ((AppCompatActivity) getActivity()).getSupportActionBar();

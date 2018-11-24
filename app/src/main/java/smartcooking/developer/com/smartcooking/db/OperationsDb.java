@@ -323,7 +323,7 @@ public class OperationsDb {
         // atenção que em SQLite, os valores boolean são 1 (true) e 0 (false). Não existe uma class boolean com valores "true" e "false"
 
         // este hashMap vai fazer a contagem do número de ingredientes em comum entre as receitas e a lista de ingredientes pesquisados
-        HashMap<Long, Integer> hash = new HashMap<Long, Integer>();
+        HashMap<Long, Integer> hash = new HashMap<>();
 
         Cursor c = mDatabase.query(DatabaseScheme.RelationTable.NAME,
                 null,

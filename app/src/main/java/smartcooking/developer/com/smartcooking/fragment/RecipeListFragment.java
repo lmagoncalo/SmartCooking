@@ -5,18 +5,18 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import smartcooking.developer.com.smartcooking.R;
 import smartcooking.developer.com.smartcooking.activity.MainActivity;
-import smartcooking.developer.com.smartcooking.db.OperationsDb;
+import smartcooking.developer.com.smartcooking.db.Ingredient.Ingredient;
 import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
 import smartcooking.developer.com.smartcooking.utils.MyAdapter;
 
@@ -30,10 +30,18 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
     public RecipeListFragment() {
     }
 
-    public static RecipeListFragment newInstance(int category) {
+    public static RecipeListFragment newInstance_category(int category) {
         RecipeListFragment fragment = new RecipeListFragment();
         Bundle args = new Bundle();
         args.putInt(CATEGORY, category);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static RecipeListFragment newInstance_ingredients(ArrayList<Ingredient> ingredients) {
+        RecipeListFragment fragment = new RecipeListFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(INGREDIENTS, ingredients);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,6 +51,12 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
             return getArguments().getInt(CATEGORY, -1);
         }
         return -1;
+    }
+
+    @SuppressWarnings("unchecked")
+    public ArrayList<Ingredient> getIngredients() {
+        Object obj = getArguments().getSerializable(INGREDIENTS);
+        return (ArrayList<Ingredient>) obj;
     }
 
 
@@ -56,7 +70,7 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
 
         SQLiteDatabase database = ((MainActivity) getActivity()).getDatabase();
 
-        switch (getCategory()) {
+        /*switch (getCategory()) {
             case 0:
                 recipeList = OperationsDb.selectRecipeByCategory("Carne", database);
                 break;
@@ -75,6 +89,10 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
             case 5:
                 recipeList = OperationsDb.selectRecipeByCategory("Outros", database);
                 break;
+            case -1:
+                ArrayList<Ingredient> selected_ingredients = getIngredients();
+                recipeList = OperationsDb.selectRecipesByIngredients(selected_ingredients,database);
+                break;
             default:
                 break;
         }
@@ -82,7 +100,7 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
         adapter = new MyAdapter(recipeList, this);
         list.setAdapter(adapter);
         list.setHasFixedSize(true);
-        list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        list.setLayoutManager(new LinearLayoutManager(getActivity()));*/
 
         return result;
     }

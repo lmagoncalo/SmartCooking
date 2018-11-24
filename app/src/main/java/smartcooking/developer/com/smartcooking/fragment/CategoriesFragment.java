@@ -39,7 +39,7 @@ public class CategoriesFragment extends Fragment {
             buttons.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RecipeListFragment recipeListFragment = RecipeListFragment.newInstance((int) v.getTag());
+                    RecipeListFragment recipeListFragment = RecipeListFragment.newInstance_category((int) v.getTag());
                     FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack("CATEGORIES").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                     ft.replace(R.id.fragment, recipeListFragment).commit();
                 }
