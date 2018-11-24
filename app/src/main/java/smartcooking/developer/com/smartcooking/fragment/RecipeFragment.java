@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import smartcooking.developer.com.smartcooking.R;
 import smartcooking.developer.com.smartcooking.activity.MainActivity;
 import smartcooking.developer.com.smartcooking.db.OperationsDb;
@@ -53,7 +55,7 @@ public class RecipeFragment extends Fragment {
 
         ImageView iv = result.findViewById(R.id.recipe_image);
 
-        //Glide.with(getContext()).load("http://www.imgur.com/fGFriqJ").into(iv);
+        Picasso.get().load(recipe.getImage()).into(iv);
 
         favorite = result.findViewById(R.id.fab);
 
