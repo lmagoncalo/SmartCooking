@@ -327,11 +327,31 @@ public class OperationsDb {
 
         Cursor c = mDatabase.query(DatabaseScheme.RelationTable.NAME,
                 null,
-                DatabaseScheme.RelationTable.Cols.ID_INGREDIENT + " IN ?",
-                new String[]{ingredientsQueryStr},
+                DatabaseScheme.RelationTable.Cols.ID_INGREDIENT + " IN " + ingredientsQueryStr,
+                null,
                 null,
                 null,
                 DatabaseScheme.RelationTable.Cols.ID_RECIPE + " ASC");
+
+        /*
+            Nesta query não podemos fazer com aquilo com os pontos de interrugação, porque depois o que ia substituir esse ponto de interrugação
+            [ (1, 2, 3), por exemplo] ia ser tratado como uma string e não como argumento, ou seja a query ia ficar assim:
+
+                SELECT *
+                FROM Relation
+                WHERE id_ingredient IN  "(1, 2, 3)"
+                ORDER BY id_recipe ASC
+
+           EM VEZ DE:
+                SELECT *
+                FROM Relation
+                WHERE id_ingredient IN  (1, 2, 3)
+                ORDER BY id_recipe ASC
+
+           (a diferença está nas aspas do WHERE)
+
+
+        */
 
         RelationCursorWrapper cursor = new RelationCursorWrapper(c);
 
@@ -388,7 +408,7 @@ public class OperationsDb {
         StringBuilder res = new StringBuilder("(");
 
         for (Ingredient i : list) {
-            if (res.length() > 0) {
+            if (res.length() > 1) {  //aqui é >1 e não >0  por causa do parentisis inicial que é posto em cima. Caso contrário a string ficava com uma vírgula logo a seguir ao parentisis
                 res.append(", ");
             }
             res.append(i.getID());

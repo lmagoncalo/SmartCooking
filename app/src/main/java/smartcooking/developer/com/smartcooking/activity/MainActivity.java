@@ -9,8 +9,14 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 import smartcooking.developer.com.smartcooking.R;
 import smartcooking.developer.com.smartcooking.db.DatabaseBaseHelper;
+import smartcooking.developer.com.smartcooking.db.Ingredient.Ingredient;
+import smartcooking.developer.com.smartcooking.db.OperationsDb;
+import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
+import smartcooking.developer.com.smartcooking.db.Relation.Relation;
 import smartcooking.developer.com.smartcooking.fragment.AboutFragment;
 import smartcooking.developer.com.smartcooking.fragment.CategoriesFragment;
 import smartcooking.developer.com.smartcooking.fragment.FavoritesFragment;
@@ -25,6 +31,7 @@ import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
 // TODO - Erro não se sabe porquê - Carregar search, abrir uma receita, carregar novamente no search e depois numa receita - Corrigido mas fazer o ondestroy para guardar a lista para não ter que ir novamente à base de dados
 // TODO - Meter um indice com o alfabeto para pesquisar ingredientes - Talvez
 // TODO - Splashscreen com asynctask - Deixar para ultimo
+// TODO - Fazer "close" de todas as variáveis "Cursor"
 
 public class MainActivity extends AppCompatActivity {
 
@@ -102,13 +109,20 @@ public class MainActivity extends AppCompatActivity {
         Recipe r3 = new Recipe(3, "Mais peixe", 15, 3, "Peixe", "SmartCooking", "Bota agua|Bota ao lume", "Agua|Lume", "https://smartcookingapp.files.wordpress.com/2015/10/receita_pgi.jpg");
         OperationsDb.recipeControlledInsert(r1,database);
         OperationsDb.recipeControlledInsert(r2,database);
-        OperationsDb.recipeControlledInsert(r3,database);
-        Ingredient i1 = new Ingredient(1,"Carne");
+        OperationsDb.recipeControlledInsert(r3,database);*/
+        /*Ingredient i1 = new Ingredient(1,"Carne");
         Ingredient i2 = new Ingredient(2,"Peixe");
-        Ingredient i3 = new Ingredient(3,"Pão");
-        OperationsDb.insertIngredient(i1,database);
+        Ingredient i3 = new Ingredient(3,"Pão");*/
+        /*OperationsDb.insertIngredient(i1,database);
         OperationsDb.insertIngredient(i2,database);
         OperationsDb.insertIngredient(i3,database);*/
+        /*Relation rel = new Relation();
+        rel.setID_ingredient(1);
+        rel.setID_recipe(1);
+        OperationsDb.insertRelation(rel, database);
+        rel.setID_recipe(2);
+        OperationsDb.insertRelation(rel, database);*/
+
 
         MainFragment mainFragment = new MainFragment();
         getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).commit();
