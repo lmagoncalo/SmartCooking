@@ -1,7 +1,10 @@
 package smartcooking.developer.com.smartcooking.activity;
 
+import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,14 +12,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
-
 import smartcooking.developer.com.smartcooking.R;
 import smartcooking.developer.com.smartcooking.db.DatabaseBaseHelper;
-import smartcooking.developer.com.smartcooking.db.Ingredient.Ingredient;
-import smartcooking.developer.com.smartcooking.db.OperationsDb;
-import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
-import smartcooking.developer.com.smartcooking.db.Relation.Relation;
 import smartcooking.developer.com.smartcooking.fragment.AboutFragment;
 import smartcooking.developer.com.smartcooking.fragment.CategoriesFragment;
 import smartcooking.developer.com.smartcooking.fragment.FavoritesFragment;
@@ -109,14 +106,14 @@ public class MainActivity extends AppCompatActivity {
         Recipe r3 = new Recipe(3, "Mais peixe", 15, 3, "Peixe", "SmartCooking", "Bota agua|Bota ao lume", "Agua|Lume", "https://smartcookingapp.files.wordpress.com/2015/10/receita_pgi.jpg");
         OperationsDb.recipeControlledInsert(r1,database);
         OperationsDb.recipeControlledInsert(r2,database);
-        OperationsDb.recipeControlledInsert(r3,database);*/
-        /*Ingredient i1 = new Ingredient(1,"Carne");
+        OperationsDb.recipeControlledInsert(r3,database);
+        Ingredient i1 = new Ingredient(1,"Carne");
         Ingredient i2 = new Ingredient(2,"Peixe");
-        Ingredient i3 = new Ingredient(3,"Pão");*/
-        /*OperationsDb.insertIngredient(i1,database);
+        Ingredient i3 = new Ingredient(3,"Pão");
+        OperationsDb.insertIngredient(i1,database);
         OperationsDb.insertIngredient(i2,database);
-        OperationsDb.insertIngredient(i3,database);*/
-        /*Relation rel = new Relation();
+        OperationsDb.insertIngredient(i3,database);
+        Relation rel = new Relation();
         rel.setID_ingredient(1);
         rel.setID_recipe(1);
         OperationsDb.insertRelation(rel, database);
@@ -130,8 +127,27 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //Toast.makeText(this, "Back", Toast.LENGTH_SHORT).show();
-        super.onBackPressed();
+        Fragment f = this.getFragmentManager().findFragmentById(R.id.fragment);
+        if (f instanceof MainFragment || f instanceof SearchFragment || f instanceof CategoriesFragment || f instanceof FavoritesFragment || f instanceof AboutFragment) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Tem a certeza que quer sair?")
+                    .setCancelable(false)
+
+                    .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    })
+                    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            MainActivity.super.onBackPressed();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public SQLiteDatabase getDatabase() {

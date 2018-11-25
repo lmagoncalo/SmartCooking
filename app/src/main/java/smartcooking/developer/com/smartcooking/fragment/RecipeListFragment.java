@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import java.util.List;
 import smartcooking.developer.com.smartcooking.R;
 import smartcooking.developer.com.smartcooking.activity.MainActivity;
 import smartcooking.developer.com.smartcooking.db.Ingredient.Ingredient;
+import smartcooking.developer.com.smartcooking.db.OperationsDb;
 import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
 import smartcooking.developer.com.smartcooking.utils.MyAdapter;
 
@@ -70,7 +72,7 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
 
         SQLiteDatabase database = ((MainActivity) getActivity()).getDatabase();
 
-        /*switch (getCategory()) {
+        switch (getCategory()) {
             case 0:
                 recipeList = OperationsDb.selectRecipeByCategory("Carne", database);
                 break;
@@ -100,7 +102,7 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
         adapter = new MyAdapter(recipeList, this);
         list.setAdapter(adapter);
         list.setHasFixedSize(true);
-        list.setLayoutManager(new LinearLayoutManager(getActivity()));*/
+        list.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return result;
     }

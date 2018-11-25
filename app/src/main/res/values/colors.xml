@@ -3,7 +3,7 @@
 
     <color name="colorPrimary">#e53935</color> <!-- Red 600 -->
     <color name="colorPrimaryDark">#D32F2F</color> <!-- Red 700 -->
-    <color name="colorAccent">#F57F17</color>
+    <color name="colorAccent">#e53935</color>
 
     <color name="row_background">#BBD32F2F</color>
 
@@ -12,7 +12,6 @@
     <color name="dashboard_color">#212121</color>
 
     <!-- Cores Default -->
-
     <color name="white">#FFFFFF</color>
     <color name="yellow">#ffff00</color>
     <color name="fuchsia">#FF00FF</color>
