@@ -3,6 +3,8 @@ package smartcooking.developer.com.smartcooking.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -57,7 +59,7 @@ public class RecipeFragment extends Fragment {
 
         Picasso.get().load(recipe.getImage()).into(iv);
 
-        favorite = result.findViewById(R.id.fab);
+        favorite = result.findViewById(R.id.recipe_fab);
 
         if (recipe.isFavorite()) {
             favorite.setImageResource(R.drawable.ic_fav_on);
@@ -79,28 +81,36 @@ public class RecipeFragment extends Fragment {
             }
         });
 
-        TextView recipe_name = result.findViewById(R.id.recipe_details_name);
         TextView recipe_ingredients = result.findViewById(R.id.recipe_details_ingredients);
         TextView recipe_preparation = result.findViewById(R.id.recipe_details_preparation);
 
-        recipe_name.setText(recipe.getName());
         recipe_ingredients.setText(recipe.getIngredientsString());
         recipe_preparation.setText(recipe.getPreparationString());
 
+        Toolbar toolbar;
+        CollapsingToolbarLayout collapsingToolbarLayout;
 
-        Toolbar toolbar = result.findViewById(R.id.toolbar);
+        toolbar = result.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ActionBar actionbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
 
-        if (actionbar != null) {
-            actionbar.setDisplayHomeAsUpEnabled(true);
-            actionbar.setDisplayShowHomeEnabled(true);
+        collapsingToolbarLayout = result.findViewById(R.id.collapsing_toolbar_layout);
+        collapsingToolbarLayout.setTitle(recipe.getName());
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
         }
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        AppBarLayout mAppBarLayout = result.findViewById(R.id.app_bar);
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            int scrollRange = -1;
+
             @Override
-            public void onClick(View v) {
-                getActivity().getFragmentManager().popBackStackImmediate();
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
             }
         });
 

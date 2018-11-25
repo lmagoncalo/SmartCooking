@@ -34,8 +34,8 @@
     <string name="tempo_label">Tempo:</string>
     <string name="dif_label">Dificuldade:</string>
     <string name="fornecedor_label">Fornecedor:</string>
-    <string name="receitaIngr_label"><u>Ingredientes:</u></string>
-    <string name="prep_label"><u>Modo preparação:</u></string>
+    <string name="ingredients_title">ingredientes:</string>
+    <string name="preparation_title">preparação:</string>
 
 
     <!-- AboutFragment -->
