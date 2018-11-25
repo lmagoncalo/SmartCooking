@@ -1,3 +1,8 @@
+<!--
+ *  Code found in: https://www.viralandroid.com/2016/02/animated-android-toolbar-expanding-and-collapsing.html
+ *  At 25 of November
+-->
+
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootLayout"
@@ -51,69 +56,69 @@
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <RelativeLayout
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/recipe_image"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:id="@+id/ingredients_title"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/recipe_image"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="@dimen/activity_vertical_margin">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:fontFamily="@font/montserrat"
+                android:fontFeatureSettings="smcp"
+                android:text="@string/ingredients_title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/title_size"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/ingredients_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:fontFamily="@font/montserrat"
-                    android:fontFeatureSettings="smcp"
-                    android:text="@string/ingredients_title"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/title_size"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/recipe_details_ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ingredients_title"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:fontFamily="@font/montserrat"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
 
-                <TextView
-                    android:id="@+id/recipe_details_ingredients"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ingredients_title"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:fontFamily="@font/montserrat"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size" />
+            <View
+                android:id="@+id/separator"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/recipe_details_ingredients"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="#40000000"></View>
 
-                <View
-                    android:id="@+id/separator"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_below="@+id/recipe_details_ingredients"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:background="#40000000"></View>
+            <TextView
+                android:id="@+id/preparation_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/separator"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:fontFamily="@font/montserrat"
+                android:fontFeatureSettings="smcp"
+                android:text="@string/preparation_title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/title_size"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/preparation_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/separator"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:fontFamily="@font/montserrat"
-                    android:fontFeatureSettings="smcp"
-                    android:text="@string/preparation_title"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/title_size"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/recipe_details_preparation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/preparation_title"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:fontFamily="@font/montserrat"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size" />
 
-                <TextView
-                    android:id="@+id/recipe_details_preparation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/preparation_title"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:fontFamily="@font/montserrat"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size" />
-
-            </RelativeLayout>
+        </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
