@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import smartcooking.developer.com.smartcooking.R;
 
@@ -33,7 +32,7 @@ class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListen
     public void onClick(View view) {
         //passing the clicked position to the parent class
         onItemClickListener.onItemClick(null, view, getAdapterPosition(), view.getId());
-        Toast.makeText(c, "Cenas: " + view.getId(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(c, "Cenas: " + view.getId(), Toast.LENGTH_SHORT).show();
     }
 
     TextView getName() {

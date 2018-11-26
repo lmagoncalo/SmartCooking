@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         if (f instanceof MainFragment || f instanceof SearchFragment || f instanceof CategoriesFragment || f instanceof FavoritesFragment || f instanceof AboutFragment) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Tem a certeza que quer sair?")
-                    .setCancelable(false)
+                    .setCancelable(true)
 
                     .setNegativeButton("Não", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {

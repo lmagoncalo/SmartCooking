@@ -64,7 +64,7 @@ public class RecipeFragment extends Fragment {
 
             Picasso.get().load(recipe.getImage()).into(iv);
 
-            favorite = result.findViewById(R.id.recipe_fab);
+            favorite = result.findViewById(R.id.recipe_fab_favorite);
 
             if (recipe.isFavorite()) {
                 favorite.setImageResource(R.drawable.ic_fav_on);
@@ -116,6 +116,13 @@ public class RecipeFragment extends Fragment {
                     if (scrollRange == -1) {
                         scrollRange = appBarLayout.getTotalScrollRange();
                     }
+                }
+            });
+
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().getFragmentManager().popBackStackImmediate();
                 }
             });
 
