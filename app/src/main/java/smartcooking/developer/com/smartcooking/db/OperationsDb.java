@@ -58,10 +58,17 @@ public class OperationsDb {
 
         // esta função retorna 'false' se o cursor estiver vazio
         if (!cursor.moveToFirst()) {
+            cursor.close();
+            c.close();
             return null;
         }
 
-        return cursor.getRecipe();
+        Recipe r = cursor.getRecipe();
+
+        cursor.close();
+        c.close();
+
+        return r;
     }
 
     private static boolean insertRecipe(Recipe recipe, SQLiteDatabase mDatabase) {
@@ -122,6 +129,8 @@ public class OperationsDb {
         RecipesCursorWrapper cursor = new RecipesCursorWrapper(c);
 
         if (!cursor.moveToFirst()) {
+            cursor.close();
+            c.close();
             return list;
         }
 
@@ -130,6 +139,9 @@ public class OperationsDb {
             list.add(recipe);
             cursor.moveToNext();
         }
+
+        cursor.close();
+        c.close();
 
         return list;
     }
@@ -148,6 +160,8 @@ public class OperationsDb {
         RecipesCursorWrapper cursor = new RecipesCursorWrapper(c);
 
         if (!cursor.moveToFirst()) {
+            cursor.close();
+            c.close();
             return list;
         }
 
@@ -156,6 +170,9 @@ public class OperationsDb {
             list.add(recipe);
             cursor.moveToNext();
         }
+
+        cursor.close();
+        c.close();
 
         return list;
     }
@@ -174,6 +191,8 @@ public class OperationsDb {
         RelationCursorWrapper cursor = new RelationCursorWrapper(c);
 
         if (!cursor.moveToFirst()) {
+            cursor.close();
+            c.close();
             return list;
         }
 
@@ -182,6 +201,9 @@ public class OperationsDb {
             list.add(relation);
             cursor.moveToNext();
         }
+
+        cursor.close();
+        c.close();
 
         return list;
     }
@@ -200,6 +222,8 @@ public class OperationsDb {
         IngredientsCursorWrapper cursor = new IngredientsCursorWrapper(c);
 
         if (!cursor.moveToFirst()) {
+            cursor.close();
+            c.close();
             return list;
         }
 
@@ -208,6 +232,9 @@ public class OperationsDb {
             list.add(ingredient);
             cursor.moveToNext();
         }
+
+        cursor.close();
+        c.close();
 
         return list;
     }
@@ -226,6 +253,8 @@ public class OperationsDb {
         IngredientsCursorWrapper cursor = new IngredientsCursorWrapper(c);
 
         if (!cursor.moveToFirst()) {
+            cursor.close();
+            c.close();
             return list;
         }
 
@@ -234,6 +263,9 @@ public class OperationsDb {
             list.add(ingredient.getName());
             cursor.moveToNext();
         }
+
+        cursor.close();
+        c.close();
 
         return list;
     }
@@ -254,6 +286,8 @@ public class OperationsDb {
         RecipesCursorWrapper cursor = new RecipesCursorWrapper(c);
 
         if (!cursor.moveToFirst()) {
+            cursor.close();
+            c.close();
             return list;
         }
 
@@ -262,6 +296,10 @@ public class OperationsDb {
             list.add(recipe);
             cursor.moveToNext();
         }
+
+
+        cursor.close();
+        c.close();
 
         return list;
     }
@@ -356,6 +394,8 @@ public class OperationsDb {
         RelationCursorWrapper cursor = new RelationCursorWrapper(c);
 
         if (!cursor.moveToFirst()) {
+            cursor.close();
+            c.close();
             return list;
         }
 
@@ -366,6 +406,8 @@ public class OperationsDb {
 
             if (recipe == null) {
                 //TODO: o return aqui é diferente porque se chegar aqui, quer dizer está alguma coisa mal com a database porque há ID's de receitas nas Relations que naõ existem na tabela Receitas
+                cursor.close();
+                c.close();
                 return null;
             }
 
@@ -379,6 +421,8 @@ public class OperationsDb {
             cursor.moveToNext();
         }
 
+        cursor.close();
+        c.close();
         return list;
     }
 
@@ -396,11 +440,15 @@ public class OperationsDb {
         RecipesCursorWrapper cursor = new RecipesCursorWrapper(c);
 
         if (!cursor.moveToFirst()) {
+            cursor.close();
+            c.close();
             return null;
         }
 
         recipe = cursor.getRecipe();
 
+        cursor.close();
+        c.close();
         return recipe;
     }
 
