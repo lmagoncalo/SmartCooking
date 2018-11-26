@@ -41,7 +41,7 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
 
         recipeList = OperationsDb.selectFavoriteRecipes(database);
 
-        adapter = new MyAdapter(recipeList, this);
+        adapter = new MyAdapter(recipeList, this, getContext());
         list.setAdapter(adapter);
         list.setHasFixedSize(true);
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -56,7 +56,7 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
 
     private void openDetails(int index) {
         Recipe recipe = recipeList.get(index);
-        RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe);
+        RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getId());
         FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction().addToBackStack("FAVORITES").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.replace(R.id.fragment, recipeFragment).commit();
     }

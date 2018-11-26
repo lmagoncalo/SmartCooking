@@ -34,7 +34,8 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="150dp"
+                android:layout_gravity="bottom"
                 android:background="@drawable/image_gradient"
                 android:gravity="center" />
 
@@ -93,7 +94,7 @@
                 android:layout_height="0.5dp"
                 android:layout_below="@+id/recipe_details_ingredients"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:background="#40000000"></View>
+                android:background="#40000000" />
 
             <TextView
                 android:id="@+id/preparation_title"

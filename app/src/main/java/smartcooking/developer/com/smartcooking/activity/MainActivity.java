@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -14,10 +15,15 @@ import android.view.MenuItem;
 
 import smartcooking.developer.com.smartcooking.R;
 import smartcooking.developer.com.smartcooking.db.DatabaseBaseHelper;
+import smartcooking.developer.com.smartcooking.db.Ingredient.Ingredient;
+import smartcooking.developer.com.smartcooking.db.OperationsDb;
+import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
+import smartcooking.developer.com.smartcooking.db.Relation.Relation;
 import smartcooking.developer.com.smartcooking.fragment.AboutFragment;
 import smartcooking.developer.com.smartcooking.fragment.CategoriesFragment;
 import smartcooking.developer.com.smartcooking.fragment.FavoritesFragment;
 import smartcooking.developer.com.smartcooking.fragment.MainFragment;
+import smartcooking.developer.com.smartcooking.fragment.RecipeFragment;
 import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
 
 // TODO - Ecrã de detalhes, ecrã main
@@ -29,6 +35,8 @@ import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
 // TODO - Splashscreen com asynctask - Deixar para ultimo
 // TODO - Fazer "close" de todas as variáveis "Cursor"
 // TODO - Nas receitas depois de carregar no bottom bar aquilo encolhe
+// TODO - Slide to unfavorite
+// TODO - Abrir imagem em grande
 
 public class MainActivity extends AppCompatActivity {
 
@@ -100,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
         database = new DatabaseBaseHelper(this).getWritableDatabase();
 
-        /*Recipe r1 = new Recipe(1, "Tostas de Frango no Forno", 15, 3, "Carne", "SmartCooking", "Bota agua|Bota ao lume", "Agua|Lume", "https://smartcookingapp.files.wordpress.com/2015/10/receita_pgi.jpg");
+        Recipe r1 = new Recipe(1, "Tostas de Frango no Forno", 15, 3, "Carne", "SmartCooking", "Bota agua|Bota ao lume", "Agua|Lume", "https://smartcookingapp.files.wordpress.com/2015/10/receita_pgi.jpg");
         Recipe r2 = new Recipe(2, "Peixe", 15, 3, "Peixe", "SmartCooking", "Bota agua|Bota ao lume", "Agua|Lume", "https://smartcookingapp.files.wordpress.com/2015/10/receita_pgi.jpg");
         r2.setFavorite(true);
         Recipe r3 = new Recipe(3, "Mais peixe", 15, 3, "Peixe", "SmartCooking", "Bota agua|Bota ao lume", "Agua|Lume", "https://smartcookingapp.files.wordpress.com/2015/10/receita_pgi.jpg");
@@ -118,9 +126,20 @@ public class MainActivity extends AppCompatActivity {
         rel.setID_recipe(1);
         OperationsDb.insertRelation(rel, database);
         rel.setID_recipe(2);
-        OperationsDb.insertRelation(rel, database);*/
+        OperationsDb.insertRelation(rel, database);
 
+        if (getIntent().getData() != null) {
+            Uri uri = getIntent().getData();
+            String id;
+            if ((id = uri.getQueryParameter("id")) != null) {
+                /*MainFragment mainFragment = new MainFragment();
+                getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).addToBackStack("Main").commit();*/
 
+                RecipeFragment recipeFragment = RecipeFragment.newInstance(Integer.parseInt(id));
+                getFragmentManager().beginTransaction().replace(R.id.fragment, recipeFragment).commit();
+                return;
+            }
+        }
         MainFragment mainFragment = new MainFragment();
         getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).commit();
     }

@@ -99,7 +99,7 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
                 break;
         }
 
-        adapter = new MyAdapter(recipeList, this);
+        adapter = new MyAdapter(recipeList, this, getContext());
         list.setAdapter(adapter);
         list.setHasFixedSize(true);
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -114,7 +114,7 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
 
     private void openDetails(int index) {
         Recipe recipe = recipeList.get(index);
-        RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe);
+        RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getId());
         FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction().addToBackStack("CATEGORIES").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.replace(R.id.fragment, recipeFragment).commit();
     }

@@ -2,6 +2,7 @@ package smartcooking.developer.com.smartcooking.fragment;
 
 
 import android.app.Fragment;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -31,19 +32,19 @@ public class RecipeFragment extends Fragment {
     public RecipeFragment() {
     }
 
-    public static RecipeFragment newInstance(Recipe recipe) {
+    public static RecipeFragment newInstance(long id) {
         RecipeFragment fragment = new RecipeFragment();
         Bundle args = new Bundle();
-        args.putSerializable(RECIPE, recipe);
+        args.putLong(RECIPE, id);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public Recipe getRecipe() {
+    public long getRecipe() {
         if (getArguments() != null) {
-            return (Recipe) getArguments().getSerializable(RECIPE);
+            return getArguments().getLong(RECIPE, -1);
         }
-        return null;
+        return -1;
     }
 
 
@@ -53,66 +54,72 @@ public class RecipeFragment extends Fragment {
         // Inflate the layout for this fragment
         View result = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-        recipe = getRecipe();
+        SQLiteDatabase database = ((MainActivity) getActivity()).getDatabase();
+        long id = getRecipe();
+        if (id != -1) {
+            recipe = OperationsDb.selectRecipeByID(id, database);
 
-        ImageView iv = result.findViewById(R.id.recipe_image);
 
-        Picasso.get().load(recipe.getImage()).into(iv);
+            ImageView iv = result.findViewById(R.id.recipe_image);
 
-        favorite = result.findViewById(R.id.recipe_fab);
+            Picasso.get().load(recipe.getImage()).into(iv);
 
-        if (recipe.isFavorite()) {
-            favorite.setImageResource(R.drawable.ic_fav_on);
-        } else {
-            favorite.setImageResource(R.drawable.ic_fav_off);
-        }
+            favorite = result.findViewById(R.id.recipe_fab);
 
-        favorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (OperationsDb.changeRecipeFavorite(recipe, ((MainActivity) getActivity()).getDatabase())) {
-                    recipe = OperationsDb.selectRecipeByID(recipe.getId(), ((MainActivity) getActivity()).getDatabase());
-                    if (recipe != null && recipe.isFavorite()) {
-                        favorite.setImageResource(R.drawable.ic_fav_on);
-                    } else {
-                        favorite.setImageResource(R.drawable.ic_fav_off);
+            if (recipe.isFavorite()) {
+                favorite.setImageResource(R.drawable.ic_fav_on);
+            } else {
+                favorite.setImageResource(R.drawable.ic_fav_off);
+            }
+
+            favorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (OperationsDb.changeRecipeFavorite(recipe, ((MainActivity) getActivity()).getDatabase())) {
+                        recipe = OperationsDb.selectRecipeByID(recipe.getId(), ((MainActivity) getActivity()).getDatabase());
+                        if (recipe != null && recipe.isFavorite()) {
+                            favorite.setImageResource(R.drawable.ic_fav_on);
+                        } else {
+                            favorite.setImageResource(R.drawable.ic_fav_off);
+                        }
                     }
                 }
+            });
+
+            TextView recipe_ingredients = result.findViewById(R.id.recipe_details_ingredients);
+            TextView recipe_preparation = result.findViewById(R.id.recipe_details_preparation);
+
+            recipe_ingredients.setText(recipe.getIngredientsString());
+            recipe_preparation.setText(recipe.getPreparationString());
+
+            Toolbar toolbar;
+            CollapsingToolbarLayout collapsingToolbarLayout;
+
+            toolbar = result.findViewById(R.id.toolbar);
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+            collapsingToolbarLayout = result.findViewById(R.id.collapsing_toolbar_layout);
+            collapsingToolbarLayout.setTitle(recipe.getName());
+
+            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setDisplayShowHomeEnabled(true);
             }
-        });
 
-        TextView recipe_ingredients = result.findViewById(R.id.recipe_details_ingredients);
-        TextView recipe_preparation = result.findViewById(R.id.recipe_details_preparation);
+            AppBarLayout mAppBarLayout = result.findViewById(R.id.app_bar);
+            mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                int scrollRange = -1;
 
-        recipe_ingredients.setText(recipe.getIngredientsString());
-        recipe_preparation.setText(recipe.getPreparationString());
-
-        Toolbar toolbar;
-        CollapsingToolbarLayout collapsingToolbarLayout;
-
-        toolbar = result.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
-        collapsingToolbarLayout = result.findViewById(R.id.collapsing_toolbar_layout);
-        collapsingToolbarLayout.setTitle(recipe.getName());
-
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
-        }
-
-        AppBarLayout mAppBarLayout = result.findViewById(R.id.app_bar);
-        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            int scrollRange = -1;
-
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                    if (scrollRange == -1) {
+                        scrollRange = appBarLayout.getTotalScrollRange();
+                    }
                 }
-            }
-        });
+            });
+
+        }
 
         return result;
     }

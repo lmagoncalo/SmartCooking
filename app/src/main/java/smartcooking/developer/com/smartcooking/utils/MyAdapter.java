@@ -21,11 +21,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     private List<Recipe> recipes;
     private List<Recipe> recipes_copy;
     private AdapterView.OnItemClickListener onItemClickListener;
+    private Context c;
 
-    public MyAdapter(List<Recipe> recipes, AdapterView.OnItemClickListener onItemClickListener) {
+    public MyAdapter(List<Recipe> recipes, AdapterView.OnItemClickListener onItemClickListener, Context c) {
         this.recipes = recipes;
         this.recipes_copy = new ArrayList<>(recipes);
         this.onItemClickListener = onItemClickListener;
+        this.c = c;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         View contactView = inflater.inflate(R.layout.row, parent, false);
 
         // Return a new holder instance
-        return new MyViewHolder(contactView, onItemClickListener);
+        return new MyViewHolder(contactView, onItemClickListener, c);
     }
 
     @Override
