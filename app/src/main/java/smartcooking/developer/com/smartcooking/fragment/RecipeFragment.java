@@ -59,7 +59,6 @@ public class RecipeFragment extends Fragment {
         if (id != -1) {
             recipe = OperationsDb.selectRecipeByID(id, database);
 
-
             ImageView iv = result.findViewById(R.id.recipe_image);
 
             Picasso.get().load(recipe.getImage()).into(iv);

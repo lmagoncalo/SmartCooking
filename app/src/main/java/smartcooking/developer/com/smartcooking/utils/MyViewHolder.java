@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import smartcooking.developer.com.smartcooking.R;
 
-class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
     private TextView name;
     private TextView difficulty;
     private ImageView image;
@@ -24,6 +24,7 @@ class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListen
         difficulty = itemView.findViewById(R.id.recipe_difficulty);
         image = itemView.findViewById(R.id.recipe_image);
         image.setOnClickListener(this);
+        image.setOnLongClickListener(this);
         this.onItemClickListener = onItemClickListener;
         this.c = c;
     }
@@ -33,6 +34,14 @@ class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListen
         //passing the clicked position to the parent class
         onItemClickListener.onItemClick(null, view, getAdapterPosition(), view.getId());
         //Toast.makeText(c, "Cenas: " + view.getId(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        // Handle long click
+        // Return true to indicate the click was handled
+        new ImagePreviewer().show(c, (ImageView) view);
+        return true;
     }
 
     TextView getName() {

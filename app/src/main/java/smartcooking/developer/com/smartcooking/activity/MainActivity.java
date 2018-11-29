@@ -27,16 +27,11 @@ import smartcooking.developer.com.smartcooking.fragment.RecipeFragment;
 import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
 
 // TODO - Ecrã de detalhes, ecrã main
-// TODO - Meter a pesquisa a andar para cima - Talvez
 // TODO - Criar os onResume e onDelete
 // TODO - Responsiveness
-// TODO - Erro não se sabe porquê - Carregar search, abrir uma receita, carregar novamente no search e depois numa receita - Corrigido mas fazer o ondestroy para guardar a lista para não ter que ir novamente à base de dados
 // TODO - Meter um indice com o alfabeto para pesquisar ingredientes - Talvez
 // TODO - Splashscreen com asynctask - Deixar para ultimo
-// TODO - Fazer "close" de todas as variáveis "Cursor"
-// TODO - Nas receitas depois de carregar no bottom bar aquilo encolhe
 // TODO - Slide to unfavorite
-// TODO - Abrir imagem em grande
 
 public class MainActivity extends AppCompatActivity {
 
@@ -133,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
             String id;
             if ((id = uri.getQueryParameter("id")) != null) {
                 /*MainFragment mainFragment = new MainFragment();
-                getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).addToBackStack("Main").commit();*/
+                getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).addToBackStack("MAIN").commit();*/
 
                 RecipeFragment recipeFragment = RecipeFragment.newInstance(Integer.parseInt(id));
                 getFragmentManager().beginTransaction().replace(R.id.fragment, recipeFragment).commit();

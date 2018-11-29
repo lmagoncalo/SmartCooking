@@ -120,7 +120,10 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        openDetails(position);
+        Recipe recipe = recipeList.get(position);
+        RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getId());
+        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction().addToBackStack("SEARCH").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.replace(R.id.fragment, recipeFragment).commit();
     }
 
     @Override
@@ -140,12 +143,5 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
         if (!text.isEmpty())
             adapter.filter(text);
-    }
-
-    private void openDetails(int index) {
-        Recipe recipe = recipeList.get(index);
-        RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getId());
-        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction().addToBackStack("SEARCH").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.replace(R.id.fragment, recipeFragment).commit();
     }
 }

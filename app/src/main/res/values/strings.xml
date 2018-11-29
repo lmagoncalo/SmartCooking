@@ -166,6 +166,7 @@
     <string name="snack_btn_image_content">Snack Button Icon</string>
     <string name="other_btn_image_content">Other Button Icon</string>
     <string name="recipe_details_image_content">Recipe Details Image</string>
+    <string name="recipe_image_preview_image_content">Image View for the recipe preview</string>
 
 
     <!-- Cenas -->
