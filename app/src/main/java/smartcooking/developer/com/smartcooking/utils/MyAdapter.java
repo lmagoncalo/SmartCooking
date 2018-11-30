@@ -21,9 +21,9 @@ import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
 
 public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     private List<Recipe> recipes;
-    private List<Recipe> recipes_copy;
-    private AdapterView.OnItemClickListener onItemClickListener;
-    private Context c;
+    private final List<Recipe> recipes_copy;
+    private final AdapterView.OnItemClickListener onItemClickListener;
+    private final Context c;
 
     public MyAdapter(List<Recipe> recipes, AdapterView.OnItemClickListener onItemClickListener, Context c) {
         this.recipes = recipes;

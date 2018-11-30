@@ -271,7 +271,7 @@ public class OperationsDb {
     }
 
     public static ArrayList<Recipe> selectFavoriteRecipes(SQLiteDatabase mDatabase) {
-        ArrayList<Recipe> list = new ArrayList<Recipe>();
+        ArrayList<Recipe> list = new ArrayList<>();
 
         // atenção que em SQLite, os valores boolean são 1 (true) e 0 (false). Não existe uma class boolean com valores "true" e "false"
 
@@ -356,7 +356,7 @@ public class OperationsDb {
                     3 -->  fazer uma verificação antes de chamar esta função, para aparecer uma mensagem de erro, caso haja ingredientes repetidos
         */
 
-        ArrayList<Recipe> list = new ArrayList<Recipe>();
+        ArrayList<Recipe> list = new ArrayList<>();
         String ingredientsQueryStr = getIngredientArrayListToString(ingrs);
         // atenção que em SQLite, os valores boolean são 1 (true) e 0 (false). Não existe uma class boolean com valores "true" e "false"
 

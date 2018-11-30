@@ -30,13 +30,10 @@ import smartcooking.developer.com.smartcooking.utils.MyAdapter;
 
 public class SearchFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    EditText recipe_name_search;
-    Button cleat_btn;
-    MyAdapter adapter;
-    List<Recipe> recipeList;
-
-    public SearchFragment() {
-    }
+    private EditText recipe_name_search;
+    private Button cleat_btn;
+    private MyAdapter adapter;
+    private List<Recipe> recipeList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

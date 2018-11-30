@@ -2,7 +2,6 @@ package smartcooking.developer.com.smartcooking.fragment;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
@@ -25,13 +24,10 @@ import smartcooking.developer.com.smartcooking.utils.SpinAdapter;
 
 public class MainFragment extends Fragment {
 
-    private ArrayList<Spinner> spinners = new ArrayList<>(5);
-    private ArrayList<LinearLayout> linearLayouts = new ArrayList<>(5);
-    private ArrayList<ImageButton> reduceButtons = new ArrayList<>(5);
-    int n_ingredients;
-
-    public MainFragment() {
-    }
+    private final ArrayList<Spinner> spinners = new ArrayList<>(5);
+    private final ArrayList<LinearLayout> linearLayouts = new ArrayList<>(5);
+    private final ArrayList<ImageButton> reduceButtons = new ArrayList<>(5);
+    private int n_ingredients;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

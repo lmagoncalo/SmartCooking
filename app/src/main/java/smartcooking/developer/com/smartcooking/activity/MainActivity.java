@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView navigation;
     private SQLiteDatabase database;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override

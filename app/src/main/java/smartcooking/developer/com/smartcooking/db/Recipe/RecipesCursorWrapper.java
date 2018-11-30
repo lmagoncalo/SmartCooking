@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import smartcooking.developer.com.smartcooking.db.DatabaseScheme;
@@ -30,18 +31,12 @@ public class RecipesCursorWrapper extends CursorWrapper {
         String hash = getString(getColumnIndex(DatabaseScheme.RecipesTable.Cols.HASH));
 
         String[] preparation_aux = preparation_str.split("\\|");
-        List<String> preparation = new ArrayList<String>();
-        ;
-        for (String p : preparation_aux) {
-            preparation.add(p);
-        }
+
+        List<String> preparation = new ArrayList<>(Arrays.asList(preparation_aux));
 
         String[] ingredients_aux = ingredients_str.split("\\|");
-        List<String> ingredients = new ArrayList<String>();
-        ;
-        for (String i : ingredients_aux) {
-            ingredients.add(i);
-        }
+
+        List<String> ingredients = new ArrayList<>(Arrays.asList(ingredients_aux));
 
         recipe.setId(ID);
         recipe.setName(name);

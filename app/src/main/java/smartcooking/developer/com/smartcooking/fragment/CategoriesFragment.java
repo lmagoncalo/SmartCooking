@@ -15,11 +15,7 @@ import smartcooking.developer.com.smartcooking.R;
 
 public class CategoriesFragment extends Fragment {
 
-    private ArrayList<Button> buttons = new ArrayList<>(6);
-
-    public CategoriesFragment() {
-    }
-
+    private final ArrayList<Button> buttons = new ArrayList<>(6);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,13 +43,6 @@ public class CategoriesFragment extends Fragment {
         }
 
         return result;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-
     }
 
 }

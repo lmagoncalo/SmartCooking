@@ -20,6 +20,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:contentDescription="@string/swipe_icon_image_content"
             android:src="@drawable/ic_fav_off" />
 
         <TextView
@@ -28,7 +29,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_toStartOf="@id/delete_icon"
-            android:text="Não favorito"
+            android:text="@string/un_fav"
             android:textColor="#fff"
             android:textSize="16sp" />
 

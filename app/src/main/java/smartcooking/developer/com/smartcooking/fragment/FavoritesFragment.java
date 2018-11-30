@@ -4,9 +4,9 @@ package smartcooking.developer.com.smartcooking.fragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,11 +28,8 @@ import smartcooking.developer.com.smartcooking.utils.RecyclerItemTouchHelper;
 
 public class FavoritesFragment extends Fragment implements AdapterView.OnItemClickListener, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
-    List<Recipe> recipeList;
-    MyAdapter adapter;
-
-    public FavoritesFragment() {
-    }
+    private List<Recipe> recipeList;
+    private MyAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,19 +53,14 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback1 = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.UP) {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
             @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 // Row is swiped from recycler view
                 // remove it from adapter
-            }
-
-            @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         };
 

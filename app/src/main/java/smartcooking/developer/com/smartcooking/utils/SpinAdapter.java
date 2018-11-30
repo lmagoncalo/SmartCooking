@@ -15,14 +15,12 @@ import smartcooking.developer.com.smartcooking.db.Ingredient.Ingredient;
 public class SpinAdapter extends ArrayAdapter<Ingredient> {
 
     // Your sent context
-    private Context context;
     // Your custom values for the spinner (User)
-    private List<Ingredient> values;
+    private final List<Ingredient> values;
 
     public SpinAdapter(Context context, int textViewResourceId,
                        List<Ingredient> values) {
         super(context, textViewResourceId, values);
-        this.context = context;
         this.values = values;
     }
 
@@ -44,8 +42,9 @@ public class SpinAdapter extends ArrayAdapter<Ingredient> {
 
     // And the "magic" goes here
     // This is for the "passive" state of the spinner
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
         TextView label = (TextView) super.getView(position, convertView, parent);
         label.setTextColor(Color.BLACK);

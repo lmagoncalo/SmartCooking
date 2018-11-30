@@ -18,10 +18,7 @@ import smartcooking.developer.com.smartcooking.R;
 
 public class AboutFragment extends Fragment {
 
-    public AboutFragment() {
-    }
-
-    public static Spanned fromHtml(String html) {
+    private static Spanned fromHtml(String html) {
         Spanned result = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             result = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);

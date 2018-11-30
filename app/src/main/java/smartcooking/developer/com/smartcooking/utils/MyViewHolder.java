@@ -12,13 +12,13 @@ import android.widget.TextView;
 import smartcooking.developer.com.smartcooking.R;
 
 public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-    private TextView name;
-    private TextView difficulty;
-    private ImageView image;
-    private Context c;
-    private RelativeLayout viewForeground, viewBackground;
+    private final TextView name;
+    private final TextView difficulty;
+    private final ImageView image;
+    private final Context c;
+    private final RelativeLayout viewForeground;
 
-    private AdapterView.OnItemClickListener onItemClickListener;
+    private final AdapterView.OnItemClickListener onItemClickListener;
 
     MyViewHolder(@NonNull View itemView, AdapterView.OnItemClickListener onItemClickListener, Context c) {
         super(itemView);
@@ -30,14 +30,12 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         this.onItemClickListener = onItemClickListener;
         this.c = c;
         this.viewForeground = itemView.findViewById(R.id.view_foreground);
-        this.viewBackground = itemView.findViewById(R.id.view_background);
     }
 
     @Override
     public void onClick(View view) {
         //passing the clicked position to the parent class
         onItemClickListener.onItemClick(null, view, getAdapterPosition(), view.getId());
-        //Toast.makeText(c, "Cenas: " + view.getId(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

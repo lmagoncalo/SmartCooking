@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,15 +23,10 @@ import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
 import smartcooking.developer.com.smartcooking.utils.MyAdapter;
 
 public class RecipeListFragment extends Fragment implements AdapterView.OnItemClickListener {
-    private static String CATEGORY = "get_category";
-    private static String INGREDIENTS = "get_ingredients";
+    private static final String CATEGORY = "get_category";
+    private static final String INGREDIENTS = "get_ingredients";
 
-    List<Recipe> recipeList;
-    MyAdapter adapter;
-    private CoordinatorLayout coordinatorLayout;
-
-    public RecipeListFragment() {
-    }
+    private List<Recipe> recipeList;
 
     public static RecipeListFragment newInstance_category(int category) {
         RecipeListFragment fragment = new RecipeListFragment();
@@ -50,7 +44,7 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
         return fragment;
     }
 
-    public int getCategory() {
+    private int getCategory() {
         if (getArguments() != null) {
             return getArguments().getInt(CATEGORY, -1);
         }
@@ -58,7 +52,7 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
     }
 
     @SuppressWarnings("unchecked")
-    public ArrayList<Ingredient> getIngredients() {
+    private ArrayList<Ingredient> getIngredients() {
         Object obj = getArguments().getSerializable(INGREDIENTS);
         return (ArrayList<Ingredient>) obj;
     }
@@ -101,7 +95,7 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
                 break;
         }
 
-        adapter = new MyAdapter(recipeList, this, getContext());
+        MyAdapter adapter = new MyAdapter(recipeList, this, getContext());
         list.setAdapter(adapter);
         list.setHasFixedSize(true);
         list.setLayoutManager(new LinearLayoutManager(getActivity()));

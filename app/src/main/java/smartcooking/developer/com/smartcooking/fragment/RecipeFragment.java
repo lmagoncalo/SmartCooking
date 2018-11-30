@@ -24,13 +24,10 @@ import smartcooking.developer.com.smartcooking.db.OperationsDb;
 import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
 
 public class RecipeFragment extends Fragment {
-    private static String RECIPE = "get_recipe";
+    private static final String RECIPE = "get_recipe";
 
-    FloatingActionButton favorite;
-    Recipe recipe;
-
-    public RecipeFragment() {
-    }
+    private FloatingActionButton favorite;
+    private Recipe recipe;
 
     public static RecipeFragment newInstance(long id) {
         RecipeFragment fragment = new RecipeFragment();
@@ -40,7 +37,7 @@ public class RecipeFragment extends Fragment {
         return fragment;
     }
 
-    public long getRecipe() {
+    private long getRecipe() {
         if (getArguments() != null) {
             return getArguments().getLong(RECIPE, -1);
         }
