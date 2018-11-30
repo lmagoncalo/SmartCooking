@@ -2,6 +2,7 @@ package smartcooking.developer.com.smartcooking.fragment;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;

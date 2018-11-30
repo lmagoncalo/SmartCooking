@@ -179,6 +179,6 @@
         android:layout_margin="0dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="@string/search_btn_text"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"/>
 
 </RelativeLayout>

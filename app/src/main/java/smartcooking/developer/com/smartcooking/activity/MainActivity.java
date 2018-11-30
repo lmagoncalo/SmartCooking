@@ -98,10 +98,46 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment f = this.getFragmentManager().findFragmentById(R.id.fragment);
+        if (f instanceof MainFragment || f instanceof SearchFragment || f instanceof CategoriesFragment || f instanceof FavoritesFragment || f instanceof AboutFragment) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Tem a certeza que quer sair?")
+                    .setCancelable(true)
+
+                    .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    })
+                    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            MainActivity.super.onBackPressed();
+                            database.close();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public SQLiteDatabase getDatabase() {
+        return database;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         database = new DatabaseBaseHelper(this).getWritableDatabase();
+
+        navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         Recipe r1 = new Recipe(1, "Tostas de Frango no Forno", 15, 3, "Carne", "SmartCooking", "Bota agua|Bota ao lume", "Agua|Lume", "https://smartcookingapp.files.wordpress.com/2015/10/receita_pgi.jpg");
         Recipe r2 = new Recipe(2, "Peixe", 15, 3, "Peixe", "SmartCooking", "Bota agua|Bota ao lume", "Agua|Lume", "https://smartcookingapp.files.wordpress.com/2015/10/receita_pgi.jpg");
@@ -135,36 +171,19 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
-        MainFragment mainFragment = new MainFragment();
-        getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).commit();
+
+        Fragment f = this.getFragmentManager().findFragmentById(R.id.fragment);
+        if (f==null) {
+            MainFragment mainFragment = new MainFragment();
+            getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).commit();
+        }
+
     }
 
     @Override
-    public void onBackPressed() {
-        Fragment f = this.getFragmentManager().findFragmentById(R.id.fragment);
-        if (f instanceof MainFragment || f instanceof SearchFragment || f instanceof CategoriesFragment || f instanceof FavoritesFragment || f instanceof AboutFragment) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Tem a certeza que quer sair?")
-                    .setCancelable(true)
-
-                    .setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    })
-                    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            MainActivity.super.onBackPressed();
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
-        } else {
-            super.onBackPressed();
-        }
+    public void onPause(){
+        super.onPause();
+        database.close();
     }
 
-    public SQLiteDatabase getDatabase() {
-        return database;
-    }
 }

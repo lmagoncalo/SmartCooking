@@ -1,6 +1,8 @@
 package smartcooking.developer.com.smartcooking.db.Relation;
 
-public class Relation {
+import java.io.Serializable;
+
+public class Relation  implements Serializable {
 
     private long ID_recipe;
     private long ID_ingredient;

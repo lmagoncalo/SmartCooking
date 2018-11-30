@@ -104,6 +104,7 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
         list.setHasFixedSize(true);
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+
         return result;
     }
 
