@@ -150,7 +150,7 @@
 
     <!-- Images Content Descriptions -->
     <string name="image_list_description">Image of the Receipe in List</string>
-    <string name="receita_image_description">Image of the Recipe</string>
+    <string name="recipe_image_description">Image of the Recipe</string>
     <string name="details_difficulty_image_content">Details Difficulty</string>
     <string name="details_time_image_content">Details Time</string>
     <string name="remove_btn_1_image_content">Remove Button 1</string>

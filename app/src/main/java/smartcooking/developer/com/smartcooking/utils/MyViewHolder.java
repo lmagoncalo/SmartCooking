@@ -6,15 +6,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import smartcooking.developer.com.smartcooking.R;
 
-class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
     private TextView name;
     private TextView difficulty;
     private ImageView image;
     private Context c;
+    private RelativeLayout viewForeground, viewBackground;
 
     private AdapterView.OnItemClickListener onItemClickListener;
 
@@ -27,6 +29,8 @@ class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListen
         image.setOnLongClickListener(this);
         this.onItemClickListener = onItemClickListener;
         this.c = c;
+        this.viewForeground = itemView.findViewById(R.id.view_foreground);
+        this.viewBackground = itemView.findViewById(R.id.view_background);
     }
 
     @Override
@@ -54,5 +58,9 @@ class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListen
 
     ImageView getImage() {
         return image;
+    }
+
+    RelativeLayout getViewForeground() {
+        return viewForeground;
     }
 }

@@ -6,8 +6,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,10 +15,6 @@ import android.view.MenuItem;
 
 import smartcooking.developer.com.smartcooking.R;
 import smartcooking.developer.com.smartcooking.db.DatabaseBaseHelper;
-import smartcooking.developer.com.smartcooking.db.Ingredient.Ingredient;
-import smartcooking.developer.com.smartcooking.db.OperationsDb;
-import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
-import smartcooking.developer.com.smartcooking.db.Relation.Relation;
 import smartcooking.developer.com.smartcooking.fragment.AboutFragment;
 import smartcooking.developer.com.smartcooking.fragment.CategoriesFragment;
 import smartcooking.developer.com.smartcooking.fragment.FavoritesFragment;
@@ -100,6 +94,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        database = new DatabaseBaseHelper(this).getWritableDatabase();
+
+        navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        if (getIntent().getData() != null) {
+            Uri uri = getIntent().getData();
+            String id;
+            if ((id = uri.getQueryParameter("id")) != null) {
+                /*MainFragment mainFragment = new MainFragment();
+                getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).addToBackStack("MAIN").commit();*/
+
+                RecipeFragment recipeFragment = RecipeFragment.newInstance(Integer.parseInt(id));
+                getFragmentManager().beginTransaction().replace(R.id.fragment, recipeFragment).commit();
+                return;
+            }
+        }
+        MainFragment mainFragment = new MainFragment();
+        getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).commit();
+
     }
 
     @Override
@@ -134,52 +148,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
-        super.onResume();
-
-        database = new DatabaseBaseHelper(this).getWritableDatabase();
-
-        navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        Recipe r1 = new Recipe(1, "Tostas de Frango no Forno", 15, 3, "Carne", "SmartCooking", "Bota agua|Bota ao lume", "Agua|Lume", "https://smartcookingapp.files.wordpress.com/2015/10/receita_pgi.jpg");
-        Recipe r2 = new Recipe(2, "Peixe", 15, 3, "Peixe", "SmartCooking", "Bota agua|Bota ao lume", "Agua|Lume", "https://smartcookingapp.files.wordpress.com/2015/10/receita_pgi.jpg");
-        r2.setFavorite(true);
-        Recipe r3 = new Recipe(3, "Mais peixe", 15, 3, "Peixe", "SmartCooking", "Bota agua|Bota ao lume", "Agua|Lume", "https://smartcookingapp.files.wordpress.com/2015/10/receita_pgi.jpg");
-        OperationsDb.recipeControlledInsert(r1,database);
-        OperationsDb.recipeControlledInsert(r2,database);
-        OperationsDb.recipeControlledInsert(r3,database);
-        /*Ingredient i1 = new Ingredient(1,"Carne");
-        Ingredient i2 = new Ingredient(2,"Peixe");
-        Ingredient i3 = new Ingredient(3,"Pão");
-        OperationsDb.insertIngredient(i1,database);
-        OperationsDb.insertIngredient(i2,database);
-        OperationsDb.insertIngredient(i3,database);*/
-        Relation rel = new Relation();
-        rel.setID_ingredient(1);
-        rel.setID_recipe(1);
-        OperationsDb.insertRelation(rel, database);
-        rel.setID_recipe(2);
-        OperationsDb.insertRelation(rel, database);
-
-        if (getIntent().getData() != null) {
-            Uri uri = getIntent().getData();
-            String id;
-            if ((id = uri.getQueryParameter("id")) != null) {
-                /*MainFragment mainFragment = new MainFragment();
-                getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).addToBackStack("MAIN").commit();*/
-
-                RecipeFragment recipeFragment = RecipeFragment.newInstance(Integer.parseInt(id));
-                getFragmentManager().beginTransaction().replace(R.id.fragment, recipeFragment).commit();
-                return;
-            }
-        }
-
         Fragment f = this.getFragmentManager().findFragmentById(R.id.fragment);
         if (f==null) {
             MainFragment mainFragment = new MainFragment();
             getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).commit();
         }
-
+        super.onResume();
     }
 
     @Override

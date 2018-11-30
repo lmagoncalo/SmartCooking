@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Locale;
 
 import smartcooking.developer.com.smartcooking.R;
+import smartcooking.developer.com.smartcooking.activity.MainActivity;
+import smartcooking.developer.com.smartcooking.db.OperationsDb;
 import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
 
 public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
@@ -34,7 +36,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public int getItemCount() {
         return recipes.size();
     }
-
 
     @NonNull
     @Override
@@ -99,8 +100,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         notifyDataSetChanged();
     }
 
-    public void removeRecipe(int postition){
-        recipes.remove(postition);
-        //TODO: é preciso fazer isto na "recipes_copy" ?
+    public void removeRecipe(int position) {
+        OperationsDb.changeRecipeFavorite(recipes.get(position), ((MainActivity) c).getDatabase());
+        recipes.remove(position);
+        // notify the item removed by position
+        // to perform recycler view delete animations
+        // NOTE: don't call notifyDataSetChanged()
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(Recipe item, int position) {
+        recipes.add(position, item);
+        // notify item added by position
+        OperationsDb.changeRecipeFavorite(item, ((MainActivity) c).getDatabase());
+        notifyItemInserted(position);
     }
 }

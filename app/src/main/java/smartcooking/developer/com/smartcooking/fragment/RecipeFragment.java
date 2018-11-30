@@ -87,9 +87,31 @@ public class RecipeFragment extends Fragment {
 
             TextView recipe_ingredients = result.findViewById(R.id.recipe_details_ingredients);
             TextView recipe_preparation = result.findViewById(R.id.recipe_details_preparation);
+            TextView recipe_time = result.findViewById(R.id.recipe_time);
+            TextView recipe_difficulty = result.findViewById(R.id.recipe_difficulty);
 
             recipe_ingredients.setText(recipe.getIngredientsString());
             recipe_preparation.setText(recipe.getPreparationString());
+            String time = recipe.getTime() + " min";
+            recipe_time.setText(time);
+            String difficulty;
+            switch (recipe.getDifficulty()) {
+                case 1:
+                    difficulty = "Fácil";
+                    break;
+                case 2:
+                    difficulty = "Intermédio";
+                    break;
+
+                case 3:
+                    difficulty = "Avançado";
+                    break;
+
+                default:
+                    difficulty = "Lendário";
+                    break;
+            }
+            recipe_difficulty.setText(difficulty);
 
             Toolbar toolbar;
             CollapsingToolbarLayout collapsingToolbarLayout;
@@ -99,6 +121,10 @@ public class RecipeFragment extends Fragment {
 
             collapsingToolbarLayout = result.findViewById(R.id.collapsing_toolbar_layout);
             collapsingToolbarLayout.setTitle(recipe.getName());
+
+            int horizontal_dim = Math.round(getActivity().getResources().getDimension(R.dimen.activity_horizontal_margin));
+
+            collapsingToolbarLayout.setExpandedTitleMarginStart(horizontal_dim);
 
             ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
             if (actionBar != null) {
