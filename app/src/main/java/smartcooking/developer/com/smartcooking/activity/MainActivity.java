@@ -6,6 +6,8 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -146,12 +148,12 @@ public class MainActivity extends AppCompatActivity {
         OperationsDb.recipeControlledInsert(r1,database);
         OperationsDb.recipeControlledInsert(r2,database);
         OperationsDb.recipeControlledInsert(r3,database);
-        Ingredient i1 = new Ingredient(1,"Carne");
+        /*Ingredient i1 = new Ingredient(1,"Carne");
         Ingredient i2 = new Ingredient(2,"Peixe");
         Ingredient i3 = new Ingredient(3,"Pão");
         OperationsDb.insertIngredient(i1,database);
         OperationsDb.insertIngredient(i2,database);
-        OperationsDb.insertIngredient(i3,database);
+        OperationsDb.insertIngredient(i3,database);*/
         Relation rel = new Relation();
         rel.setID_ingredient(1);
         rel.setID_recipe(1);

@@ -4,9 +4,13 @@ package smartcooking.developer.com.smartcooking.fragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +25,8 @@ import smartcooking.developer.com.smartcooking.db.Ingredient.Ingredient;
 import smartcooking.developer.com.smartcooking.db.OperationsDb;
 import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
 import smartcooking.developer.com.smartcooking.utils.MyAdapter;
+import smartcooking.developer.com.smartcooking.utils.SwipeController;
+import smartcooking.developer.com.smartcooking.utils.SwipeControllerActions;
 
 public class RecipeListFragment extends Fragment implements AdapterView.OnItemClickListener {
     private static String CATEGORY = "get_category";
@@ -104,6 +110,26 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
         list.setHasFixedSize(true);
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        Drawable icon = getActivity().getDrawable(R.drawable.ic_fav_off);
+
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>> ICON: " + icon);
+        SwipeController swipeController = new SwipeController(new SwipeControllerActions() {
+            @Override
+            public void onRightClicked(int position) {
+                adapter.removeRecipe(position);
+                adapter.notifyItemRemoved(position);
+                adapter.notifyItemRangeChanged(position, adapter.getItemCount());
+            }
+
+            @Override
+            public void onLeftClicked(int position) {
+                adapter.removeRecipe(position);
+                adapter.notifyItemRemoved(position);
+                adapter.notifyItemRangeChanged(position, adapter.getItemCount());
+            }
+        }, icon);
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+        itemTouchhelper.attachToRecyclerView(list);
 
         return result;
     }

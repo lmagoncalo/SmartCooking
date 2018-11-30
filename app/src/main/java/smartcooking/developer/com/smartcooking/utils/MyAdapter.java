@@ -98,4 +98,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         }
         notifyDataSetChanged();
     }
+
+    public void removeRecipe(int postition){
+        recipes.remove(postition);
+        //TODO: é preciso fazer isto na "recipes_copy" ?
+    }
 }
