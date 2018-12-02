@@ -4,8 +4,11 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -103,14 +106,12 @@ public class MainActivity extends AppCompatActivity {
             Uri uri = getIntent().getData();
             String id;
             if ((id = uri.getQueryParameter("id")) != null) {
-                /*MainFragment mainFragment = new MainFragment();
-                getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).addToBackStack("MAIN").commit();*/
-
                 RecipeFragment recipeFragment = RecipeFragment.newInstance(Integer.parseInt(id));
                 getFragmentManager().beginTransaction().replace(R.id.fragment, recipeFragment).commit();
                 return;
             }
         }
+
         MainFragment mainFragment = new MainFragment();
         getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).commit();
 
@@ -148,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
+        database = new DatabaseBaseHelper(this).getWritableDatabase();
         Fragment f = this.getFragmentManager().findFragmentById(R.id.fragment);
         if (f==null) {
             MainFragment mainFragment = new MainFragment();
@@ -160,6 +162,13 @@ public class MainActivity extends AppCompatActivity {
     public void onPause(){
         super.onPause();
         database.close();
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

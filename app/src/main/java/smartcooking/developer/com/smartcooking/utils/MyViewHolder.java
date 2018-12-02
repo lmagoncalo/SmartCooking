@@ -16,7 +16,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
     private final TextView difficulty;
     private final ImageView image;
     private final Context c;
-    private final RelativeLayout viewForeground;
+    private final RelativeLayout viewForeground, viewBackground;
 
     private final AdapterView.OnItemClickListener onItemClickListener;
 
@@ -30,6 +30,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         this.onItemClickListener = onItemClickListener;
         this.c = c;
         this.viewForeground = itemView.findViewById(R.id.view_foreground);
+        this.viewBackground = itemView.findViewById(R.id.view_background);
     }
 
     @Override
@@ -60,5 +61,9 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
 
     RelativeLayout getViewForeground() {
         return viewForeground;
+    }
+
+    RelativeLayout getViewBackground() {
+        return viewBackground;
     }
 }

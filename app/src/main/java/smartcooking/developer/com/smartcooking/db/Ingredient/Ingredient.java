@@ -3,23 +3,23 @@ package smartcooking.developer.com.smartcooking.db.Ingredient;
 import java.io.Serializable;
 
 public class Ingredient implements Serializable{
-    private long ID;
+    private long id;
     private String name;
 
     public Ingredient() {
     }
 
     public Ingredient(long id, String name) {
-        this.ID = id;
+        this.id = id;
         this.name = name;
     }
 
-    public long getID() {
-        return ID;
+    public long getId() {
+        return id;
     }
 
-    public void setID(long ID) {
-        this.ID = ID;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {

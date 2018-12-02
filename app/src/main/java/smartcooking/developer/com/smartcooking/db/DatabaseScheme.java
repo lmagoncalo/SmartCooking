@@ -33,8 +33,8 @@ public class DatabaseScheme {
         }
     }
 
-    public static final class RelationTable {
-        public static final String NAME = "Relation";
+    public static final class RelationsTable {
+        public static final String NAME = "Relations";
 
         public static final class Cols {
             public static final String ID_RECIPE = "id_recipe";

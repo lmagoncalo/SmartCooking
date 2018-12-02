@@ -49,7 +49,7 @@
     <string name="icons_text">Icons feitos por: </string>
 
     <!-- FavoriteFragment -->
-    <string name="un_fav">Não favorito</string>
+    <string name="un_fav">não\nfavorito</string>
 
 
     <!-- Array de ingredientes -->
@@ -185,7 +185,7 @@
         "flexibility of the material creates new affordances that supercede those in the physical "
         "world, without breaking the rules of physics.\n"
         "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
+        "interact, and exist in space and in relations to each other. Realistic lighting shows "
         "seams, divides space, and indicates moving parts.\n\n"
 
         "Bold, graphic, intentional.\n\n"

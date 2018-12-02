@@ -1,11 +1,5 @@
 package smartcooking.developer.com.smartcooking.utils;
 
-/*
- *
- * Code from https://medium.com/@arekk/how-to-preview-image-on-long-click-and-blur-background-351737f5feda
- *
- */
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +8,10 @@ import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.view.View;
+
+/**
+ * Code from https://medium.com/@arekk/how-to-preview-image-on-long-click-and-blur-background-351737f5feda
+ */
 
 class ImagePreviewerUtils {
 

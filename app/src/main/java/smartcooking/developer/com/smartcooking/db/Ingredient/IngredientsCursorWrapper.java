@@ -18,7 +18,7 @@ public class IngredientsCursorWrapper extends CursorWrapper {
         long ID = getLong(getColumnIndex(DatabaseScheme.IngredientsTable.Cols.ID));
         String name = getString(getColumnIndex(DatabaseScheme.IngredientsTable.Cols.NAME));
 
-        ingredient.setID(ID);
+        ingredient.setId(ID);
         ingredient.setName(name);
 
         return ingredient;

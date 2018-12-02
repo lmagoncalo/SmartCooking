@@ -12,8 +12,8 @@ import smartcooking.developer.com.smartcooking.db.Ingredient.Ingredient;
 import smartcooking.developer.com.smartcooking.db.Ingredient.IngredientsCursorWrapper;
 import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
 import smartcooking.developer.com.smartcooking.db.Recipe.RecipesCursorWrapper;
-import smartcooking.developer.com.smartcooking.db.Relation.Relation;
-import smartcooking.developer.com.smartcooking.db.Relation.RelationCursorWrapper;
+import smartcooking.developer.com.smartcooking.db.Relation.Relations;
+import smartcooking.developer.com.smartcooking.db.Relation.RelationsCursorWrapper;
 
 public class OperationsDb {
     /*** CLASSE QUE VAI TER TODAS AS OPERAÇÕES DA BASE DE DADOS, PARA ISTO NÃO SE MISTURAR COM O RESTO DO CÓDIGO DA APP ***/
@@ -103,14 +103,14 @@ public class OperationsDb {
         // aqui, não meto o ID no argumento "selectionArgs" porque assim ia estar a convertê-lo para String e o ID é um 'serial'
 
         ContentValues values = getContentValuesIngredients(ingredient);
-        return mDatabase.update(DatabaseScheme.IngredientsTable.NAME, values, String.format(Locale.getDefault(), DatabaseScheme.IngredientsTable.Cols.ID + " = %d", ingredient.getID()), null) != 0;
+        return mDatabase.update(DatabaseScheme.IngredientsTable.NAME, values, String.format(Locale.getDefault(), DatabaseScheme.IngredientsTable.Cols.ID + " = %d", ingredient.getId()), null) != 0;
 
         // o "update" retorna o número de linhas afectadas, ou seja, se retornar '0', há algum problema
     }
 
-    public static boolean insertRelation(Relation relation, SQLiteDatabase mDatabase) {
-        ContentValues values = getContentValuesRelations(relation);
-        return mDatabase.insert(DatabaseScheme.RelationTable.NAME, null, values) != -1;
+    public static boolean insertRelation(Relations relations, SQLiteDatabase mDatabase) {
+        ContentValues values = getContentValuesRelations(relations);
+        return mDatabase.insert(DatabaseScheme.RelationsTable.NAME, null, values) != -1;
 
         // o "insert" retorna '-1' se houver erro
     }
@@ -177,10 +177,10 @@ public class OperationsDb {
         return list;
     }
 
-    public static ArrayList<Relation> selectAllRelations(SQLiteDatabase mDatabase) {
-        ArrayList<Relation> list = new ArrayList<>();
+    public static ArrayList<Relations> selectAllRelations(SQLiteDatabase mDatabase) {
+        ArrayList<Relations> list = new ArrayList<>();
 
-        Cursor c = mDatabase.query(DatabaseScheme.RelationTable.NAME,
+        Cursor c = mDatabase.query(DatabaseScheme.RelationsTable.NAME,
                 null,
                 null,
                 null,
@@ -188,7 +188,7 @@ public class OperationsDb {
                 null,
                 null);
 
-        RelationCursorWrapper cursor = new RelationCursorWrapper(c);
+        RelationsCursorWrapper cursor = new RelationsCursorWrapper(c);
 
         if (!cursor.moveToFirst()) {
             cursor.close();
@@ -197,8 +197,8 @@ public class OperationsDb {
         }
 
         while (!cursor.isAfterLast()) {
-            Relation relation = cursor.getRelation();
-            list.add(relation);
+            Relations relations = cursor.getRelations();
+            list.add(relations);
             cursor.moveToNext();
         }
 
@@ -330,19 +330,19 @@ public class OperationsDb {
         // atenção que em SQLite, os valores boolean são 1 (true) e 0 (false). Não existe uma class boolean com valores "true" e "false"
 
         ContentValues values = new ContentValues();
-        values.put(DatabaseScheme.IngredientsTable.Cols.ID, ingredient.getID());
+        values.put(DatabaseScheme.IngredientsTable.Cols.ID, ingredient.getId());
         values.put(DatabaseScheme.IngredientsTable.Cols.NAME, ingredient.getName());
 
         return values;
     }
 
-    private static ContentValues getContentValuesRelations(Relation relation) {
+    private static ContentValues getContentValuesRelations(Relations relations) {
 
         // atenção que em SQLite, os valores boolean são 1 (true) e 0 (false). Não existe uma class boolean com valores "true" e "false"
 
         ContentValues values = new ContentValues();
-        values.put(DatabaseScheme.RelationTable.Cols.ID_RECIPE, relation.getID_recipe());
-        values.put(DatabaseScheme.RelationTable.Cols.ID_INGREDIENT, relation.getID_ingredient());
+        values.put(DatabaseScheme.RelationsTable.Cols.ID_RECIPE, relations.getId_recipe());
+        values.put(DatabaseScheme.RelationsTable.Cols.ID_INGREDIENT, relations.getId_ingredient());
 
         return values;
     }
@@ -363,26 +363,26 @@ public class OperationsDb {
         // este hashMap vai fazer a contagem do número de ingredientes em comum entre as receitas e a lista de ingredientes pesquisados
         HashMap<Long, Integer> hash = new HashMap<>();
 
-        Cursor c = mDatabase.query(DatabaseScheme.RelationTable.NAME,
+        Cursor c = mDatabase.query(DatabaseScheme.RelationsTable.NAME,
                 null,
-                DatabaseScheme.RelationTable.Cols.ID_INGREDIENT + " IN " + ingredientsQueryStr,
+                DatabaseScheme.RelationsTable.Cols.ID_INGREDIENT + " IN " + ingredientsQueryStr,
                 null,
                 null,
                 null,
-                DatabaseScheme.RelationTable.Cols.ID_RECIPE + " ASC");
+                DatabaseScheme.RelationsTable.Cols.ID_RECIPE + " ASC");
 
         /*
             Nesta query não podemos fazer com aquilo com os pontos de interrugação, porque depois o que ia substituir esse ponto de interrugação
             [ (1, 2, 3), por exemplo] ia ser tratado como uma string e não como argumento, ou seja a query ia ficar assim:
 
                 SELECT *
-                FROM Relation
+                FROM Relations
                 WHERE id_ingredient IN  "(1, 2, 3)"
                 ORDER BY id_recipe ASC
 
            EM VEZ DE:
                 SELECT *
-                FROM Relation
+                FROM Relations
                 WHERE id_ingredient IN  (1, 2, 3)
                 ORDER BY id_recipe ASC
 
@@ -391,7 +391,7 @@ public class OperationsDb {
 
         */
 
-        RelationCursorWrapper cursor = new RelationCursorWrapper(c);
+        RelationsCursorWrapper cursor = new RelationsCursorWrapper(c);
 
         if (!cursor.moveToFirst()) {
             cursor.close();
@@ -400,9 +400,9 @@ public class OperationsDb {
         }
 
         while (!cursor.isAfterLast()) {
-            Relation relation = cursor.getRelation();
+            Relations relations = cursor.getRelations();
 
-            Recipe recipe = selectRecipeByID(relation.getID_recipe(), mDatabase);
+            Recipe recipe = selectRecipeByID(relations.getId_recipe(), mDatabase);
 
             if (recipe == null) {
                 //TODO: o return aqui é diferente porque se chegar aqui, quer dizer está alguma coisa mal com a database porque há ID's de receitas nas Relations que naõ existem na tabela Receitas
@@ -459,7 +459,7 @@ public class OperationsDb {
             if (res.length() > 1) {  //aqui é >1 e não >0  por causa do parentisis inicial que é posto em cima. Caso contrário a string ficava com uma vírgula logo a seguir ao parentisis
                 res.append(", ");
             }
-            res.append(i.getID());
+            res.append(i.getId());
         }
         res.append(")");
 

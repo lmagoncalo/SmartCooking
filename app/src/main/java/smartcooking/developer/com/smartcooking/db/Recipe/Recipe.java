@@ -39,7 +39,7 @@ public class Recipe implements Serializable, Comparable<Recipe> {
     private String hash;
     private boolean favorite = false;
 
-    Recipe() {
+    public Recipe() {
     }
 /*
     public Recipe(int id, String name, int time, int difficulty, String category) {

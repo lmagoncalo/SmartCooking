@@ -32,11 +32,11 @@ public class DatabaseBaseHelper extends SQLiteOpenHelper {
                 DatabaseScheme.IngredientsTable.Cols.ID + " integer primary key autoincrement, " +
                 DatabaseScheme.IngredientsTable.Cols.NAME + " varchar(50))");
 
-        db.execSQL("create table " + DatabaseScheme.RelationTable.NAME + "( " +
-                DatabaseScheme.RelationTable.Cols.ID_RECIPE + " integer, " +
-                DatabaseScheme.RelationTable.Cols.ID_INGREDIENT + " integer, " +
-                "FOREIGN KEY (" + DatabaseScheme.RelationTable.Cols.ID_RECIPE + ") REFERENCES " + DatabaseScheme.RecipesTable.NAME + "(" + DatabaseScheme.RecipesTable.Cols.ID + "), " +
-                "FOREIGN KEY (" + DatabaseScheme.RelationTable.Cols.ID_INGREDIENT + ") REFERENCES " + DatabaseScheme.IngredientsTable.NAME + "(" + DatabaseScheme.IngredientsTable.Cols.ID + "))");
+        db.execSQL("create table " + DatabaseScheme.RelationsTable.NAME + "( " +
+                DatabaseScheme.RelationsTable.Cols.ID_RECIPE + " integer, " +
+                DatabaseScheme.RelationsTable.Cols.ID_INGREDIENT + " integer, " +
+                "FOREIGN KEY (" + DatabaseScheme.RelationsTable.Cols.ID_RECIPE + ") REFERENCES " + DatabaseScheme.RecipesTable.NAME + "(" + DatabaseScheme.RecipesTable.Cols.ID + "), " +
+                "FOREIGN KEY (" + DatabaseScheme.RelationsTable.Cols.ID_INGREDIENT + ") REFERENCES " + DatabaseScheme.IngredientsTable.NAME + "(" + DatabaseScheme.IngredientsTable.Cols.ID + "))");
 
     }
 
