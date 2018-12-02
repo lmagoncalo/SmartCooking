@@ -154,21 +154,23 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
             while (jsonReader.hasNext()) {
                 Recipe new_recipe = new Recipe();
                 jsonReader.beginObject();
-                jsonReader.nextInt();
-                jsonReader.beginObject();
                 while (jsonReader.hasNext()) {
-                    switch (jsonReader.nextName()) {
+
+                    String cenas = jsonReader.nextName();
+                    Log.d(TAG, cenas);
+
+                    switch (cenas) {
                         case "id":
-                            new_recipe.setId(Long.parseLong(jsonReader.nextString()));
+                            new_recipe.setId(jsonReader.nextInt());
                             break;
                         case "name":
                             new_recipe.setName(jsonReader.nextString());
                             break;
                         case "difficulty":
-                            new_recipe.setDifficulty(Integer.parseInt(jsonReader.nextString()));
+                            new_recipe.setDifficulty(jsonReader.nextInt());
                             break;
                         case "time":
-                            new_recipe.setTime(Integer.parseInt(jsonReader.nextString()));
+                            new_recipe.setTime(jsonReader.nextInt());
                             break;
                         case "category":
                             new_recipe.setCategory(jsonReader.nextString());
