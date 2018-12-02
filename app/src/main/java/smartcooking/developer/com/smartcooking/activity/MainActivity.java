@@ -26,10 +26,8 @@ import smartcooking.developer.com.smartcooking.fragment.SplashFragment;
 // TODO - Criar os OnResume e OnPause (aqui é para fazer mais alguma coisa do que fazer close() da databse ? )
 // TODO - Responsiveness
 // TODO - Meter um indice com o alfabeto para pesquisar ingredientes - Talvez
-// TODO - Splashscreen com asynctask - Deixar para ultimo
-// TODO - Slide to unfavorite
+// TODO - Todas as hipoteses ao abrir a aplicação, ter BD, ter net, ter shared preferences
 
-// TODO - pôr o texto da página "Sobre Nós" justificado
 // TODO - agitar o telemóvel e a app cagar uma receita random
 
 

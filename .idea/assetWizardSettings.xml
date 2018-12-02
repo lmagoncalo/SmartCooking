@@ -35,8 +35,8 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_fav_on" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/../valentines-heart.svg" />
+                            <entry key="outputName" value="smartcooking_logo" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../smartcooking_logo.svg" />
                           </map>
                         </option>
                       </PersistentState>

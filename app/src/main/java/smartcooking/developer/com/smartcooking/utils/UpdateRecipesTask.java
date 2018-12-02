@@ -3,11 +3,15 @@ package smartcooking.developer.com.smartcooking.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.design.widget.BottomNavigationView;
 import android.util.JsonReader;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -33,28 +37,28 @@ import smartcooking.developer.com.smartcooking.fragment.MainFragment;
 public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
     private String baseUrl = "https://smartcookies.localtunnel.me/api/";
 
-    private String TAG = "MyActivity";
+    private String TAG = "MyApplication";
 
     private int APIVersion;
 
     private WeakReference<Context> contextRef;
-    private Activity act;
+    private WeakReference<Activity> activityRef;
+    private WeakReference<ProgressBar> progressBar;
 
     private boolean error = false;
 
     private List<Recipe> list_recipes;
     private List<Ingredient> list_ingredients;
     private List<Relations> list_relations;
-    private ProgressBar progressBar;
     private Integer count = 1;
 
-    public UpdateRecipesTask(Context context, ProgressBar progressBar, Activity act) {
-        contextRef = new WeakReference<>(context);
-        list_recipes = new ArrayList<>();
-        list_ingredients = new ArrayList<>();
-        list_relations = new ArrayList<>();
-        this.progressBar = progressBar;
-        this.act = act;
+    public UpdateRecipesTask(Context context, ProgressBar progressBar, Activity activityRef) {
+        this.contextRef = new WeakReference<>(context);
+        this.list_recipes = new ArrayList<>();
+        this.list_ingredients = new ArrayList<>();
+        this.list_relations = new ArrayList<>();
+        this.activityRef = new WeakReference<>(activityRef);
+        this.progressBar = new WeakReference<>(progressBar);
     }
 
     @Override
@@ -63,30 +67,54 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
         String PREFS_NAME = "SmartCooking_PrefsName";
         SharedPreferences sharedPreferences = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
+        publishProgress(count++);
+
+        Log.d(TAG, "Before get Version");
+
         getVersion();
 
-        String version = sharedPreferences.getString("Recipes_Version", "-1");
+        Log.d(TAG, "After get Version");
+
+        publishProgress(count++);
+
+        String version = sharedPreferences.getString(PREFS_NAME, "-1");
         int localVersion;
+        Log.d(TAG, "Version: " + version + " Error: " + error);
         if (version != null) {
             localVersion = Integer.parseInt(version);
         } else {
             localVersion = -1;
         }
 
+        publishProgress(count++);
+
+        if (localVersion != -1 && error) {
+            return "Success";
+        } else if (localVersion == -1 && error) {
+            return "First_Time";
+        }
 
         if (localVersion < APIVersion) {
-            if (!error) {
-                getRecipes();
-            }
+            getRecipes();
+
+            publishProgress(count++);
 
             if (!error) {
                 getIngredients();
+            } else {
+                return "Net_Error";
             }
+
+            publishProgress(count++);
 
 
             if (!error) {
                 getRelations();
+            } else {
+                return "Net_Error";
             }
+
+            publishProgress(count++);
 
 
             if(!error){
@@ -95,13 +123,16 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
                 editor.apply();
 
                 updateDatabase();
+            } else {
+                return "Net_Error";
             }
 
+            publishProgress(count++);
+
+            return "Success";
         } else {
             return "Success";
         }
-
-        return null;
     }
 
     private void getVersion() {
@@ -345,30 +376,76 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        progressBar.setVisibility(View.GONE);
-        if (!isError()) {
-            MainFragment mainFragment = new MainFragment();
-            act.getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).commit();
-            BottomNavigationView navigation = act.findViewById(R.id.navigation);
-            navigation.setVisibility(View.VISIBLE);
+        progressBar.get().setVisibility(View.GONE);
+        switch (result) {
+            case "Success":
+                MainFragment mainFragment = new MainFragment();
+                activityRef.get().getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).commit();
+                BottomNavigationView navigation = activityRef.get().findViewById(R.id.navigation);
+                navigation.setVisibility(View.VISIBLE);
+                break;
+            case "First_Time":
+                crash("É necessário estar ligado à Internet na primeira vez que abre a aplicação.");
+                break;
+            case "Net_Error":
+                crash("Ocorreu algum erro inesperado. Confirme a sua ligação à Internet.");
+                break;
         }
     }
 
     @Override
     protected void onPreExecute() {
-        progressBar.setProgress(0);
-        progressBar.setMax(6);
+        progressBar.get().setProgress(0);
+        progressBar.get().setMax(6);
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
         if (this.progressBar != null) {
-            progressBar.setProgress(values[0]);
+            progressBar.get().setProgress(values[0]);
         }
     }
 
-    public boolean isError() {
-        return error;
+    private void crash(String tipo) {
+        android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(contextRef.get());
+
+        // set title
+        alertDialogBuilder.setTitle("Erro");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(tipo)
+                .setCancelable(false)
+                .setPositiveButton("Fechar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        activityRef.get().finish();
+                    }
+                });
+
+        // create alert dialog
+        android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
+    private boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) contextRef.get().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
     }
 }
