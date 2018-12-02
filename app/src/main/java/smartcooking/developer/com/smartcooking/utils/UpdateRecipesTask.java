@@ -1,12 +1,15 @@
 package smartcooking.developer.com.smartcooking.utils;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.support.design.widget.BottomNavigationView;
 import android.util.JsonReader;
-import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,82 +22,89 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import smartcooking.developer.com.smartcooking.R;
 import smartcooking.developer.com.smartcooking.db.DatabaseBaseHelper;
 import smartcooking.developer.com.smartcooking.db.Ingredient.Ingredient;
 import smartcooking.developer.com.smartcooking.db.OperationsDb;
 import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
 import smartcooking.developer.com.smartcooking.db.Relation.Relations;
+import smartcooking.developer.com.smartcooking.fragment.MainFragment;
 
-public class UpdateRecipesTask extends AsyncTask<String, String, String> {
+public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
     private String baseUrl = "https://smartcookies.localtunnel.me/api/";
 
     private String TAG = "MyActivity";
 
     private int APIVersion;
-    private int localVersion;
 
     private WeakReference<Context> contextRef;
+    private Activity act;
 
     private boolean error = false;
 
     private List<Recipe> list_recipes;
     private List<Ingredient> list_ingredients;
     private List<Relations> list_relations;
+    private ProgressBar progressBar;
+    private Integer count = 1;
 
-    public UpdateRecipesTask(Context context) {
+    public UpdateRecipesTask(Context context, ProgressBar progressBar, Activity act) {
         contextRef = new WeakReference<>(context);
         list_recipes = new ArrayList<>();
         list_ingredients = new ArrayList<>();
         list_relations = new ArrayList<>();
+        this.progressBar = progressBar;
+        this.act = act;
     }
 
     @Override
-    protected void onPreExecute() {
-    }
-
-    @Override
-    protected String doInBackground(String... params) {
+    protected String doInBackground(Integer... params) {
         Context c = contextRef.get();
         String PREFS_NAME = "SmartCooking_PrefsName";
         SharedPreferences sharedPreferences = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
-        //getVersion();
+        publishProgress(count++);
+
+        getVersion();
 
         String version = sharedPreferences.getString("Recipes_Version", "-1");
-        localVersion = Integer.parseInt(version);
+        int localVersion;
+        if (version != null) {
+            localVersion = Integer.parseInt(version);
+        } else {
+            localVersion = -1;
+        }
 
-        APIVersion=0;
+        publishProgress(count++);
 
         if (localVersion < APIVersion) {
-            if (!error){
-                //getRecipes();
+            if (!error) {
+                getRecipes();
             }
 
-            if(!error){
-                //getIngredients();
+            publishProgress(count++);
+
+            if (!error) {
+                getIngredients();
             }
 
-            if(!error){
-                //getRelations();
+            publishProgress(count++);
+
+            if (!error) {
+                getRelations();
             }
 
+            publishProgress(count++);
+
             if(!error){
-                /*SharedPreferences.Editor editor = sharedPreferences.edit();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(PREFS_NAME, Integer.toString(APIVersion));
-                editor.apply();*/
-                /*SQLiteDatabase database = new DatabaseBaseHelper(contextRef.get()).getWritableDatabase();
-                for(Recipe r: list_recipes){
-                    OperationsDb.recipeControlledInsert(r, database);
-                }
+                editor.apply();
 
-                for(Ingredient ingr : list_ingredients){
-                    OperationsDb.insertIngredient(ingr, database);
-                }
-
-                for(Relations r : list_relations){
-                    OperationsDb.insertRelation(r, database);
-                }*/
+                updateDatabase();
             }
+
+            publishProgress(count++);
         } else {
             return "Success";
         }
@@ -128,8 +138,6 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
                     }
                 }
                 jsonReader.endObject();
-
-                //Log.d(TAG, "Version: " + APIVersion);
             } else {
                 // Error handling code goes here
                 error = true;
@@ -171,11 +179,7 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
                 Recipe new_recipe = new Recipe();
                 jsonReader.beginObject();
                 while (jsonReader.hasNext()) {
-
-                    String cenas = jsonReader.nextName();
-                    Log.d(TAG, cenas);
-
-                    switch (cenas) {
+                    switch (jsonReader.nextName()) {
                         case "id":
                             new_recipe.setId(jsonReader.nextInt());
                             break;
@@ -225,10 +229,6 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
         } catch (IOException e) {
             error = true;
         }
-
-        for (int i = 0; i < list_recipes.size(); i++) {
-            System.out.println(list_recipes.get(i).getName());
-        }
     }
 
     private void getIngredients() {
@@ -264,13 +264,14 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
                 while (jsonReader.hasNext()) {
                     switch (jsonReader.nextName()) {
                         case "id":
-                            new_ingredient.setId(Long.parseLong(jsonReader.nextString()));
+                            new_ingredient.setId(jsonReader.nextLong());
                             break;
-                        case "nome":
+                        case "name":
                             new_ingredient.setName(jsonReader.nextString());
                             break;
                         default:
                             jsonReader.skipValue();
+                            break;
                     }
                 }
                 jsonReader.endObject();
@@ -280,10 +281,6 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
         } catch (IOException e) {
             error = true;
         }
-
-        /*for (int i = 0; i < list_ingredients.size(); i++) {
-            Log.d(TAG, list_ingredients.get(i).getName());
-        }*/
     }
 
     private void getRelations() {
@@ -319,13 +316,14 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
                 while (jsonReader.hasNext()) {
                     switch (jsonReader.nextName()) {
                         case "id_recipe":
-                            new_relation.setId_recipe(Long.parseLong(jsonReader.nextString()));
+                            new_relation.setId_recipe(jsonReader.nextLong());
                             break;
-                        case "id_ingredients":
-                            new_relation.setId_ingredient(Long.parseLong(jsonReader.nextString()));
+                        case "id_ingredient":
+                            new_relation.setId_ingredient(jsonReader.nextLong());
                             break;
                         default:
                             jsonReader.skipValue();
+                            break;
                     }
                 }
                 jsonReader.endObject();
@@ -335,15 +333,47 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
         } catch (IOException e) {
             error = true;
         }
+    }
 
-        for (int i = 0; i < list_relations.size(); i++) {
-            System.out.println(list_relations.get(i));
+    private void updateDatabase() {
+        SQLiteDatabase database = new DatabaseBaseHelper(contextRef.get()).getWritableDatabase();
+
+        for (Recipe r : list_recipes) {
+            OperationsDb.recipeControlledInsert(r, database);
+        }
+
+        for (Ingredient i : list_ingredients) {
+            OperationsDb.insertIngredient(i, database);
+        }
+
+        for (Relations rs : list_relations) {
+            OperationsDb.insertRelation(rs, database);
         }
     }
 
     @Override
-    protected void onPostExecute(String s) {
+    protected void onPostExecute(String result) {
+        progressBar.setVisibility(View.GONE);
+        if (!isError()) {
+            MainFragment mainFragment = new MainFragment();
+            act.getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).commit();
+            BottomNavigationView navigation = act.findViewById(R.id.navigation);
+            navigation.setVisibility(View.VISIBLE);
+        }
+    }
 
+    @Override
+    protected void onPreExecute() {
+        progressBar.setProgress(0);
+        progressBar.setMax(6);
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+        if (this.progressBar != null) {
+            progressBar.setProgress(values[0]);
+        }
     }
 
     public boolean isError() {

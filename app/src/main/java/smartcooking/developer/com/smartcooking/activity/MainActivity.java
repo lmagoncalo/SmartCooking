@@ -6,12 +6,12 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 
 import smartcooking.developer.com.smartcooking.R;
 import smartcooking.developer.com.smartcooking.db.DatabaseBaseHelper;
@@ -19,8 +19,8 @@ import smartcooking.developer.com.smartcooking.fragment.AboutFragment;
 import smartcooking.developer.com.smartcooking.fragment.CategoriesFragment;
 import smartcooking.developer.com.smartcooking.fragment.FavoritesFragment;
 import smartcooking.developer.com.smartcooking.fragment.MainFragment;
-import smartcooking.developer.com.smartcooking.fragment.RecipeFragment;
 import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
+import smartcooking.developer.com.smartcooking.fragment.SplashFragment;
 
 // TODO - Ecrã de detalhes, ecrã main
 // TODO - Criar os OnResume e OnPause (aqui é para fazer mais alguma coisa do que fazer close() da databse ? )
@@ -103,19 +103,10 @@ public class MainActivity extends AppCompatActivity {
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        if (getIntent().getData() != null) {
-            Uri uri = getIntent().getData();
-            String id;
-            if ((id = uri.getQueryParameter("id")) != null) {
-                RecipeFragment recipeFragment = RecipeFragment.newInstance(Integer.parseInt(id));
-                getFragmentManager().beginTransaction().replace(R.id.fragment, recipeFragment).commit();
-                return;
-            }
-        }
+        navigation.setVisibility(View.GONE);
 
-        MainFragment mainFragment = new MainFragment();
-        getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).commit();
-
+        SplashFragment splashFragment = new SplashFragment();
+        getFragmentManager().beginTransaction().replace(R.id.fragment, splashFragment).commit();
     }
 
     @Override
