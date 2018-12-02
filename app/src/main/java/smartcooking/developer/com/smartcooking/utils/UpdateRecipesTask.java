@@ -63,8 +63,6 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
         String PREFS_NAME = "SmartCooking_PrefsName";
         SharedPreferences sharedPreferences = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
-        publishProgress(count++);
-
         getVersion();
 
         String version = sharedPreferences.getString("Recipes_Version", "-1");
@@ -75,26 +73,21 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
             localVersion = -1;
         }
 
-        publishProgress(count++);
 
         if (localVersion < APIVersion) {
             if (!error) {
                 getRecipes();
             }
 
-            publishProgress(count++);
-
             if (!error) {
                 getIngredients();
             }
 
-            publishProgress(count++);
 
             if (!error) {
                 getRelations();
             }
 
-            publishProgress(count++);
 
             if(!error){
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -104,7 +97,6 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
                 updateDatabase();
             }
 
-            publishProgress(count++);
         } else {
             return "Success";
         }

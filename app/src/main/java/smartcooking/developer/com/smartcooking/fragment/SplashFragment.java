@@ -11,11 +11,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import java.util.Random;
 
 import smartcooking.developer.com.smartcooking.R;
 import smartcooking.developer.com.smartcooking.utils.UpdateRecipesTask;
 
 public class SplashFragment extends Fragment {
+
+    private final String[] SPLASH_PHRASES = {"A aquecer o forno...", "YEEEEEEET", "2 Shots of vodka", "Blink motherfucker", "esabatad gnitadpU"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,6 +30,8 @@ public class SplashFragment extends Fragment {
 
         if (haveNetworkConnection()) { // Have internet connection
             ProgressBar progressBar = result.findViewById(R.id.progress_bar);
+
+            setRandomPhrase(result);
 
             UpdateRecipesTask myTask = new UpdateRecipesTask(getContext(), progressBar, getActivity());
 
@@ -78,6 +85,19 @@ public class SplashFragment extends Fragment {
                     haveConnectedMobile = true;
         }
         return haveConnectedWifi || haveConnectedMobile;
+    }
+
+    private void setRandomPhrase(View result){
+        int max = SPLASH_PHRASES.length;
+        Random rdm = new Random();
+        int value = rdm.nextInt(max);
+
+        TextView textView = (TextView) result.findViewById(R.id.progress_text);
+
+        String str = SPLASH_PHRASES[value];
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>> str: " + str);
+        textView.setText(str);
+
     }
 
 }
