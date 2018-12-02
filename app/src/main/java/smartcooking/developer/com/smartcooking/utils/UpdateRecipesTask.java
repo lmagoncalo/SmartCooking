@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.JsonReader;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,34 +58,42 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
         String PREFS_NAME = "SmartCooking_PrefsName";
         SharedPreferences sharedPreferences = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
-        getVersion();
+        //getVersion();
 
         String version = sharedPreferences.getString("Recipes_Version", "-1");
-        if (version != null) {
-            localVersion = Integer.parseInt(version);
-        }else{
-            localVersion = -1;
-        }
+        localVersion = Integer.parseInt(version);
+
+        APIVersion=0;
 
         if (localVersion < APIVersion) {
-            if (!error) {
-                getRecipes();
-            }
-
-            if (!error) {
-                getIngredients();
-            }
-
-            if (!error) {
-                getRelations();
+            if (!error){
+                //getRecipes();
             }
 
             if(!error){
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(PREFS_NAME, Integer.toString(APIVersion));
-                editor.apply();
+                //getIngredients();
+            }
 
-                updateDatabase();
+            if(!error){
+                //getRelations();
+            }
+
+            if(!error){
+                /*SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(PREFS_NAME, Integer.toString(APIVersion));
+                editor.apply();*/
+                /*SQLiteDatabase database = new DatabaseBaseHelper(contextRef.get()).getWritableDatabase();
+                for(Recipe r: list_recipes){
+                    OperationsDb.recipeControlledInsert(r, database);
+                }
+
+                for(Ingredient ingr : list_ingredients){
+                    OperationsDb.insertIngredient(ingr, database);
+                }
+
+                for(Relations r : list_relations){
+                    OperationsDb.insertRelation(r, database);
+                }*/
             }
         } else {
             return "Success";
@@ -162,7 +171,11 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
                 Recipe new_recipe = new Recipe();
                 jsonReader.beginObject();
                 while (jsonReader.hasNext()) {
-                    switch (jsonReader.nextName()) {
+
+                    String cenas = jsonReader.nextName();
+                    Log.d(TAG, cenas);
+
+                    switch (cenas) {
                         case "id":
                             new_recipe.setId(jsonReader.nextInt());
                             break;
@@ -213,9 +226,9 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
             error = true;
         }
 
-        /*for (int i = 0; i < list_recipes.size(); i++) {
-            Log.d(TAG,list_recipes.get(i).getName());
-        }*/
+        for (int i = 0; i < list_recipes.size(); i++) {
+            System.out.println(list_recipes.get(i).getName());
+        }
     }
 
     private void getIngredients() {
@@ -251,14 +264,13 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
                 while (jsonReader.hasNext()) {
                     switch (jsonReader.nextName()) {
                         case "id":
-                            new_ingredient.setId(jsonReader.nextLong());
+                            new_ingredient.setId(Long.parseLong(jsonReader.nextString()));
                             break;
-                        case "name":
+                        case "nome":
                             new_ingredient.setName(jsonReader.nextString());
                             break;
                         default:
                             jsonReader.skipValue();
-                            break;
                     }
                 }
                 jsonReader.endObject();
@@ -307,14 +319,13 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
                 while (jsonReader.hasNext()) {
                     switch (jsonReader.nextName()) {
                         case "id_recipe":
-                            new_relation.setId_recipe(jsonReader.nextLong());
+                            new_relation.setId_recipe(Long.parseLong(jsonReader.nextString()));
                             break;
-                        case "id_ingredient":
-                            new_relation.setId_ingredient(jsonReader.nextLong());
+                        case "id_ingredients":
+                            new_relation.setId_ingredient(Long.parseLong(jsonReader.nextString()));
                             break;
                         default:
                             jsonReader.skipValue();
-                            break;
                     }
                 }
                 jsonReader.endObject();
@@ -325,24 +336,8 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
             error = true;
         }
 
-        /*for (int i = 0; i < list_relations.size(); i++) {
-            System.out.println(list_relations.get(i).getId_recipe());
-        }*/
-    }
-
-    private void updateDatabase() {
-        SQLiteDatabase database = new DatabaseBaseHelper(contextRef.get()).getWritableDatabase();
-
-        for (Recipe r : list_recipes) {
-            OperationsDb.recipeControlledInsert(r, database);
-        }
-
-        for (Ingredient i : list_ingredients) {
-            OperationsDb.insertIngredient(i, database);
-        }
-
-        for (Relations rs : list_relations) {
-            OperationsDb.insertRelation(rs, database);
+        for (int i = 0; i < list_relations.size(); i++) {
+            System.out.println(list_relations.get(i));
         }
     }
 

@@ -23,11 +23,15 @@ import smartcooking.developer.com.smartcooking.fragment.RecipeFragment;
 import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
 
 // TODO - Ecrã de detalhes, ecrã main
-// TODO - Criar os onResume e onDelete
+// TODO - Criar os OnResume e OnPause (aqui é para fazer mais alguma coisa do que fazer close() da databse ? )
 // TODO - Responsiveness
 // TODO - Meter um indice com o alfabeto para pesquisar ingredientes - Talvez
 // TODO - Splashscreen com asynctask - Deixar para ultimo
 // TODO - Slide to unfavorite
+
+// TODO - pôr o texto da página "Sobre Nós" justificado
+// TODO - agitar o telemóvel e a app cagar uma receita random
+
 
 public class MainActivity extends AppCompatActivity {
 
