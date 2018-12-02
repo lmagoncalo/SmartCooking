@@ -27,6 +27,7 @@ public class Recipe implements Serializable, Comparable<Recipe> {
         }
 
     };
+
     private long id;
     private String name;
     private int difficulty;

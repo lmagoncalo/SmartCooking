@@ -36,7 +36,7 @@ public class SplashScreen extends AppCompatActivity {
                 myTask.execute().get();
 
                 if (myTask.isError()) {
-                    crash("Ocorreu um erro inesperado.");
+                    crash("Ocorreu um erro inesperado aqui.");
                 } else {
                     Intent i = new Intent(SplashScreen.this, MainActivity.class);
                     startActivity(i);
@@ -46,7 +46,7 @@ public class SplashScreen extends AppCompatActivity {
                 }
 
             } catch (InterruptedException | ExecutionException e) {
-                crash("Ocorreu um erro inesperado.");
+                crash("Ocorreu um erro inesperado aqui.");
             }
         }/*else{
             try {

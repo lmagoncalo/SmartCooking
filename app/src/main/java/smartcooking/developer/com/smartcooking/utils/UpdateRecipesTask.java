@@ -23,11 +23,12 @@ import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
 import smartcooking.developer.com.smartcooking.db.Relation.Relations;
 
 public class UpdateRecipesTask extends AsyncTask<String, String, String> {
-    private String baseUrl = "https://smartcookies.localtunnel.me/api";
+    private String baseUrl = "https://smartcookies.localtunnel.me/api/";
 
     private String TAG = "MyActivity";
 
     private int APIVersion;
+    private int localVersion;
 
     private WeakReference<Context> contextRef;
 
@@ -54,22 +55,19 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
         String PREFS_NAME = "SmartCooking_PrefsName";
         SharedPreferences sharedPreferences = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
-        //getVersion();
+        getVersion();
 
-        //String version = sharedPreferences.getString("Recipes_Version", "");
-        int localVersion = 0;
-        /*if (version != null) {
-            //localVersion = Integer.parseInt(version);
-            localVersion = 0;
+        String version = sharedPreferences.getString("Recipes_Version", null);
+        if (version != null) {
+            localVersion = Integer.parseInt(version);
         }else{
-            error = true;
-            return null;
-        }*/
+            localVersion = -1;
+        }
 
         if (localVersion < APIVersion) {
-            /*if(!error)
+            if (!error)
                 getRecipes();
-
+/*
             if(!error)
                 getIngredients();
 
@@ -90,7 +88,7 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
 
     private void getVersion() {
         try {
-            URL urlEndpoint = new URL(baseUrl + "/version");
+            URL urlEndpoint = new URL(baseUrl + "version/");
 
             // Create connection
             HttpsURLConnection myConnection = (HttpsURLConnection) urlEndpoint.openConnection();
@@ -103,24 +101,32 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
                 JsonReader jsonReader = new JsonReader(responseBodyReader);
 
                 jsonReader.beginObject();
-                if (jsonReader.nextName().equals("version")) {
-                    APIVersion = Integer.parseInt(jsonReader.nextString());
+                while (jsonReader.hasNext()) {
+                    switch (jsonReader.nextName()) {
+                        case "version":
+                            APIVersion = Integer.parseInt(jsonReader.nextString());
+                            break;
+                        case "id":
+                            jsonReader.nextString();
+                            break;
+                    }
                 }
                 jsonReader.endObject();
 
-                Log.d(TAG, "Version: " + APIVersion);
+                //Log.d(TAG, "Version: " + APIVersion);
             } else {
                 // Error handling code goes here
                 error = true;
             }
         } catch (IOException e) {
             e.printStackTrace();
+            error = true;
         }
     }
 
     private void getRecipes() {
         try {
-            URL urlEndpoint = new URL(baseUrl + "/recipes");
+            URL urlEndpoint = new URL(baseUrl + "recipes/");
 
             // Create connection
             HttpsURLConnection myConnection = (HttpsURLConnection) urlEndpoint.openConnection();
@@ -148,35 +154,46 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
             while (jsonReader.hasNext()) {
                 Recipe new_recipe = new Recipe();
                 jsonReader.beginObject();
+                jsonReader.nextInt();
+                jsonReader.beginObject();
                 while (jsonReader.hasNext()) {
                     switch (jsonReader.nextName()) {
                         case "id":
                             new_recipe.setId(Long.parseLong(jsonReader.nextString()));
                             break;
-                        case "nome":
+                        case "name":
                             new_recipe.setName(jsonReader.nextString());
                             break;
-                        case "dificuldade":
+                        case "difficulty":
                             new_recipe.setDifficulty(Integer.parseInt(jsonReader.nextString()));
                             break;
-                        case "tempo":
+                        case "time":
                             new_recipe.setTime(Integer.parseInt(jsonReader.nextString()));
                             break;
-                        case "categoria":
+                        case "category":
                             new_recipe.setCategory(jsonReader.nextString());
                             break;
-                        case "fornecedor":
+                        case "supplier":
                             new_recipe.setSupplier(jsonReader.nextString());
                             break;
-                        case "imagem":
+                        case "image":
                             new_recipe.setImage(jsonReader.nextString());
                             break;
-                        case "preparacao":
+                        case "preparation":
                             new_recipe.setPreparation(Arrays.asList(jsonReader.nextString().split("\\|")));
                             break;
-                        case "ingredientes":
+                        case "ingredients":
                             new_recipe.setIngredients(Arrays.asList(jsonReader.nextString().split("\\|")));
                             break;
+                        case "favorite":
+                            String fav = jsonReader.nextString();
+                            if (fav.equals("False"))
+                                new_recipe.setFavorite(false);
+                            else
+                                new_recipe.setFavorite(true);
+                            break;
+                        case "hash":
+                            new_recipe.setHash(jsonReader.nextString());
                         default:
                             jsonReader.skipValue();
                     }
@@ -190,13 +207,13 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
         }
 
         for (int i = 0; i < list_recipes.size(); i++) {
-            System.out.println(list_recipes.get(i));
+            System.out.println(list_recipes.get(i).getName());
         }
     }
 
     private void getIngredients() {
         try {
-            URL urlEndpoint = new URL(baseUrl + "/ingredients");
+            URL urlEndpoint = new URL(baseUrl + "ingredients/");
 
             // Create connection
             HttpsURLConnection myConnection = (HttpsURLConnection) urlEndpoint.openConnection();
@@ -245,13 +262,13 @@ public class UpdateRecipesTask extends AsyncTask<String, String, String> {
         }
 
         for (int i = 0; i < list_ingredients.size(); i++) {
-            System.out.println(list_ingredients.get(i));
+            Log.d(TAG, list_ingredients.get(i).getName());
         }
     }
 
     private void getRelations() {
         try {
-            URL urlEndpoint = new URL(baseUrl + "/relations");
+            URL urlEndpoint = new URL(baseUrl + "relations/");
 
             // Create connection
             HttpsURLConnection myConnection = (HttpsURLConnection) urlEndpoint.openConnection();
