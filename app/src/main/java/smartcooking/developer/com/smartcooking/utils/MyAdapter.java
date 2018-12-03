@@ -79,8 +79,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
 
-
-    // Filter Class
+    // Filter Class - Talvez mudar isto
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         recipes.clear();
@@ -89,9 +88,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
             recipes = new ArrayList<>(recipes_copy);
         } else {
             String[] search_array = charText.split(" ");
-            for (String s : search_array) {
-                for (Recipe r : recipes_copy) {
-                    if (r.getName().toLowerCase(Locale.getDefault()).contains(s) && !recipes.contains(r)) {
+            for (Recipe r : recipes_copy) {
+                for (String s : search_array) {
+                    if (!recipes.contains(r) && r.getName().toLowerCase(Locale.getDefault()).contains(s)) {
                         recipes.add(r);
                     }
                 }
@@ -114,5 +113,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         // notify item added by position
         OperationsDb.changeRecipeFavorite(item, ((MainActivity) c).getDatabase());
         notifyItemInserted(position);
+    }
+
+    public Recipe getRecipe(int position) {
+        return recipes.get(position);
     }
 }

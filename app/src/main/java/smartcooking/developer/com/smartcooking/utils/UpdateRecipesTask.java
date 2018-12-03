@@ -6,12 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.design.widget.BottomNavigationView;
 import android.util.JsonReader;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -19,12 +16,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import smartcooking.developer.com.smartcooking.R;
 import smartcooking.developer.com.smartcooking.db.DatabaseBaseHelper;
@@ -35,9 +31,7 @@ import smartcooking.developer.com.smartcooking.db.Relation.Relations;
 import smartcooking.developer.com.smartcooking.fragment.MainFragment;
 
 public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
-    private String baseUrl = "https://smartcookies.localtunnel.me/api/";
-
-    private String TAG = "MyApplication";
+    private String baseUrl = "http://10.16.1.66:9500/api/";
 
     private int APIVersion;
 
@@ -53,10 +47,10 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
     private Integer count = 1;
 
     public UpdateRecipesTask(Context context, ProgressBar progressBar, Activity activityRef) {
-        this.contextRef = new WeakReference<>(context);
         this.list_recipes = new ArrayList<>();
         this.list_ingredients = new ArrayList<>();
         this.list_relations = new ArrayList<>();
+        this.contextRef = new WeakReference<>(context);
         this.activityRef = new WeakReference<>(activityRef);
         this.progressBar = new WeakReference<>(progressBar);
     }
@@ -69,17 +63,12 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
 
         publishProgress(count++);
 
-        Log.d(TAG, "Before get Version");
-
         getVersion();
-
-        Log.d(TAG, "After get Version");
 
         publishProgress(count++);
 
         String version = sharedPreferences.getString(PREFS_NAME, "-1");
         int localVersion;
-        Log.d(TAG, "Version: " + version + " Error: " + error);
         if (version != null) {
             localVersion = Integer.parseInt(version);
         } else {
@@ -140,7 +129,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
             URL urlEndpoint = new URL(baseUrl + "version/");
 
             // Create connection
-            HttpsURLConnection myConnection = (HttpsURLConnection) urlEndpoint.openConnection();
+            HttpURLConnection myConnection = (HttpURLConnection) urlEndpoint.openConnection();
 
             if (myConnection.getResponseCode() == 200) {
                 // Success
@@ -176,7 +165,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
             URL urlEndpoint = new URL(baseUrl + "recipes/");
 
             // Create connection
-            HttpsURLConnection myConnection = (HttpsURLConnection) urlEndpoint.openConnection();
+            HttpURLConnection myConnection = (HttpURLConnection) urlEndpoint.openConnection();
 
             if (myConnection.getResponseCode() == 200) {
                 // Success
@@ -259,7 +248,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
             URL urlEndpoint = new URL(baseUrl + "ingredients/");
 
             // Create connection
-            HttpsURLConnection myConnection = (HttpsURLConnection) urlEndpoint.openConnection();
+            HttpURLConnection myConnection = (HttpURLConnection) urlEndpoint.openConnection();
 
             if (myConnection.getResponseCode() == 200) {
                 // Success
@@ -311,7 +300,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
             URL urlEndpoint = new URL(baseUrl + "relations/");
 
             // Create connection
-            HttpsURLConnection myConnection = (HttpsURLConnection) urlEndpoint.openConnection();
+            HttpURLConnection myConnection = (HttpURLConnection) urlEndpoint.openConnection();
 
             if (myConnection.getResponseCode() == 200) {
                 // Success
@@ -430,22 +419,5 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
 
         // show it
         alertDialog.show();
-    }
-
-    private boolean haveNetworkConnection() {
-        boolean haveConnectedWifi = false;
-        boolean haveConnectedMobile = false;
-
-        ConnectivityManager cm = (ConnectivityManager) contextRef.get().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-        for (NetworkInfo ni : netInfo) {
-            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-                if (ni.isConnected())
-                    haveConnectedWifi = true;
-            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-                if (ni.isConnected())
-                    haveConnectedMobile = true;
-        }
-        return haveConnectedWifi || haveConnectedMobile;
     }
 }

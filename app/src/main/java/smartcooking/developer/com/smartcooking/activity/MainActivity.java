@@ -4,8 +4,11 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -19,17 +22,14 @@ import smartcooking.developer.com.smartcooking.fragment.AboutFragment;
 import smartcooking.developer.com.smartcooking.fragment.CategoriesFragment;
 import smartcooking.developer.com.smartcooking.fragment.FavoritesFragment;
 import smartcooking.developer.com.smartcooking.fragment.MainFragment;
+import smartcooking.developer.com.smartcooking.fragment.RecipeFragment;
 import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
 import smartcooking.developer.com.smartcooking.fragment.SplashFragment;
 
-// TODO - Ecrã de detalhes, ecrã main
+// TODO - Ecrã main
 // TODO - Criar os OnResume e OnPause (aqui é para fazer mais alguma coisa do que fazer close() da databse ? )
-// TODO - Responsiveness
-// TODO - Meter um indice com o alfabeto para pesquisar ingredientes - Talvez
-// TODO - Todas as hipoteses ao abrir a aplicação, ter BD, ter net, ter shared preferences
-
-// TODO - agitar o telemóvel e a app cagar uma receita random
-
+// TODO - Responsiveness - Neste momento não roda
+// TODO - Click no texto dos cards
 
 public class MainActivity extends AppCompatActivity {
 
@@ -100,8 +100,21 @@ public class MainActivity extends AppCompatActivity {
 
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
         navigation.setVisibility(View.GONE);
+
+        String PREFS_NAME = "SmartCooking_PrefsName";
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String version = sharedPreferences.getString(PREFS_NAME, "-1");
+
+        if (getIntent().getData() != null && version != null && Integer.parseInt(version) != -1) {
+            Uri uri = getIntent().getData();
+            String id;
+            if ((id = uri.getQueryParameter("id")) != null) {
+                RecipeFragment recipeFragment = RecipeFragment.newInstance(Integer.parseInt(id));
+                getFragmentManager().beginTransaction().replace(R.id.fragment, recipeFragment).commit();
+                return;
+            }
+        }
 
         SplashFragment splashFragment = new SplashFragment();
         getFragmentManager().beginTransaction().replace(R.id.fragment, splashFragment).commit();
@@ -143,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         Fragment f = this.getFragmentManager().findFragmentById(R.id.fragment);
         if (f==null) {
             MainFragment mainFragment = new MainFragment();
-            getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).addToBackStack("MAIN").commit();
         }
         super.onResume();
     }
@@ -151,6 +164,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPause(){
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
         database.close();
+        super.onDestroy();
+    }
+
+    public BottomNavigationView getNavigation() {
+        return navigation;
     }
 }

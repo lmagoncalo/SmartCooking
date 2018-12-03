@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import smartcooking.developer.com.smartcooking.R;
 import smartcooking.developer.com.smartcooking.activity.MainActivity;
@@ -84,8 +85,8 @@ public class RecipeFragment extends Fragment {
 
             TextView recipe_ingredients = result.findViewById(R.id.recipe_details_ingredients);
             TextView recipe_preparation = result.findViewById(R.id.recipe_details_preparation);
-            TextView recipe_time = result.findViewById(R.id.recipe_time);
-            TextView recipe_difficulty = result.findViewById(R.id.recipe_difficulty);
+            TextView recipe_time = result.findViewById(R.id.recipe_time_text);
+            TextView recipe_difficulty = result.findViewById(R.id.recipe_difficulty_text);
 
             recipe_ingredients.setText(recipe.getIngredientsString());
             recipe_preparation.setText(recipe.getPreparationString());
@@ -120,8 +121,10 @@ public class RecipeFragment extends Fragment {
             collapsingToolbarLayout.setTitle(recipe.getName());
 
             int horizontal_dim = Math.round(getActivity().getResources().getDimension(R.dimen.activity_horizontal_margin));
-
+            int vertical_dim = Math.round(getActivity().getResources().getDimension(R.dimen.activity_vertical_margin));
             collapsingToolbarLayout.setExpandedTitleMarginStart(horizontal_dim);
+            collapsingToolbarLayout.setExpandedTitleMarginBottom(vertical_dim);
+
 
             ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
             if (actionBar != null) {

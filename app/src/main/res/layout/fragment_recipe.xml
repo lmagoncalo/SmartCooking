@@ -18,12 +18,14 @@
         android:layout_height="255dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:maxLines="3">
 
             <ImageView
                 android:id="@+id/recipe_image"
@@ -50,7 +52,7 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-        </android.support.design.widget.CollapsingToolbarLayout>
+        </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -73,7 +75,7 @@
                 android:id="@+id/layout_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_padding"
                 android:orientation="horizontal">
 
                 <TextView
@@ -83,9 +85,10 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat"
                     android:fontFeatureSettings="smcp"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/title_size"
+                    android:text="@string/time_title"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -95,17 +98,55 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat"
                     android:fontFeatureSettings="smcp"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/title_size"
+                    android:text="@string/difficulty_title"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_info_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_info"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/recipe_time_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <TextView
+                    android:id="@+id/recipe_difficulty_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/separator1"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/layout_info_text"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="#40000000" />
 
             <TextView
                 android:id="@+id/ingredients_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/layout_info"
+                android:layout_below="@+id/separator1"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:fontFamily="@font/montserrat"
                 android:fontFeatureSettings="smcp"
@@ -125,7 +166,7 @@
                 android:textSize="@dimen/text_size" />
 
             <View
-                android:id="@+id/separator"
+                android:id="@+id/separator2"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_below="@+id/recipe_details_ingredients"
@@ -136,7 +177,7 @@
                 android:id="@+id/preparation_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/separator"
+                android:layout_below="@+id/separator2"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:fontFamily="@font/montserrat"
                 android:fontFeatureSettings="smcp"

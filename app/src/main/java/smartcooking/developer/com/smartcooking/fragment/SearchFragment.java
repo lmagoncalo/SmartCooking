@@ -77,14 +77,6 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         recipe_name_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                if (!recipe_name_search.getText().toString().isEmpty()) { //if edittext include text
-                    cleat_btn.setVisibility(View.VISIBLE);
-                } else { //not include text
-                    cleat_btn.setVisibility(View.GONE);
-                    // When user changed the Text
-                }
-                String text = cs.toString().toLowerCase(Locale.getDefault());
-                adapter.filter(text);
             }
 
             @Override
@@ -93,12 +85,20 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
             @Override
             public void afterTextChanged(Editable arg0) {
+                if (!recipe_name_search.getText().toString().isEmpty()) { //if edittext include text
+                    cleat_btn.setVisibility(View.VISIBLE);
+                } else { //not include text
+                    cleat_btn.setVisibility(View.GONE);
+                    // When user changed the Text
+                }
+                String text = recipe_name_search.getText().toString().toLowerCase(Locale.getDefault());
+                adapter.filter(text);
             }
         });
 
         recipe_name_search.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
-                //If the keyevent is a key-down event on the "enter" button
+                // If the keyevent is a key-down event on the "enter" button
                 if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     InputMethodManager inputManager = (InputMethodManager)
                             getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -111,13 +111,12 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
                 return false;
             }
         });
-
         return result;
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Recipe recipe = recipeList.get(position);
+        Recipe recipe = adapter.getRecipe(position);
         RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getId());
         FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction().addToBackStack("SEARCH").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.replace(R.id.fragment, recipeFragment).commit();
