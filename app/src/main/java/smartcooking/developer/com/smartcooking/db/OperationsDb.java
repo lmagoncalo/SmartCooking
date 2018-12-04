@@ -310,7 +310,7 @@ public class OperationsDb {
         // atenção que em SQLite, os valores boolean são 1 (true) e 0 (false). Não existe uma class boolean com valores "true" e "false"
 
         ContentValues values = new ContentValues();
-        //values.put(DatabaseScheme.RecipesTable.Cols.ID, recipe.getId());
+        values.put(DatabaseScheme.RecipesTable.Cols.ID, recipe.getId());
         values.put(DatabaseScheme.RecipesTable.Cols.NAME, recipe.getName());
         values.put(DatabaseScheme.RecipesTable.Cols.DIFFICULTY, recipe.getDifficulty());
         values.put(DatabaseScheme.RecipesTable.Cols.TIME, recipe.getTime());
@@ -363,13 +363,42 @@ public class OperationsDb {
         // este hashMap vai fazer a contagem do número de ingredientes em comum entre as receitas e a lista de ingredientes pesquisados
         HashMap<Long, Integer> hash = new HashMap<>();
 
-        Cursor c = mDatabase.query(DatabaseScheme.RelationsTable.NAME,
+        /*Cursor c = mDatabase.query(DatabaseScheme.RelationsTable.NAME,
                 null,
                 DatabaseScheme.RelationsTable.Cols.ID_INGREDIENT + " IN " + ingredientsQueryStr,
                 null,
                 null,
                 null,
-                DatabaseScheme.RelationsTable.Cols.ID_RECIPE + " ASC");
+                DatabaseScheme.RelationsTable.Cols.ID_RECIPE + " ASC");*/
+
+        /*
+
+        A  =  ingrs em comum entre receita e pesquisa
+        B  =  ingrs da receita que não estão na pesquisa
+        C  =  nº total de ingrs da receita   (A + B)
+
+           A  DESC, B  ASC, tempo_preparecao ASC, dificuldade ASC, ID ASC
+
+        */
+
+        Cursor c = mDatabase.rawQuery(
+                "SELECT *, " +
+                           "( " +
+                                "SELECT COUNT(*) " +
+                                "FROM " + DatabaseScheme.RelationsTable.NAME + " AS rel " +
+                                "WHERE rel.id_recipe = r.id  AND  rel.id_ingredient in " +  ingredientsQueryStr + " ) as A, " +
+                           "( " +
+                                "SELECT COUNT(*) " +
+                                "FROM " + DatabaseScheme.RelationsTable.NAME + " AS rel " +
+                                "WHERE rel.id_recipe = r.id  AND  rel.id_ingredient NOT in " +  ingredientsQueryStr + " ) as B " +
+                    "FROM " + DatabaseScheme.RecipesTable.NAME + " as r " +
+                    "WHERE A > 0 " +
+                    "ORDER BY A DESC, " +
+                          "B ASC, " +
+                          "r." +DatabaseScheme.RecipesTable.Cols.TIME + " ASC, " +
+                          "r." + DatabaseScheme.RecipesTable.Cols.DIFFICULTY + " ASC, " +
+                          "r." + DatabaseScheme.RecipesTable.Cols.ID + " ASC"
+        , new String[]{});
 
         /*
             Nesta query não podemos fazer com aquilo com os pontos de interrugação, porque depois o que ia substituir esse ponto de interrugação
@@ -391,7 +420,7 @@ public class OperationsDb {
 
         */
 
-        RelationsCursorWrapper cursor = new RelationsCursorWrapper(c);
+        RecipesCursorWrapper cursor = new RecipesCursorWrapper(c);
 
         if (!cursor.moveToFirst()) {
             cursor.close();
@@ -400,16 +429,14 @@ public class OperationsDb {
         }
 
         while (!cursor.isAfterLast()) {
-            Relations relations = cursor.getRelations();
 
-            Recipe recipe = selectRecipeByID(relations.getId_recipe(), mDatabase);
 
-            if (recipe == null) {
-                //TODO: o return aqui é diferente porque se chegar aqui, quer dizer está alguma coisa mal com a database porque há ID's de receitas nas Relations que naõ existem na tabela Receitas
-                cursor.close();
-                c.close();
-                return null;
-            }
+            Recipe recipe = cursor.getRecipe();
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>> NOME: " + recipe.getName());
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>> ID: " + recipe.getId());
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>> A: " + cursor.getInt(cursor.getColumnIndex("A")));
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>> B: " + cursor.getInt(cursor.getColumnIndex("B")));
+
 
             // é feita esta verificação porque 1 receita pode ter mais do que 1 dos ingredientes pesquisados e assim ia ser adicionada mais do que 1 vez
             if (!list.contains(recipe)) {
