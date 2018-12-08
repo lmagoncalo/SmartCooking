@@ -31,19 +31,19 @@ import smartcooking.developer.com.smartcooking.db.Relation.Relations;
 import smartcooking.developer.com.smartcooking.fragment.MainFragment;
 
 public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
-    private String baseUrl = "http://10.16.1.66:9500/api/";
+    private final String baseUrl = "http://192.168.1.66:9500/api/";
 
     private int APIVersion;
 
-    private WeakReference<Context> contextRef;
-    private WeakReference<Activity> activityRef;
-    private WeakReference<ProgressBar> progressBar;
+    private final WeakReference<Context> contextRef;
+    private final WeakReference<Activity> activityRef;
+    private final WeakReference<ProgressBar> progressBar;
 
     private boolean error = false;
 
-    private List<Recipe> list_recipes;
-    private List<Ingredient> list_ingredients;
-    private List<Relations> list_relations;
+    private final List<Recipe> list_recipes;
+    private final List<Ingredient> list_ingredients;
+    private final List<Relations> list_relations;
     private Integer count = 1;
 
     public UpdateRecipesTask(Context context, ProgressBar progressBar, Activity activityRef) {
@@ -391,9 +391,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
-        if (this.progressBar != null) {
-            progressBar.get().setProgress(values[0]);
-        }
+        progressBar.get().setProgress(values[0]);
     }
 
     private void crash(String tipo) {

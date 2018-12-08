@@ -59,10 +59,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         String difficulty;
         switch (recipe.getDifficulty()) {
             case 1:
-                difficulty = "Facil";
+                difficulty = "Fácil";
                 break;
             case 2:
-                difficulty = "Intermedio";
+                difficulty = "Intermédio";
                 break;
 
             case 3:

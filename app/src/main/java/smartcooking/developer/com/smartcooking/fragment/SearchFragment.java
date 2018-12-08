@@ -1,10 +1,11 @@
 package smartcooking.developer.com.smartcooking.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -18,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.List;
 import java.util.Locale;
@@ -30,19 +32,23 @@ import smartcooking.developer.com.smartcooking.utils.MyAdapter;
 
 public class SearchFragment extends Fragment implements AdapterView.OnItemClickListener {
 
+    private View result;
     private EditText recipe_name_search;
     private Button cleat_btn;
     private MyAdapter adapter;
     private List<Recipe> recipeList;
+    private SQLiteDatabase database;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View result = inflater.inflate(R.layout.fragment_search, container, false);
+        result = inflater.inflate(R.layout.fragment_search, container, false);
 
-        SQLiteDatabase database = ((MainActivity) getActivity()).getDatabase();
-        recipeList = OperationsDb.selectAllRecipes(database);
+        if (getActivity() != null) {
+            database = ((MainActivity) getActivity()).getDatabase();
+            recipeList = OperationsDb.selectAllRecipes(database);
+        }
 
         RecyclerView list = result.findViewById(R.id.list_recipes_search);
         recipe_name_search = result.findViewById(R.id.name_search_edittext);
@@ -93,6 +99,12 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
                 }
                 String text = recipe_name_search.getText().toString().toLowerCase(Locale.getDefault());
                 adapter.filter(text);
+
+                if (adapter.getItemCount() == 0) {
+                    TextView empty = result.findViewById(R.id.empty_list);
+                    String s = "Ainda não há receitas aqui";
+                    empty.setText(s);
+                }
             }
         });
 
@@ -103,8 +115,8 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
                     InputMethodManager inputManager = (InputMethodManager)
                             getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);
+                    if (getActivity().getCurrentFocus() != null)
+                        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     recipe_name_search.clearFocus();
                     return true;
                 }
@@ -118,16 +130,21 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Recipe recipe = adapter.getRecipe(position);
         RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getId());
-        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction().addToBackStack("SEARCH").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.replace(R.id.fragment, recipeFragment).commit();
+        FragmentTransaction ft;
+        if (getFragmentManager() != null) {
+            ft = getFragmentManager().beginTransaction().addToBackStack("SEARCH").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.replace(R.id.fragment, recipeFragment).commit();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        SQLiteDatabase database = ((MainActivity) getActivity()).getDatabase();
-        recipeList = OperationsDb.selectAllRecipes(database);
+        if (getActivity() != null) {
+            database = ((MainActivity) getActivity()).getDatabase();
+            recipeList = OperationsDb.selectAllRecipes(database);
+        }
 
         String text = recipe_name_search.getText().toString().toLowerCase(Locale.getDefault());
 

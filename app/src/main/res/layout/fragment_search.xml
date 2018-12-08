@@ -51,7 +51,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/remove"
+                android:background="@drawable/ic_fav_on"
                 android:visibility="gone" />
         </RelativeLayout>
 

@@ -1,9 +1,11 @@
 package smartcooking.developer.com.smartcooking.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,12 +32,18 @@ public class MainFragment extends Fragment {
     private int n_ingredients;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View result = inflater.inflate(R.layout.fragment_main, container, false);
 
-        List<Ingredient> ingredients = OperationsDb.selectAllIngredients(((MainActivity) getActivity()).getDatabase());
+        List<Ingredient> ingredients = null;
+        SQLiteDatabase database;
+        if (getActivity() != null) {
+            database = ((MainActivity) getActivity()).getDatabase();
+            ingredients = OperationsDb.selectAllIngredients(database);
+        }
+
         n_ingredients = 1;
 
         SpinAdapter adapter = new SpinAdapter(getContext(),
@@ -106,13 +114,15 @@ public class MainFragment extends Fragment {
                 }
 
                 RecipeListFragment recipeListFragment = RecipeListFragment.newInstance_ingredients(selected_ingredients);
-                FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction().addToBackStack("MAIN").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("MAIN").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.replace(R.id.fragment, recipeListFragment).commit();
             }
         });
 
-        Typeface type = ResourcesCompat.getFont(getContext(), R.font.montserrat);
-        search_button.setTypeface(type);
+        if (getContext() != null) {
+            Typeface type = ResourcesCompat.getFont(getContext(), R.font.montserrat);
+            search_button.setTypeface(type);
+        }
 
         return result;
     }

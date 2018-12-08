@@ -1,11 +1,12 @@
 package smartcooking.developer.com.smartcooking.fragment;
 
 
-import android.app.Fragment;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -47,14 +48,17 @@ public class RecipeFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View result = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-        SQLiteDatabase database = ((MainActivity) getActivity()).getDatabase();
+        SQLiteDatabase database = null;
+        if (getActivity() != null) {
+            database = ((MainActivity) getActivity()).getDatabase();
+        }
         long id = getRecipe();
-        if (id != -1) {
+        if (getActivity() != null && database != null && id != -1) {
             recipe = OperationsDb.selectRecipeByID(id, database);
 
             ImageView iv = result.findViewById(R.id.recipe_image);
@@ -147,7 +151,7 @@ public class RecipeFragment extends Fragment {
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getActivity().getFragmentManager().popBackStackImmediate();
+                    getActivity().getSupportFragmentManager().popBackStackImmediate();
                 }
             });
 

@@ -4,7 +4,7 @@
     android:id="@+id/layout_progress"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    style="@style/SplashScreen">
 
     <ImageView
         android:id="@+id/imageView"
@@ -12,6 +12,7 @@
         android:layout_height="150dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:contentDescription="@string/splash_screen_image_content"
         app:srcCompat="@drawable/smartcooking_logo" />
 
     <ProgressBar

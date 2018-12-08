@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.DisplayMetrics;
@@ -43,7 +44,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
                                 int actionState, boolean isCurrentlyActive) {
         final View foregroundView = ((MyViewHolder) viewHolder).getViewForeground();
 
-        int primary_color = ((MyViewHolder) viewHolder).getViewBackground().getContext().getResources().getColor(R.color.colorPrimary);
+        int primary_color = ContextCompat.getColor(((MyViewHolder) viewHolder).getViewBackground().getContext(), R.color.colorPrimary);
         String hexColor = String.format("#%06X", (0xFFFFFF & primary_color));
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -77,10 +78,10 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        listener.onSwiped(viewHolder, direction, viewHolder.getAdapterPosition());
+        listener.onSwiped(viewHolder);
     }
 
     public interface RecyclerItemTouchHelperListener {
-        void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position);
+        void onSwiped(RecyclerView.ViewHolder viewHolder);
     }
 }

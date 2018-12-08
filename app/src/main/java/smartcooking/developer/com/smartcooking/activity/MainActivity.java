@@ -1,9 +1,6 @@
 package smartcooking.developer.com.smartcooking.activity;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -12,6 +9,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +30,7 @@ import smartcooking.developer.com.smartcooking.fragment.SplashFragment;
 // TODO - Criar os OnResume e OnPause (aqui é para fazer mais alguma coisa do que fazer close() da databse ? )
 // TODO - Responsiveness - Neste momento não roda
 // TODO - Click no texto dos cards
+// TODO - Mudar as cenas deprecated
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             int open = navigation.getSelectedItemId();
 
             //Clear the stack
-            FragmentManager fm = getFragmentManager();
+            FragmentManager fm = getSupportFragmentManager();
             for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
                 fm.popBackStack();
             }
@@ -54,35 +55,35 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_home:
                     if (open != R.id.navigation_home) {
                         MainFragment mainFragment = new MainFragment();
-                        ft = getFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        ft = getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                         ft.replace(R.id.fragment, mainFragment).commit();
                     }
                     return true;
                 case R.id.navigation_search:
                     if (open != R.id.navigation_search) {
                         SearchFragment searchFragment = new SearchFragment();
-                        ft = getFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        ft = getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                         ft.replace(R.id.fragment, searchFragment).commit();
                     }
                     return true;
                 case R.id.navigation_categories:
                     if (open != R.id.navigation_categories) {
                         CategoriesFragment categoriesFragment = new CategoriesFragment();
-                        ft = getFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        ft = getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                         ft.replace(R.id.fragment, categoriesFragment).commit();
                     }
                     return true;
                 case R.id.navigation_favorites:
                     if (open != R.id.navigation_favorites) {
                         FavoritesFragment favoritesFragment = new FavoritesFragment();
-                        ft = getFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        ft = getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                         ft.replace(R.id.fragment, favoritesFragment).commit();
                     }
                     return true;
                 case R.id.navigation_about:
                     if (open != R.id.navigation_about) {
                         AboutFragment aboutFragment = new AboutFragment();
-                        ft = getFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        ft = getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                         ft.replace(R.id.fragment, aboutFragment).commit();
                     }
                     return true;
@@ -111,18 +112,18 @@ public class MainActivity extends AppCompatActivity {
             String id;
             if ((id = uri.getQueryParameter("id")) != null) {
                 RecipeFragment recipeFragment = RecipeFragment.newInstance(Integer.parseInt(id));
-                getFragmentManager().beginTransaction().replace(R.id.fragment, recipeFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment, recipeFragment).commit();
                 return;
             }
         }
 
         SplashFragment splashFragment = new SplashFragment();
-        getFragmentManager().beginTransaction().replace(R.id.fragment, splashFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment, splashFragment).commit();
     }
 
     @Override
     public void onBackPressed() {
-        Fragment f = this.getFragmentManager().findFragmentById(R.id.fragment);
+        Fragment f = this.getSupportFragmentManager().findFragmentById(R.id.fragment);
         if (f instanceof MainFragment || f instanceof SearchFragment || f instanceof CategoriesFragment || f instanceof FavoritesFragment || f instanceof AboutFragment) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Tem a certeza que quer sair?")
@@ -153,10 +154,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         database = new DatabaseBaseHelper(this).getWritableDatabase();
-        Fragment f = this.getFragmentManager().findFragmentById(R.id.fragment);
+        Fragment f = this.getSupportFragmentManager().findFragmentById(R.id.fragment);
         if (f==null) {
             MainFragment mainFragment = new MainFragment();
-            getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).addToBackStack("MAIN").commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).addToBackStack("MAIN").commit();
         }
         super.onResume();
     }
@@ -172,7 +173,4 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public BottomNavigationView getNavigation() {
-        return navigation;
-    }
 }

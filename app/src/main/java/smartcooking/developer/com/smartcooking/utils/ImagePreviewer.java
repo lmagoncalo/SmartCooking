@@ -25,29 +25,33 @@ class ImagePreviewer {
         ImageView imageView = dialogView.findViewById(R.id.previewer_image);
 
         try {
-            Drawable copy = source.getDrawable().getConstantState().newDrawable();
-            imageView.setImageDrawable(copy);
+            if (source.getDrawable().getConstantState() != null) {
+                Drawable copy = source.getDrawable().getConstantState().newDrawable();
+                imageView.setImageDrawable(copy);
 
-            final Dialog dialog = new Dialog(context, R.style.ImagePreviewerTheme);
-            dialog.getWindow().setBackgroundDrawable(background);
-            dialog.setContentView(dialogView);
-            dialog.show();
 
-            source.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (dialog.isShowing()) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        int action = event.getActionMasked();
-                        if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                            dialog.dismiss();
-                            return true;
+                final Dialog dialog = new Dialog(context, R.style.ImagePreviewerTheme);
+                if (dialog.getWindow() != null)
+                    dialog.getWindow().setBackgroundDrawable(background);
+                dialog.setContentView(dialogView);
+                dialog.show();
+
+                source.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (dialog.isShowing()) {
+                            v.getParent().requestDisallowInterceptTouchEvent(true);
+                            int action = event.getActionMasked();
+                            if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+                                v.getParent().requestDisallowInterceptTouchEvent(false);
+                                dialog.dismiss();
+                                return true;
+                            }
                         }
+                        return false;
                     }
-                    return false;
-                }
-            });
+                });
+            }
         } catch (Exception ignored) {
 
         }

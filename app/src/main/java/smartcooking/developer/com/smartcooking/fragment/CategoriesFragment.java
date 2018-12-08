@@ -1,9 +1,10 @@
 package smartcooking.developer.com.smartcooking.fragment;
 
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ public class CategoriesFragment extends Fragment {
     private final ArrayList<Button> buttons = new ArrayList<>(6);
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View result = inflater.inflate(R.layout.fragment_categories, container, false);
@@ -36,8 +37,11 @@ public class CategoriesFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     RecipeListFragment recipeListFragment = RecipeListFragment.newInstance_category((int) v.getTag());
-                    FragmentTransaction ft = getFragmentManager().beginTransaction().addToBackStack("CATEGORIES").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                    ft.replace(R.id.fragment, recipeListFragment).commit();
+                    FragmentTransaction ft;
+                    if (getFragmentManager() != null) {
+                        ft = getFragmentManager().beginTransaction().addToBackStack("CATEGORIES").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        ft.replace(R.id.fragment, recipeListFragment).commit();
+                    }
                 }
             });
         }

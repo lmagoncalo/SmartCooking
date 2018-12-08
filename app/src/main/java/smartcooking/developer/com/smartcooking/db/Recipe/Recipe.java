@@ -4,12 +4,10 @@ package smartcooking.developer.com.smartcooking.db.Recipe;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 public class Recipe implements Serializable, Comparable<Recipe> {
-    static Comparator<Recipe> RecipeNameComparator = new Comparator<Recipe>() {
+    /*static Comparator<Recipe> RecipeNameComparator = new Comparator<Recipe>() {
 
         public int compare(Recipe left, Recipe right) {
 
@@ -26,7 +24,7 @@ public class Recipe implements Serializable, Comparable<Recipe> {
             //return left.getPesoPesquisa() - right.getPesoPesquisa();
         }
 
-    };
+    };*/
 
     private long id;
     private String name;
@@ -87,7 +85,7 @@ public class Recipe implements Serializable, Comparable<Recipe> {
         this.category = category;
         this.preparation = preparation;
         this.image = image;
-    }*/
+    }
 
     public Recipe(long id, String title, int time_prep, int difficulty, String category, String supplier, String prep, String list_ingr, String URLLink) {
         this.id = id;
@@ -99,7 +97,7 @@ public class Recipe implements Serializable, Comparable<Recipe> {
         this.preparation = Arrays.asList(prep.split("\\|"));
         this.image = URLLink;
         this.hash = "abd";
-    }
+    }*/
 
     public long getId() {
         return id;
@@ -149,16 +147,8 @@ public class Recipe implements Serializable, Comparable<Recipe> {
         this.supplier = supplier;
     }
 
-    public List<String> getPreparation() {
-        return preparation;
-    }
-
     public void setPreparation(List<String> preparation) {
         this.preparation = preparation;
-    }
-
-    public List<String> getIngredients() {
-        return ingredients;
     }
 
     public void setIngredients(List<String> ingredients) {

@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
 
 import smartcooking.developer.com.smartcooking.db.Ingredient.Ingredient;
@@ -13,32 +12,22 @@ import smartcooking.developer.com.smartcooking.db.Ingredient.IngredientsCursorWr
 import smartcooking.developer.com.smartcooking.db.Recipe.Recipe;
 import smartcooking.developer.com.smartcooking.db.Recipe.RecipesCursorWrapper;
 import smartcooking.developer.com.smartcooking.db.Relation.Relations;
-import smartcooking.developer.com.smartcooking.db.Relation.RelationsCursorWrapper;
+// import smartcooking.developer.com.smartcooking.db.Relation.RelationsCursorWrapper;
 
 public class OperationsDb {
     /*** CLASSE QUE VAI TER TODAS AS OPERAÇÕES DA BASE DE DADOS, PARA ISTO NÃO SE MISTURAR COM O RESTO DO CÓDIGO DA APP ***/
 
-    public static int recipeControlledInsert(Recipe new_recipe, SQLiteDatabase mDatabase) {
+    public static void recipeControlledInsert(Recipe new_recipe, SQLiteDatabase mDatabase) {
         Recipe old_recipe = recipeExists(new_recipe, mDatabase);
         if (old_recipe != null) {
             // se já existe uma receita com o mesmo ID
-            if (old_recipe.getHash().equals(new_recipe.getHash())) {
-                return 0;   // a receita foi ignorada porque já existe uma igual na base de dados
-            } else {
-                // se a receita já existe, mas precisa de update porque o hash é diferente
-                if (updateRecipe(new_recipe, mDatabase)) {
-                    return 2;   // se correu tudo bem com o update
-                }
-
-                return -2;      // se houve um erro com o update
+            if (!old_recipe.getHash().equals(new_recipe.getHash())) {
+                updateRecipe(new_recipe, mDatabase);
             }
         } else {
             // se a receita ainda não existe na base de dados
-            if (insertRecipe(new_recipe, mDatabase)) {
-                return 1;       // se correu tudo bem com o insert
-            }
+            insertRecipe(new_recipe, mDatabase);
 
-            return -1;          // se houve um erro com o insert
         }
     }
 
@@ -71,9 +60,9 @@ public class OperationsDb {
         return r;
     }
 
-    private static boolean insertRecipe(Recipe recipe, SQLiteDatabase mDatabase) {
+    private static void insertRecipe(Recipe recipe, SQLiteDatabase mDatabase) {
         ContentValues values = getContentValuesRecipes(recipe);
-        return mDatabase.insert(DatabaseScheme.RecipesTable.NAME, null, values) != -1;
+        mDatabase.insert(DatabaseScheme.RecipesTable.NAME, null, values);
 
         // o "insert" retorna '-1' se houver erro
     }
@@ -92,25 +81,25 @@ public class OperationsDb {
         return updateRecipe(recipe, mDatabase);
     }
 
-    public static boolean insertIngredient(Ingredient ingredient, SQLiteDatabase mDatabase) {
+    public static void insertIngredient(Ingredient ingredient, SQLiteDatabase mDatabase) {
         ContentValues values = getContentValuesIngredients(ingredient);
-        return mDatabase.insert(DatabaseScheme.IngredientsTable.NAME, null, values) != -1;
+        mDatabase.insert(DatabaseScheme.IngredientsTable.NAME, null, values);
 
         // o "insert" retorna '-1' se houver erro
     }
 
-    public static boolean updateIngredient(Ingredient ingredient, SQLiteDatabase mDatabase) {
+    /*public static boolean updateIngredient(Ingredient ingredient, SQLiteDatabase mDatabase) {
         // aqui, não meto o ID no argumento "selectionArgs" porque assim ia estar a convertê-lo para String e o ID é um 'serial'
 
         ContentValues values = getContentValuesIngredients(ingredient);
         return mDatabase.update(DatabaseScheme.IngredientsTable.NAME, values, String.format(Locale.getDefault(), DatabaseScheme.IngredientsTable.Cols.ID + " = %d", ingredient.getId()), null) != 0;
 
         // o "update" retorna o número de linhas afectadas, ou seja, se retornar '0', há algum problema
-    }
+    }*/
 
-    public static boolean insertRelation(Relations relations, SQLiteDatabase mDatabase) {
+    public static void insertRelation(Relations relations, SQLiteDatabase mDatabase) {
         ContentValues values = getContentValuesRelations(relations);
-        return mDatabase.insert(DatabaseScheme.RelationsTable.NAME, null, values) != -1;
+        mDatabase.insert(DatabaseScheme.RelationsTable.NAME, null, values);
 
         // o "insert" retorna '-1' se houver erro
     }
@@ -177,7 +166,7 @@ public class OperationsDb {
         return list;
     }
 
-    public static ArrayList<Relations> selectAllRelations(SQLiteDatabase mDatabase) {
+    /*public static ArrayList<Relations> selectAllRelations(SQLiteDatabase mDatabase) {
         ArrayList<Relations> list = new ArrayList<>();
 
         Cursor c = mDatabase.query(DatabaseScheme.RelationsTable.NAME,
@@ -206,7 +195,7 @@ public class OperationsDb {
         c.close();
 
         return list;
-    }
+    }*/
 
     public static ArrayList<Ingredient> selectAllIngredients(SQLiteDatabase mDatabase) {
         ArrayList<Ingredient> list = new ArrayList<>();
@@ -239,7 +228,7 @@ public class OperationsDb {
         return list;
     }
 
-    public static ArrayList<String> selectAllIngredientsStrings(SQLiteDatabase mDatabase) {
+    /*public static ArrayList<String> selectAllIngredientsStrings(SQLiteDatabase mDatabase) {
         ArrayList<String> list = new ArrayList<>();
 
         Cursor c = mDatabase.query(DatabaseScheme.IngredientsTable.NAME,
@@ -268,7 +257,7 @@ public class OperationsDb {
         c.close();
 
         return list;
-    }
+    }*/
 
     public static ArrayList<Recipe> selectFavoriteRecipes(SQLiteDatabase mDatabase) {
         ArrayList<Recipe> list = new ArrayList<>();
@@ -361,8 +350,6 @@ public class OperationsDb {
         // atenção que em SQLite, os valores boolean são 1 (true) e 0 (false). Não existe uma class boolean com valores "true" e "false"
 
         // este hashMap vai fazer a contagem do número de ingredientes em comum entre as receitas e a lista de ingredientes pesquisados
-        HashMap<Long, Integer> hash = new HashMap<>();
-
         /*Cursor c = mDatabase.query(DatabaseScheme.RelationsTable.NAME,
                 null,
                 DatabaseScheme.RelationsTable.Cols.ID_INGREDIENT + " IN " + ingredientsQueryStr,
@@ -432,18 +419,10 @@ public class OperationsDb {
 
 
             Recipe recipe = cursor.getRecipe();
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>> NOME: " + recipe.getName());
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>> ID: " + recipe.getId());
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>> A: " + cursor.getInt(cursor.getColumnIndex("A")));
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>> B: " + cursor.getInt(cursor.getColumnIndex("B")));
-
 
             // é feita esta verificação porque 1 receita pode ter mais do que 1 dos ingredientes pesquisados e assim ia ser adicionada mais do que 1 vez
             if (!list.contains(recipe)) {
                 list.add(recipe);
-                hash.put(recipe.getId(), 1);
-            }else{
-                hash.put(recipe.getId(), hash.get(recipe.getId())+1);
             }
             cursor.moveToNext();
         }
@@ -493,7 +472,7 @@ public class OperationsDb {
         return res.toString();
     }
 
-    public static void turnOnForeignKeys(SQLiteDatabase mDatabase) {
+    /*public static void turnOnForeignKeys(SQLiteDatabase mDatabase) {
         mDatabase.execSQL("PRAGMA foreign_keys = ON;");
-    }
+    }*/
 }

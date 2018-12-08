@@ -1,12 +1,13 @@
 package smartcooking.developer.com.smartcooking.fragment;
 
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -29,23 +31,32 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
 
     private List<Recipe> recipeList;
     private MyAdapter adapter;
+    private TextView empty;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View result = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
         RecyclerView list = result.findViewById(R.id.list_recipes);
 
-        SQLiteDatabase database = ((MainActivity) getActivity()).getDatabase();
-
-        recipeList = OperationsDb.selectFavoriteRecipes(database);
+        SQLiteDatabase database;
+        if (getActivity() != null) {
+            database = ((MainActivity) getActivity()).getDatabase();
+            recipeList = OperationsDb.selectFavoriteRecipes(database);
+        }
 
         adapter = new MyAdapter(recipeList, this, getContext());
         list.setAdapter(adapter);
         list.setHasFixedSize(true);
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        empty = result.findViewById(R.id.empty_list);
+
+        if (adapter.getItemCount() == 0) {
+            String s = "Ainda não há receitas aqui";
+            empty.setText(s);
+        }
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(list);
@@ -61,12 +72,15 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
     private void openDetails(int index) {
         Recipe recipe = recipeList.get(index);
         RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getId());
-        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction().addToBackStack("FAVORITES").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.replace(R.id.fragment, recipeFragment).commit();
+        FragmentTransaction ft;
+        if (getFragmentManager() != null) {
+            ft = getFragmentManager().beginTransaction().addToBackStack("FAVORITES").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.replace(R.id.fragment, recipeFragment).commit();
+        }
     }
 
     @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+    public void onSwiped(RecyclerView.ViewHolder viewHolder) {
         if (viewHolder instanceof MyViewHolder) {
             // backup of removed item for undo purpose
             final Recipe deletedRecipe = recipeList.get(viewHolder.getAdapterPosition());
@@ -74,6 +88,11 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
 
             // remove the item from recycler view
             adapter.removeRecipe(viewHolder.getAdapterPosition());
+
+            if (adapter.getItemCount() == 0) {
+                String s = "Ainda não há receitas aqui";
+                empty.setText(s);
+            }
 
             // showing snack bar with Undo option
             Snackbar snackbar = Snackbar
@@ -84,11 +103,11 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
 
                     // undo is selected, restore the deleted item
                     adapter.restoreItem(deletedRecipe, deletedIndex);
+                    empty.setText(null);
                 }
             });
             snackbar.setActionTextColor(Color.YELLOW);
             snackbar.show();
         }
     }
-
 }

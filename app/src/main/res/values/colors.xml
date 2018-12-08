@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <color name="colorPrimary">#e53935</color> <!-- Red 600 -->
-    <color name="colorPrimaryDark">#D32F2F</color> <!-- Red 700 -->
-    <color name="colorAccent">#e53935</color>
-
-    <color name="row_background">#BBD32F2F</color>
+    <color name="colorPrimaryDark">#C62828</color> <!-- Red 700 -->
+    <color name="colorAccent">@color/text_color</color>
 
     <color name="text_color">#DE000000</color>
 
@@ -13,25 +10,9 @@
 
     <!-- Cores Default -->
     <color name="white">#ffffff</color>
-    <color name="yellow">#ffff00</color>
-    <color name="fuchsia">#FF00FF</color>
-    <color name="red">#FF0000</color>
-    <color name="silver">#C0C0C0</color>
-    <color name="gray">#808080</color>
-    <color name="olive">#808000</color>
-    <color name="purple">#800080</color>
-    <color name="maroon">#800000</color>
-    <color name="aqua">#00FFFF</color>
-    <color name="lime">#00FF00</color>
-    <color name="teal">#008080</color>
-    <color name="green">#008000</color>
-    <color name="blue">#0000FF</color>
-    <color name="navy">#000080</color>
-    <color name="black">#000000</color>
 
 
     <!-- Cores dos Botoes das CategoriasActivity -->
-
     <color name="button1">#EF5350</color> <!-- Red 400 -->
     <color name="button2">#F44336</color> <!-- Red 500 -->
     <color name="button3">#E53935</color> <!-- Red 600 -->

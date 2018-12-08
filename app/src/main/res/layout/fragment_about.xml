@@ -54,7 +54,7 @@
                 android:layout_marginStart="@dimen/activity_padding"
                 android:fontFamily="@font/montserrat"
                 android:textColor="@color/text_color"
-                android:textStyle="bold" />
+                android:textStyle="italic" />
 
         </LinearLayout>
 
@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_padding"
                 android:fontFamily="@font/montserrat"
-                android:textStyle="bold" />
+                android:textStyle="italic" />
         </LinearLayout>
 
     </LinearLayout>
@@ -112,21 +112,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
-            android:textStyle="bold" />
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/partners_two_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
-            android:textStyle="bold" />
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/partners_three_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
-            android:textStyle="bold" />
+            android:textStyle="italic" />
     </LinearLayout>
 
     <LinearLayout
@@ -165,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_padding"
                 android:fontFamily="@font/montserrat"
-                android:textStyle="bold" />
+                android:textStyle="italic" />
         </LinearLayout>
 
     </LinearLayout>

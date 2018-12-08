@@ -52,15 +52,8 @@
 
 
     <!-- Images Content Descriptions -->
-    <string name="image_list_description">Image of the Receipe in List</string>
-    <string name="recipe_image_description">Image of the Recipe</string>
-    <string name="details_difficulty_image_content">Details Difficulty</string>
-    <string name="details_time_image_content">Details Time</string>
-    <string name="remove_btn_1_image_content">Remove Button 1</string>
-    <string name="remove_btn_2_image_content">Remove Button 2</string>
-    <string name="remove_btn_3_image_content">Remove Button 3</string>
-    <string name="remove_btn_4_image_content">Remove Button 4</string>
-    <string name="remove_btn_5_image_content">Remove Button 5</string>
+    <string name="image_list_image_content">Image of the Receipe in List</string>
+    <string name="recipe_image_content">Image of the Recipe</string>
     <string name="add_btn_image_content">Add Ingredient Button</string>
     <string name="meat_btn_image_content">Meat Button Icon</string>
     <string name="fish_btn_image_content">Fish Button Icon</string>
@@ -68,8 +61,8 @@
     <string name="dessert_btn_image_content">Desert Button Icon</string>
     <string name="snack_btn_image_content">Snack Button Icon</string>
     <string name="other_btn_image_content">Other Button Icon</string>
-    <string name="recipe_details_image_content">Recipe Details Image</string>
     <string name="recipe_image_preview_image_content">Image View for the recipe preview</string>
     <string name="swipe_icon_image_content">Icon in the backgroud of the swipe</string>
+    <string name="splash_screen_image_content">Image on the Splash Screen</string>
 
 </resources>

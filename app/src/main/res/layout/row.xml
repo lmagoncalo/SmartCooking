@@ -64,10 +64,10 @@
                     android:layout_height="100dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
-                    android:contentDescription="@string/image_list_description"
+                    android:contentDescription="@string/image_list_image_content"
                     android:focusable="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/food" />
+                    android:src="@color/colorPrimary" />
 
                 <TextView
                     android:id="@+id/recipe_name"

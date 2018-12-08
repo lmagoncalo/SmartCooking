@@ -1,16 +1,18 @@
 package smartcooking.developer.com.smartcooking.fragment;
 
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,52 +55,64 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
 
     @SuppressWarnings("unchecked")
     private ArrayList<Ingredient> getIngredients() {
-        Object obj = getArguments().getSerializable(INGREDIENTS);
+        Object obj = null;
+        if (getArguments() != null) {
+            obj = getArguments().getSerializable(INGREDIENTS);
+        }
         return (ArrayList<Ingredient>) obj;
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View result = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
         RecyclerView list = result.findViewById(R.id.list_recipes);
 
-        SQLiteDatabase database = ((MainActivity) getActivity()).getDatabase();
+        SQLiteDatabase database;
+        if (getActivity() != null) {
+            database = ((MainActivity) getActivity()).getDatabase();
 
-        switch (getCategory()) {
-            case 0:
-                recipeList = OperationsDb.selectRecipeByCategory("Carne", database);
-                break;
-            case 1:
-                recipeList = OperationsDb.selectRecipeByCategory("Peixe", database);
-                break;
-            case 2:
-                recipeList = OperationsDb.selectRecipeByCategory("Vegetariano", database);
-                break;
-            case 3:
-                recipeList = OperationsDb.selectRecipeByCategory("Sobremesa", database);
-                break;
-            case 4:
-                recipeList = OperationsDb.selectRecipeByCategory("Snack", database);
-                break;
-            case 5:
-                recipeList = OperationsDb.selectRecipeByCategory("Outros", database);
-                break;
-            case -1:
-                ArrayList<Ingredient> selected_ingredients = getIngredients();
-                recipeList = OperationsDb.selectRecipesByIngredients(selected_ingredients,database);
-                break;
-            default:
-                break;
+            switch (getCategory()) {
+                case 0:
+                    recipeList = OperationsDb.selectRecipeByCategory("Carne", database);
+                    break;
+                case 1:
+                    recipeList = OperationsDb.selectRecipeByCategory("Peixe", database);
+                    break;
+                case 2:
+                    recipeList = OperationsDb.selectRecipeByCategory("Vegetariano", database);
+                    break;
+                case 3:
+                    recipeList = OperationsDb.selectRecipeByCategory("Sobremesa", database);
+                    break;
+                case 4:
+                    recipeList = OperationsDb.selectRecipeByCategory("Snack", database);
+                    break;
+                case 5:
+                    recipeList = OperationsDb.selectRecipeByCategory("Outros", database);
+                    break;
+                case -1:
+                    ArrayList<Ingredient> selected_ingredients = getIngredients();
+                    recipeList = OperationsDb.selectRecipesByIngredients(selected_ingredients, database);
+                    break;
+                default:
+                    break;
+            }
         }
 
         MyAdapter adapter = new MyAdapter(recipeList, this, getContext());
         list.setAdapter(adapter);
         list.setHasFixedSize(true);
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        if (adapter.getItemCount() == 0) {
+            TextView empty = result.findViewById(R.id.empty_list);
+            String s = "Ainda não há receitas aqui";
+            empty.setText(s);
+        }
 
         return result;
     }
@@ -111,7 +125,10 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
     private void openDetails(int index) {
         Recipe recipe = recipeList.get(index);
         RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getId());
-        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction().addToBackStack("CATEGORIES").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.replace(R.id.fragment, recipeFragment).commit();
+        FragmentTransaction ft;
+        if (getFragmentManager() != null) {
+            ft = getFragmentManager().beginTransaction().addToBackStack("LIST").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.replace(R.id.fragment, recipeFragment).commit();
+        }
     }
 }
