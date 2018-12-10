@@ -31,7 +31,7 @@ public class SplashFragment extends Fragment {
 
         setRandomPhrase(result);
 
-        UpdateRecipesTask myTask = new UpdateRecipesTask(getContext(), progressBar, getActivity());
+        UpdateRecipesTask myTask = new UpdateRecipesTask(getContext(), progressBar, getActivity(), this);
         myTask.execute();
 
         return result;

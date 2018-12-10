@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.JsonReader;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -38,6 +40,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
     private final WeakReference<Context> contextRef;
     private final WeakReference<Activity> activityRef;
     private final WeakReference<ProgressBar> progressBar;
+    private final Fragment fragment;
 
     private boolean error = false;
 
@@ -46,13 +49,14 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
     private final List<Relations> list_relations;
     private Integer count = 1;
 
-    public UpdateRecipesTask(Context context, ProgressBar progressBar, Activity activityRef) {
+    public UpdateRecipesTask(Context context, ProgressBar progressBar, Activity activityRef, Fragment fragment) {
         this.list_recipes = new ArrayList<>();
         this.list_ingredients = new ArrayList<>();
         this.list_relations = new ArrayList<>();
         this.contextRef = new WeakReference<>(context);
         this.activityRef = new WeakReference<>(activityRef);
         this.progressBar = new WeakReference<>(progressBar);
+        this.fragment = fragment;
     }
 
     @Override
@@ -369,7 +373,11 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
         switch (result) {
             case "Success":
                 MainFragment mainFragment = new MainFragment();
-                activityRef.get().getFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).commit();
+                FragmentTransaction ft;
+                if (fragment.getFragmentManager() != null) {
+                    ft = fragment.getFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    ft.replace(R.id.fragment, mainFragment).commit();
+                }
                 BottomNavigationView navigation = activityRef.get().findViewById(R.id.navigation);
                 navigation.setVisibility(View.VISIBLE);
                 break;
