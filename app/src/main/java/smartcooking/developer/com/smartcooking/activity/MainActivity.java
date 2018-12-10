@@ -30,7 +30,6 @@ import smartcooking.developer.com.smartcooking.fragment.SplashFragment;
 // TODO - Criar os OnResume e OnPause (aqui é para fazer mais alguma coisa do que fazer close() da databse ? )
 // TODO - Responsiveness - Neste momento não roda
 // TODO - Click no texto dos cards
-// TODO - Mudar as cenas deprecated
 
 public class MainActivity extends AppCompatActivity {
 
@@ -155,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         database = new DatabaseBaseHelper(this).getWritableDatabase();
         Fragment f = this.getSupportFragmentManager().findFragmentById(R.id.fragment);
-        if (f==null) {
+        if (f == null) {
             MainFragment mainFragment = new MainFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment, mainFragment).addToBackStack("MAIN").commit();
         }
