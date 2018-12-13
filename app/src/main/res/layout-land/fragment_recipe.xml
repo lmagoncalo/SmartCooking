@@ -1,0 +1,196 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:weightSum="2">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/recipe_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:contentDescription="@string/recipe_image_content"
+            android:fitsSystemWindows="true"
+            android:scaleType="centerCrop" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:id="@+id/recipe_details_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/text_color"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/separator1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@+id/recipe_details_title"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="#40000000" />
+
+                <LinearLayout
+                    android:id="@+id/layout_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/separator1"
+                    android:layout_marginBottom="@dimen/activity_padding"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/recipe_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat"
+                        android:fontFeatureSettings="smcp"
+                        android:text="@string/time_title"
+                        android:textAlignment="center"
+                        android:textColor="@color/text_color"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/recipe_difficulty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat"
+                        android:fontFeatureSettings="smcp"
+                        android:text="@string/difficulty_title"
+                        android:textAlignment="center"
+                        android:textColor="@color/text_color"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_info_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout_info"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/recipe_time_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat"
+                        android:textAlignment="center"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size" />
+
+                    <TextView
+                        android:id="@+id/recipe_difficulty_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat"
+                        android:textAlignment="center"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/separator2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@+id/layout_info_text"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="#40000000" />
+
+                <TextView
+                    android:id="@+id/ingredients_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/separator2"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:fontFamily="@font/montserrat"
+                    android:fontFeatureSettings="smcp"
+                    android:text="@string/ingredients_title"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/title_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/recipe_details_ingredients"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ingredients_title"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+
+                <View
+                    android:id="@+id/separator3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@+id/recipe_details_ingredients"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="#40000000" />
+
+                <TextView
+                    android:id="@+id/preparation_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/separator3"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:fontFamily="@font/montserrat"
+                    android:fontFeatureSettings="smcp"
+                    android:text="@string/preparation_title"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/title_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/recipe_details_preparation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/preparation_title"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size" />
+
+            </RelativeLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -27,9 +27,10 @@ import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
 import smartcooking.developer.com.smartcooking.fragment.SplashFragment;
 
 // TODO - Ecrã main
-// TODO - Criar os OnResume e OnPause (aqui é para fazer mais alguma coisa do que fazer close() da databse ? )
-// TODO - Responsiveness - Neste momento não roda
+// TODO - Criar os OnResume e OnPause - Guardar o ecrã aberto no onPause e fazer load no onResume
 // TODO - Click no texto dos cards
+// TODO - Meter o timeout no getVersion
+// TODO - Serviço para notificações (Talvez)
 
 public class MainActivity extends AppCompatActivity {
 
@@ -164,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPause(){
         super.onPause();
+
     }
 
     @Override

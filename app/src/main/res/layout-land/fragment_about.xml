@@ -2,17 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/activity_horizontal_margin"
-    android:layout_marginTop="@dimen/activity_vertical_margin"
-    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-    android:layout_marginBottom="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
     tools:context=".fragment.AboutFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
@@ -32,7 +32,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
             android:text="@string/aboutus_text"
-            android:textSize="@dimen/text_size"
             android:textColor="@color/text_color" />
 
         <LinearLayout
@@ -46,7 +45,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat"
                 android:text="@string/facebook_text"
-                android:textSize="@dimen/text_size"
                 android:textColor="@color/text_color" />
 
             <TextView
@@ -56,7 +54,6 @@
                 android:layout_marginStart="@dimen/activity_padding"
                 android:fontFamily="@font/montserrat"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size"
                 android:textStyle="italic" />
 
         </LinearLayout>
@@ -72,7 +69,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat"
                 android:text="@string/twitter_text"
-                android:textSize="@dimen/text_size"
                 android:textColor="@color/text_color" />
 
             <TextView
@@ -81,7 +77,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_padding"
                 android:fontFamily="@font/montserrat"
-                android:textSize="@dimen/text_size"
                 android:textStyle="italic" />
         </LinearLayout>
 
@@ -90,93 +85,98 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_weight="1"
+        android:baselineAligned="false"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/partners_title_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:fontFamily="@font/montserrat"
-            android:fontFeatureSettings="smcp"
-            android:text="@string/partners_title"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/title_size"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/partners_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat"
-            android:text="@string/partners_text"
-            android:textSize="@dimen/text_size"
-            android:textColor="@color/text_color" />
-
-        <TextView
-            android:id="@+id/partners_one_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat"
-            android:textSize="@dimen/text_size"
-            android:textStyle="italic" />
-
-        <TextView
-            android:id="@+id/partners_two_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat"
-            android:textSize="@dimen/text_size"
-            android:textStyle="italic" />
-
-        <TextView
-            android:id="@+id/partners_three_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat"
-            android:textSize="@dimen/text_size"
-            android:textStyle="italic" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/others_title_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:fontFamily="@font/montserrat"
-            android:fontFeatureSettings="smcp"
-            android:text="@string/others_title"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/title_size"
-            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/icons_textview"
-                android:layout_width="wrap_content"
+                android:id="@+id/partners_title_textview"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat"
-                android:text="@string/icons_text"
-                android:textSize="@dimen/text_size"
+                android:fontFeatureSettings="smcp"
+                android:text="@string/partners_title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/title_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/partners_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/partners_text"
                 android:textColor="@color/text_color" />
 
             <TextView
-                android:id="@+id/icons_link_textview"
+                android:id="@+id/partners_one_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_padding"
                 android:fontFamily="@font/montserrat"
-                android:textSize="@dimen/text_size"
                 android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/partners_two_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/partners_three_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:textStyle="italic" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/others_title_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="@font/montserrat"
+                android:fontFeatureSettings="smcp"
+                android:text="@string/others_title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/title_size"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/icons_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/icons_text"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:id="@+id/icons_link_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_padding"
+                    android:fontFamily="@font/montserrat"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

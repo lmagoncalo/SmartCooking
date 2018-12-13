@@ -183,7 +183,7 @@ public class Recipe implements Serializable, Comparable<Recipe> {
         StringBuilder prep = new StringBuilder();
 
         for (String s : this.preparation) {
-            prep.append("- ").append(s).append("\n");
+            prep.append("— ").append(s).append("\n");
         }
 
         return prep.toString();
@@ -193,7 +193,7 @@ public class Recipe implements Serializable, Comparable<Recipe> {
         StringBuilder prep = new StringBuilder();
 
         for (String i : this.ingredients) {
-            prep.append("- ").append(i).append("\n");
+            prep.append("— ").append(i).append("\n");
         }
 
         return prep.toString();

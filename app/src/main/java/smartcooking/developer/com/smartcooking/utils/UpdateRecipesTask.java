@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.JsonReader;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -19,6 +20,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -134,6 +136,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
 
             // Create connection
             HttpURLConnection myConnection = (HttpURLConnection) urlEndpoint.openConnection();
+            myConnection.setConnectTimeout(5000);
 
             if (myConnection.getResponseCode() == 200) {
                 // Success
@@ -158,6 +161,8 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
                 // Error handling code goes here
                 error = true;
             }
+        } catch (SocketTimeoutException e) {
+            error = true;
         } catch (IOException e) {
             e.printStackTrace();
             error = true;
@@ -403,7 +408,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
     }
 
     private void crash(String tipo) {
-        android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(contextRef.get());
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(contextRef.get());
 
         // set title
         alertDialogBuilder.setTitle("Erro");
@@ -421,7 +426,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
                 });
 
         // create alert dialog
-        android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        AlertDialog alertDialog = alertDialogBuilder.create();
 
         // show it
         alertDialog.show();

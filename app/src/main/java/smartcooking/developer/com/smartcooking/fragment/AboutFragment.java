@@ -1,11 +1,9 @@
 package smartcooking.developer.com.smartcooking.fragment;
 
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -17,15 +15,9 @@ import java.util.ArrayList;
 
 import smartcooking.developer.com.smartcooking.R;
 
-public class AboutFragment extends Fragment {
+import static android.text.Html.fromHtml;
 
-    private static Spanned fromHtml(String html) {
-        Spanned result = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
-        }
-        return result;
-    }
+public class AboutFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,

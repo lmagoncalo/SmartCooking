@@ -1,11 +1,13 @@
 package smartcooking.developer.com.smartcooking.fragment;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -77,7 +79,14 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         adapter = new MyAdapter(recipeList, this, getContext());
         list.setAdapter(adapter);
         list.setHasFixedSize(true);
-        list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // In landscape
+            list.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        } else {
+            // In portrait
+            list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        }
 
         // Enabling Search Filter
         recipe_name_search.addTextChangedListener(new TextWatcher() {

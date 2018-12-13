@@ -66,26 +66,28 @@ public class RecipeFragment extends Fragment {
             Picasso.get().load(recipe.getImage()).into(iv);
 
             favorite = result.findViewById(R.id.recipe_fab_favorite);
+            if (favorite != null) {
 
-            if (recipe.isFavorite()) {
-                favorite.setImageResource(R.drawable.ic_fav_on);
-            } else {
-                favorite.setImageResource(R.drawable.ic_fav_off);
-            }
+                if (recipe.isFavorite()) {
+                    favorite.setImageResource(R.drawable.ic_fav_on);
+                } else {
+                    favorite.setImageResource(R.drawable.ic_fav_off);
+                }
 
-            favorite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (OperationsDb.changeRecipeFavorite(recipe, ((MainActivity) getActivity()).getDatabase())) {
-                        recipe = OperationsDb.selectRecipeByID(recipe.getId(), ((MainActivity) getActivity()).getDatabase());
-                        if (recipe != null && recipe.isFavorite()) {
-                            favorite.setImageResource(R.drawable.ic_fav_on);
-                        } else {
-                            favorite.setImageResource(R.drawable.ic_fav_off);
+                favorite.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (OperationsDb.changeRecipeFavorite(recipe, ((MainActivity) getActivity()).getDatabase())) {
+                            recipe = OperationsDb.selectRecipeByID(recipe.getId(), ((MainActivity) getActivity()).getDatabase());
+                            if (recipe != null && recipe.isFavorite()) {
+                                favorite.setImageResource(R.drawable.ic_fav_on);
+                            } else {
+                                favorite.setImageResource(R.drawable.ic_fav_off);
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
 
             TextView recipe_ingredients = result.findViewById(R.id.recipe_details_ingredients);
             TextView recipe_preparation = result.findViewById(R.id.recipe_details_preparation);
@@ -122,38 +124,44 @@ public class RecipeFragment extends Fragment {
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
             collapsingToolbarLayout = result.findViewById(R.id.collapsing_toolbar_layout);
-            collapsingToolbarLayout.setTitle(recipe.getName());
 
-            int horizontal_dim = Math.round(getActivity().getResources().getDimension(R.dimen.activity_horizontal_margin));
-            int vertical_dim = Math.round(getActivity().getResources().getDimension(R.dimen.activity_vertical_margin));
-            collapsingToolbarLayout.setExpandedTitleMarginStart(horizontal_dim);
-            collapsingToolbarLayout.setExpandedTitleMarginBottom(vertical_dim);
+            if (collapsingToolbarLayout != null) {
+                collapsingToolbarLayout.setTitle(recipe.getName());
+
+                int horizontal_dim = Math.round(getActivity().getResources().getDimension(R.dimen.activity_horizontal_margin));
+                int vertical_dim = Math.round(getActivity().getResources().getDimension(R.dimen.activity_vertical_margin));
+                collapsingToolbarLayout.setExpandedTitleMarginStart(horizontal_dim);
+                collapsingToolbarLayout.setExpandedTitleMarginBottom(vertical_dim);
 
 
-            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setDisplayShowHomeEnabled(true);
-            }
+                ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+                if (actionBar != null) {
+                    actionBar.setDisplayHomeAsUpEnabled(true);
+                    actionBar.setDisplayShowHomeEnabled(true);
+                }
 
-            AppBarLayout mAppBarLayout = result.findViewById(R.id.app_bar);
-            mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-                int scrollRange = -1;
+                AppBarLayout mAppBarLayout = result.findViewById(R.id.app_bar);
+                mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                    int scrollRange = -1;
 
-                @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    if (scrollRange == -1) {
-                        scrollRange = appBarLayout.getTotalScrollRange();
+                    @Override
+                    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                        if (scrollRange == -1) {
+                            scrollRange = appBarLayout.getTotalScrollRange();
+                        }
                     }
-                }
-            });
+                });
 
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getActivity().getSupportFragmentManager().popBackStackImmediate();
-                }
-            });
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getActivity().getSupportFragmentManager().popBackStackImmediate();
+                    }
+                });
+            } else {
+                TextView recipe_title = result.findViewById(R.id.recipe_details_title);
+                recipe_title.setText(recipe.getName());
+            }
 
         }
 

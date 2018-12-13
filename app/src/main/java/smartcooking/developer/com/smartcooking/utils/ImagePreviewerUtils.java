@@ -2,6 +2,7 @@ package smartcooking.developer.com.smartcooking.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
@@ -22,9 +23,10 @@ class ImagePreviewerUtils {
     }
 
     private static Bitmap takeScreenshot(View screen) {
-        screen.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(screen.getDrawingCache());
-        screen.setDrawingCacheEnabled(false);
+        Bitmap bitmap = Bitmap.createBitmap(screen.getWidth(),
+                screen.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        screen.draw(canvas);
         return bitmap;
     }
 

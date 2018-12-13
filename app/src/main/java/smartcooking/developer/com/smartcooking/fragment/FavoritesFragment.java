@@ -1,6 +1,7 @@
 package smartcooking.developer.com.smartcooking.fragment;
 
 
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -50,7 +52,16 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
         adapter = new MyAdapter(recipeList, this, getContext());
         list.setAdapter(adapter);
         list.setHasFixedSize(true);
-        list.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // In landscape
+            list.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        } else {
+            // In portrait
+            list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        }
+
         empty = result.findViewById(R.id.empty_list);
 
         if (adapter.getItemCount() == 0) {
@@ -95,19 +106,21 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
             }
 
             // showing snack bar with Undo option
-            Snackbar snackbar = Snackbar
-                    .make(getActivity().findViewById(R.id.list_layout), deletedRecipe.getName() + " deixou de ser favorito!", Snackbar.LENGTH_LONG);
-            snackbar.setAction("DESFAZER", new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            if (getActivity() != null) {
+                Snackbar snackbar = Snackbar
+                        .make(getActivity().findViewById(R.id.list_layout), deletedRecipe.getName() + " deixou de ser favorito!", Snackbar.LENGTH_LONG);
+                snackbar.setAction("DESFAZER", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-                    // undo is selected, restore the deleted item
-                    adapter.restoreItem(deletedRecipe, deletedIndex);
-                    empty.setText(null);
-                }
-            });
-            snackbar.setActionTextColor(Color.YELLOW);
-            snackbar.show();
+                        // undo is selected, restore the deleted item
+                        adapter.restoreItem(deletedRecipe, deletedIndex);
+                        empty.setText(null);
+                    }
+                });
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
+            }
         }
     }
 }
