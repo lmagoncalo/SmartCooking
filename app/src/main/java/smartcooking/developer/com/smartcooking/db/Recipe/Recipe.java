@@ -4,6 +4,7 @@ package smartcooking.developer.com.smartcooking.db.Recipe;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 
 public class Recipe implements Serializable, Comparable<Recipe> {
@@ -236,6 +237,25 @@ public class Recipe implements Serializable, Comparable<Recipe> {
                 ", image='" + image +
                 '}';
     }
+
+    public static Comparator<Recipe> RecipeNameComparator = new Comparator<Recipe>() {
+
+        public int compare(Recipe left, Recipe right) {
+
+            String leftName = left.getName().toUpperCase();
+            String rightName = right.getName().toUpperCase();
+
+            //ascending order
+            return leftName.compareTo(rightName);
+
+            //descending order
+            //return fruitName2.compareTo(fruitName1);
+
+            //Weight compare
+            //return left.getPesoPesquisa() - right.getPesoPesquisa();
+        }
+
+    };
 
     @Override
     public int compareTo(@NonNull Recipe recipe) {

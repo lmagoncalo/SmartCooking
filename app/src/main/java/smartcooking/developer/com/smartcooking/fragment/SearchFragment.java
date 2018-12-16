@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -50,6 +51,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         if (getActivity() != null) {
             database = ((MainActivity) getActivity()).getDatabase();
             recipeList = OperationsDb.selectAllRecipes(database);
+            SortAlfabetic(recipeList);
         }
 
         RecyclerView list = result.findViewById(R.id.list_recipes_search);
@@ -79,6 +81,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         adapter = new MyAdapter(recipeList, this, getContext());
         list.setAdapter(adapter);
         list.setHasFixedSize(true);
+
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
@@ -146,6 +149,10 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         }
     }
 
+    private void SortAlfabetic(List<Recipe> list) {
+        Collections.sort(list, Recipe.RecipeNameComparator);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -153,6 +160,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         if (getActivity() != null) {
             database = ((MainActivity) getActivity()).getDatabase();
             recipeList = OperationsDb.selectAllRecipes(database);
+            SortAlfabetic(recipeList);
         }
 
         String text = recipe_name_search.getText().toString().toLowerCase(Locale.getDefault());
@@ -161,7 +169,15 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         adapter = new MyAdapter(recipeList, this, getContext());
         list.setAdapter(adapter);
         list.setHasFixedSize(true);
-        list.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // In landscape
+            list.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        } else {
+            // In portrait
+            list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        }
 
         if (!text.isEmpty())
             adapter.filter(text);
