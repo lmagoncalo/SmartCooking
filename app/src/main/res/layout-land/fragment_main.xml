@@ -31,58 +31,74 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_weight="0.2"
+            android:layout_weight="0.05"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/main_btn1"
+                android:id="@+id/main_btn_reduce1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:background="@drawable/main_reduce_btn"
                 android:fontFamily="@font/montserrat"
                 android:textColor="@color/colorPrimary"
+                android:text="@string/reduce_btn_main"
                 android:textSize="30sp" />
 
             <Button
-                android:id="@+id/main_btn2"
+                android:id="@+id/main_btn_reduce2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:background="@drawable/main_reduce_btn"
                 android:fontFamily="@font/montserrat"
                 android:textColor="@color/colorPrimary"
+                android:text="@string/reduce_btn_main"
                 android:textSize="30sp" />
 
             <Button
-                android:id="@+id/main_btn3"
+                android:id="@+id/main_btn_reduce3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:background="@drawable/main_reduce_btn"
                 android:fontFamily="@font/montserrat"
                 android:textColor="@color/colorPrimary"
+                android:text="@string/reduce_btn_main"
                 android:textSize="30sp" />
 
             <Button
-                android:id="@+id/main_btn4"
+                android:id="@+id/main_btn_reduce4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:background="@drawable/main_reduce_btn"
                 android:fontFamily="@font/montserrat"
                 android:textColor="@color/colorPrimary"
+                android:text="@string/reduce_btn_main"
                 android:textSize="30sp" />
 
             <Button
-                android:id="@+id/main_btn5"
+                android:id="@+id/main_btn_reduce5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/main_reduce_btn"
                 android:fontFamily="@font/montserrat"
                 android:textColor="@color/colorPrimary"
+                android:text="@string/reduce_btn_main"
                 android:textSize="30sp" />
+
+            <Button
+                android:id="@+id/main_btn_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/main_add_btn"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/add_btn_main"
+                android:textColor="@color/colorPrimary"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -116,8 +132,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:background="@drawable/spinner_background"
                 android:overlapAnchor="false"
+                android:background="@drawable/spinner_background"
                 android:textSize="@dimen/text_size" />
 
             <Spinner

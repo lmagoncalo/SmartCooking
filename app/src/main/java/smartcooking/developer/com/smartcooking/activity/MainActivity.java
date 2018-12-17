@@ -28,9 +28,7 @@ import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
 import smartcooking.developer.com.smartcooking.fragment.SplashFragment;
 
 // TODO - Ecrã main - Landscape
-// TODO - Erro - Landscape remove favorite
 // TODO - Erro - Rodar 2 vezes e fazer back
-// TODO - Ao meter add abrir o spinner
 
 public class MainActivity extends AppCompatActivity {
 
