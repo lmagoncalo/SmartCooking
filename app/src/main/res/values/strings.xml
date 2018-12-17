@@ -21,6 +21,7 @@
 
     <!-- MainFragment -->
     <string name="search_btn_text">procurar</string>
+    <string name="main_title">escolher ingredientes</string>
 
 
     <!-- RecipeFragment -->

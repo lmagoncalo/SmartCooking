@@ -1,18 +1,14 @@
 package smartcooking.developer.com.smartcooking.fragment;
 
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -27,8 +23,8 @@ import smartcooking.developer.com.smartcooking.utils.SpinAdapter;
 public class MainFragment extends Fragment {
 
     private final ArrayList<Spinner> spinners = new ArrayList<>(5);
-    private final ArrayList<LinearLayout> linearLayouts = new ArrayList<>(5);
-    private final ArrayList<ImageButton> reduceButtons = new ArrayList<>(5);
+    private final ArrayList<Button> buttons = new ArrayList<>(5);
+    private ArrayList<Integer> ingredients_spinners = new ArrayList<>(5);
     private int n_ingredients;
 
     @Override
@@ -48,7 +44,7 @@ public class MainFragment extends Fragment {
 
         SpinAdapter adapter = new SpinAdapter(getContext(),
                 android.R.layout.simple_spinner_item,
-                ingredients);
+                ingredients, getContext());
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -58,50 +54,44 @@ public class MainFragment extends Fragment {
         spinners.add(3,(Spinner)result.findViewById(R.id.ingr_spinner4));
         spinners.add(4, (Spinner) result.findViewById(R.id.ingr_spinner5));
 
-        linearLayouts.add(0, (LinearLayout) result.findViewById(R.id.layout_spinner1));
-        linearLayouts.add(1, (LinearLayout) result.findViewById(R.id.layout_spinner2));
-        linearLayouts.add(2, (LinearLayout) result.findViewById(R.id.layout_spinner3));
-        linearLayouts.add(3, (LinearLayout) result.findViewById(R.id.layout_spinner4));
-        linearLayouts.add(4, (LinearLayout) result.findViewById(R.id.layout_spinner5));
 
-        reduceButtons.add(0, (ImageButton) result.findViewById(R.id.reduce_btn1));
-        reduceButtons.add(1, (ImageButton) result.findViewById(R.id.reduce_btn2));
-        reduceButtons.add(2, (ImageButton) result.findViewById(R.id.reduce_btn3));
-        reduceButtons.add(3, (ImageButton) result.findViewById(R.id.reduce_btn4));
-        reduceButtons.add(4, (ImageButton) result.findViewById(R.id.reduce_btn5));
+        buttons.add(0, (Button) result.findViewById(R.id.main_btn1));
+        buttons.add(1, (Button) result.findViewById(R.id.main_btn2));
+        buttons.add(2, (Button) result.findViewById(R.id.main_btn3));
+        buttons.add(3, (Button) result.findViewById(R.id.main_btn4));
+        buttons.add(4, (Button) result.findViewById(R.id.main_btn5));
 
         for (int i = 0; i < 5; i++) {
             spinners.get(i).setAdapter(adapter);
         }
 
-        reduceButtons.get(0).setVisibility(View.GONE);
+        buttons.get(0).setText("+");
 
         for (int i = 4; i >= n_ingredients; i--) {
-            linearLayouts.get(i).setVisibility(View.GONE);
+            spinners.get(i).setVisibility(View.GONE);
+            buttons.get(i).setVisibility(View.GONE);
         }
 
         for (int i = 0; i < 5; i++) {
-            reduceButtons.get(i).setTag(i);
-            reduceButtons.get(i).setOnClickListener(new View.OnClickListener() {
+            buttons.get(i).setTag(i);
+            buttons.get(i).setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    linearLayouts.get((Integer) v.getTag()).setVisibility(View.GONE);
-                    n_ingredients--;
+                    int this_btn = (Integer) v.getTag();
+
+                    // ADD
+                    if (n_ingredients < 5 && this_btn == n_ingredients - 1) {
+                        addIngredient();
+                    }
+                    // REMOVE
+                    else {
+                        for (int j = 0; j < n_ingredients - 1 && j != this_btn; j++) {
+                            ingredients_spinners.add(spinners.get(j).getSelectedItemPosition());
+                        }
+                        removeIngredient(this_btn);
+                    }
                 }
             });
         }
-
-        ImageButton add_button = result.findViewById(R.id.add_btn);
-        add_button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (n_ingredients < 5) {
-                    linearLayouts.get(n_ingredients).setVisibility(View.VISIBLE);
-                    n_ingredients++;
-                }
-                if (n_ingredients == 5) {
-                    v.setVisibility(View.GONE);
-                }
-            }
-        });
 
         Button search_button = result.findViewById(R.id.search_btn);
         search_button.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +101,7 @@ public class MainFragment extends Fragment {
 
                 for (int i = 0; i < n_ingredients; i++) {
                     selected_ingredients.add((Ingredient) spinners.get(i).getSelectedItem());
+                    //Log.e("INGREDIENTES"," " + selected_ingredients.get(i).getName());
                 }
 
                 RecipeListFragment recipeListFragment = RecipeListFragment.newInstance_ingredients(selected_ingredients);
@@ -119,11 +110,45 @@ public class MainFragment extends Fragment {
             }
         });
 
-        if (getContext() != null) {
-            Typeface type = ResourcesCompat.getFont(getContext(), R.font.montserrat);
-            search_button.setTypeface(type);
+        return result;
+    }
+
+    // Remove um ingrediente
+    private void removeIngredient(int this_btn) {
+        ingredients_spinners.clear();
+        for (int i = 0; i < n_ingredients; i++) {
+            if (i != this_btn)
+                ingredients_spinners.add(spinners.get(i).getSelectedItemPosition());
         }
 
-        return result;
+        for (int i = 0; i < 5; i++) {
+            spinners.get(i).setVisibility(View.GONE);
+        }
+
+        for (int i = 0; i < ingredients_spinners.size(); i++) {
+            spinners.get(i).setVisibility(View.VISIBLE);
+            spinners.get(i).setSelection(ingredients_spinners.get(i));
+        }
+
+        n_ingredients--;
+        buttons.get(n_ingredients).setVisibility(View.GONE);
+        buttons.get(n_ingredients - 1).setText("+");
+    }
+
+    // Adicionar um ingrediente
+    private void addIngredient() {
+        buttons.get(n_ingredients - 1).setText("-");
+
+        n_ingredients++;
+
+        buttons.get(n_ingredients - 1).setVisibility(View.VISIBLE);
+
+        if (n_ingredients == 5) {
+            buttons.get(n_ingredients - 1).setText("-");
+        } else {
+            buttons.get(n_ingredients - 1).setText("+");
+        }
+
+        spinners.get(n_ingredients - 1).setVisibility(View.VISIBLE);
     }
 }

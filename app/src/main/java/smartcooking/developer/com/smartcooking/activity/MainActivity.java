@@ -185,16 +185,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onRestoreInstanceState(Bundle inState) {
-        FragmentTransaction ft;
-        Fragment f = getSupportFragmentManager().getFragment(inState, "fragment");
-        if (f != null) {
-            ft = getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.replace(R.id.fragment, f).commit();
-        }
-
-        if (navigation.getVisibility() != View.VISIBLE)
-            navigation.setVisibility(View.VISIBLE);
-
         switch (inState.getInt(NAVIGATION_SELECTED)) {
             case 0:
                 navigation.setSelectedItemId(R.id.navigation_home);
@@ -212,6 +202,16 @@ public class MainActivity extends AppCompatActivity {
                 navigation.setSelectedItemId(R.id.navigation_about);
                 break;
         }
+
+        FragmentTransaction ft;
+        Fragment f = getSupportFragmentManager().getFragment(inState, "fragment");
+        if (f != null) {
+            ft = getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.replace(R.id.fragment, f).commit();
+        }
+
+        if (navigation.getVisibility() != View.VISIBLE)
+            navigation.setVisibility(View.VISIBLE);
     }
 
 }
