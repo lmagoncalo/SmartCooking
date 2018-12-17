@@ -21,7 +21,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +34,6 @@ import smartcooking.developer.com.smartcooking.utils.MyAdapter;
 
 public class SearchFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private View result;
     private EditText recipe_name_search;
     private Button cleat_btn;
     private MyAdapter adapter;
@@ -46,7 +44,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        result = inflater.inflate(R.layout.fragment_search, container, false);
+        View result = inflater.inflate(R.layout.fragment_search, container, false);
 
         if (getActivity() != null) {
             database = ((MainActivity) getActivity()).getDatabase();
@@ -111,12 +109,6 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
                 }
                 String text = recipe_name_search.getText().toString().toLowerCase(Locale.getDefault());
                 adapter.filter(text);
-
-                if (adapter.getItemCount() == 0) {
-                    TextView empty = result.findViewById(R.id.empty_list);
-                    String s = "Ainda não há receitas aqui";
-                    empty.setText(s);
-                }
             }
         });
 
@@ -157,29 +149,31 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     public void onResume() {
         super.onResume();
 
-        if (getActivity() != null) {
+        if (getActivity() != null && (recipeList == null || recipeList.isEmpty())) {
             database = ((MainActivity) getActivity()).getDatabase();
             recipeList = OperationsDb.selectAllRecipes(database);
             SortAlfabetic(recipeList);
+
+            RecyclerView list = getActivity().findViewById(R.id.list_recipes_search);
+            adapter = new MyAdapter(recipeList, this, getContext());
+            list.setAdapter(adapter);
+            list.setHasFixedSize(true);
+
+            int orientation = getResources().getConfiguration().orientation;
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                // In landscape
+                list.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+            } else {
+                // In portrait
+                list.setLayoutManager(new LinearLayoutManager(getActivity()));
+            }
+
+            String text = recipe_name_search.getText().toString().toLowerCase(Locale.getDefault());
+
+            if (!text.isEmpty())
+                adapter.filter(text);
         }
 
-        String text = recipe_name_search.getText().toString().toLowerCase(Locale.getDefault());
 
-        RecyclerView list = getActivity().findViewById(R.id.list_recipes_search);
-        adapter = new MyAdapter(recipeList, this, getContext());
-        list.setAdapter(adapter);
-        list.setHasFixedSize(true);
-
-        int orientation = getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // In landscape
-            list.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        } else {
-            // In portrait
-            list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        }
-
-        if (!text.isEmpty())
-            adapter.filter(text);
     }
 }

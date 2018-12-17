@@ -135,6 +135,8 @@ public class OperationsDb {
         return list;
     }
 
+    private static final char[] hex = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
     public static ArrayList<Recipe> selectAllRecipes(SQLiteDatabase mDatabase) {
         ArrayList<Recipe> list = new ArrayList<>();
 
@@ -155,15 +157,28 @@ public class OperationsDb {
         }
 
         while (!cursor.isAfterLast()) {
-            Recipe recipe = cursor.getRecipe();
+            Recipe recipe = cursor.getRecipe(); //10 8739591
             list.add(recipe);
             cursor.moveToNext();
+
+
+            //System.out.println("update public.\"Recipes\" set hash = '" + byteArray2Hex(recipe.toString().getBytes()) + "' where id= " + recipe.getId() +";");
+
         }
 
         cursor.close();
         c.close();
 
         return list;
+    }
+
+    private static String byteArray2Hex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder(bytes.length * 2);
+        for (final byte b : bytes) {
+            sb.append(hex[(b & 0xF0) >> 4]);
+            sb.append(hex[b & 0x0F]);
+        }
+        return sb.toString();
     }
 
     /*public static ArrayList<Relations> selectAllRelations(SQLiteDatabase mDatabase) {

@@ -35,7 +35,7 @@ import smartcooking.developer.com.smartcooking.db.Relation.Relations;
 import smartcooking.developer.com.smartcooking.fragment.MainFragment;
 
 public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
-    private final String baseUrl = "http://192.168.1.66:9500/api/";
+    private final String baseUrl = "http://smartcooking-api.herokuapp.com/api/";
 
     private int APIVersion;
 

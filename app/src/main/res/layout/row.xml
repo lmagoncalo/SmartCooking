@@ -66,8 +66,7 @@
                     android:clickable="true"
                     android:contentDescription="@string/image_list_image_content"
                     android:focusable="true"
-                    android:scaleType="centerCrop"
-                    android:src="@color/colorPrimary" />
+                    android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/recipe_name"

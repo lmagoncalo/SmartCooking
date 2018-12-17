@@ -20,17 +20,31 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
 
     private final AdapterView.OnItemClickListener onItemClickListener;
 
-    MyViewHolder(@NonNull View itemView, AdapterView.OnItemClickListener onItemClickListener, Context c) {
+    MyViewHolder(@NonNull final View itemView, AdapterView.OnItemClickListener _onItemClickListener, Context _c) {
         super(itemView);
         name = itemView.findViewById(R.id.recipe_name);
         difficulty = itemView.findViewById(R.id.recipe_difficulty);
         image = itemView.findViewById(R.id.recipe_image);
         image.setOnClickListener(this);
         image.setOnLongClickListener(this);
-        this.onItemClickListener = onItemClickListener;
-        this.c = c;
+        this.onItemClickListener = _onItemClickListener;
+        this.c = _c;
         this.viewForeground = itemView.findViewById(R.id.view_foreground);
         this.viewBackground = itemView.findViewById(R.id.view_background);
+
+        name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClickListener.onItemClick(null, view, getAdapterPosition(), view.getId());
+            }
+        });
+
+        difficulty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClickListener.onItemClick(null, view, getAdapterPosition(), view.getId());
+            }
+        });
     }
 
     @Override

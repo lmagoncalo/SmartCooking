@@ -182,22 +182,44 @@ public class Recipe implements Serializable, Comparable<Recipe> {
 
     public String getPreparationString() {
         StringBuilder prep = new StringBuilder();
+        boolean flag = false;
 
-        for (String s : this.preparation) {
-            prep.append("— ").append(s).append("\n");
+        for (String p : this.preparation) {
+            if (!p.equals("*")) {
+                if (!flag) {
+                    prep.append("— ").append(p);
+                } else {
+                    prep.append(p);
+                    flag = false;
+                }
+            } else {
+                flag = true;
+            }
+            prep.append("\n");
         }
 
         return prep.toString();
     }
 
     public String getIngredientsString() {
-        StringBuilder prep = new StringBuilder();
+        StringBuilder ingre = new StringBuilder();
+        boolean flag = false;
 
         for (String i : this.ingredients) {
-            prep.append("— ").append(i).append("\n");
+            if (!i.equals("*")) {
+                if (!flag) {
+                    ingre.append("— ").append(i);
+                } else {
+                    ingre.append(i);
+                    flag = false;
+                }
+            } else {
+                flag = true;
+            }
+            ingre.append("\n");
         }
 
-        return prep.toString();
+        return ingre.toString();
     }
 
     public String getPreparationStringToDatabase() {

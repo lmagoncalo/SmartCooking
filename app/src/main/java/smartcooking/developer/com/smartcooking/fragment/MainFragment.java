@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.Spinner;
 
@@ -23,7 +24,8 @@ import smartcooking.developer.com.smartcooking.utils.SpinAdapter;
 public class MainFragment extends Fragment {
 
     private final ArrayList<Spinner> spinners = new ArrayList<>(5);
-    private final ArrayList<Button> buttons = new ArrayList<>(5);
+    private final ArrayList<Button> reduce_buttons = new ArrayList<>(5);
+    private Button add_button;
     private ArrayList<Integer> ingredients_spinners = new ArrayList<>(5);
     private int n_ingredients;
 
@@ -40,7 +42,7 @@ public class MainFragment extends Fragment {
             ingredients = OperationsDb.selectAllIngredients(database);
         }
 
-        n_ingredients = 1;
+        n_ingredients = 0;
 
         SpinAdapter adapter = new SpinAdapter(getContext(),
                 android.R.layout.simple_spinner_item,
@@ -55,47 +57,48 @@ public class MainFragment extends Fragment {
         spinners.add(4, (Spinner) result.findViewById(R.id.ingr_spinner5));
 
 
-        buttons.add(0, (Button) result.findViewById(R.id.main_btn1));
-        buttons.add(1, (Button) result.findViewById(R.id.main_btn2));
-        buttons.add(2, (Button) result.findViewById(R.id.main_btn3));
-        buttons.add(3, (Button) result.findViewById(R.id.main_btn4));
-        buttons.add(4, (Button) result.findViewById(R.id.main_btn5));
+        reduce_buttons.add(0, (Button) result.findViewById(R.id.main_btn_reduce1));
+        reduce_buttons.add(1, (Button) result.findViewById(R.id.main_btn_reduce2));
+        reduce_buttons.add(2, (Button) result.findViewById(R.id.main_btn_reduce3));
+        reduce_buttons.add(3, (Button) result.findViewById(R.id.main_btn_reduce4));
+        reduce_buttons.add(4, (Button) result.findViewById(R.id.main_btn_reduce5));
+
+        add_button = result.findViewById(R.id.main_btn_add);
+
+        add_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (n_ingredients < 5) {
+                    n_ingredients++;
+                    spinners.get(n_ingredients - 1).setVisibility(View.VISIBLE);
+                    spinners.get(n_ingredients - 1).performClick();
+                    reduce_buttons.get(n_ingredients - 1).setVisibility(View.VISIBLE);
+                    if (n_ingredients == 5) {
+                        add_button.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
 
         for (int i = 0; i < 5; i++) {
             spinners.get(i).setAdapter(adapter);
-        }
-
-        buttons.get(0).setText("+");
-
-        for (int i = 4; i >= n_ingredients; i--) {
             spinners.get(i).setVisibility(View.GONE);
-            buttons.get(i).setVisibility(View.GONE);
-        }
+            reduce_buttons.get(i).setVisibility(View.GONE);
 
-        for (int i = 0; i < 5; i++) {
-            buttons.get(i).setTag(i);
-            buttons.get(i).setOnClickListener(new View.OnClickListener() {
+            reduce_buttons.get(i).setTag(i);
+            reduce_buttons.get(i).setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     int this_btn = (Integer) v.getTag();
-
-                    // ADD
-                    if (n_ingredients < 5 && this_btn == n_ingredients - 1) {
-                        addIngredient();
-                    }
                     // REMOVE
-                    else {
-                        for (int j = 0; j < n_ingredients - 1 && j != this_btn; j++) {
-                            ingredients_spinners.add(spinners.get(j).getSelectedItemPosition());
-                        }
-                        removeIngredient(this_btn);
+                    for (int j = 0; j < n_ingredients - 1 && j != this_btn; j++) {
+                        ingredients_spinners.add(spinners.get(j).getSelectedItemPosition());
                     }
+                    removeIngredient(this_btn);
                 }
             });
         }
 
         Button search_button = result.findViewById(R.id.search_btn);
         search_button.setOnClickListener(new View.OnClickListener() {
-
             public void onClick(View v) {
                 ArrayList<Ingredient> selected_ingredients = new ArrayList<>(n_ingredients);
 
@@ -113,6 +116,26 @@ public class MainFragment extends Fragment {
         return result;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        final ViewTreeObserver observer = reduce_buttons.get(0).getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        int width = reduce_buttons.get(0).getWidth();
+                        add_button.setHeight(width);
+                        for (int i = 0; i < 5; i++) {
+                            reduce_buttons.get(i).setHeight(width);
+                            spinners.get(i).setMinimumHeight(width);
+
+                        }
+                    }
+                });
+    }
+
     // Remove um ingrediente
     private void removeIngredient(int this_btn) {
         ingredients_spinners.clear();
@@ -120,7 +143,6 @@ public class MainFragment extends Fragment {
             if (i != this_btn)
                 ingredients_spinners.add(spinners.get(i).getSelectedItemPosition());
         }
-
         for (int i = 0; i < 5; i++) {
             spinners.get(i).setVisibility(View.GONE);
         }
@@ -131,24 +153,7 @@ public class MainFragment extends Fragment {
         }
 
         n_ingredients--;
-        buttons.get(n_ingredients).setVisibility(View.GONE);
-        buttons.get(n_ingredients - 1).setText("+");
-    }
-
-    // Adicionar um ingrediente
-    private void addIngredient() {
-        buttons.get(n_ingredients - 1).setText("-");
-
-        n_ingredients++;
-
-        buttons.get(n_ingredients - 1).setVisibility(View.VISIBLE);
-
-        if (n_ingredients == 5) {
-            buttons.get(n_ingredients - 1).setText("-");
-        } else {
-            buttons.get(n_ingredients - 1).setText("+");
-        }
-
-        spinners.get(n_ingredients - 1).setVisibility(View.VISIBLE);
+        reduce_buttons.get(n_ingredients).setVisibility(View.GONE);
+        add_button.setVisibility(View.VISIBLE);
     }
 }
