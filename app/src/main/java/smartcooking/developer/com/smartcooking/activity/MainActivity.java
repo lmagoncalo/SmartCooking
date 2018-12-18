@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -28,7 +27,6 @@ import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
 import smartcooking.developer.com.smartcooking.fragment.SplashFragment;
 
 // TODO - Ecrã main - Landscape
-// TODO - Erro - Rodar 2 vezes e fazer back
 
 public class MainActivity extends AppCompatActivity {
 
@@ -153,6 +151,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onPause() {
+
+        super.onPause();
+    }
+
+    @Override
     public void onResume() {
         database = new DatabaseBaseHelper(this).getWritableDatabase();
         super.onResume();
@@ -164,53 +168,15 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private int getSelectedItem() {
-        Menu menu = navigation.getMenu();
-        for (int i = 0; i < navigation.getMenu().size(); i++) {
-            MenuItem menuItem = menu.getItem(i);
-            if (menuItem.isChecked()) {
-                return i;
-            }
-        }
-        return 0;
-    }
-
     public void onSaveInstanceState(Bundle outState) {
-        Fragment f = this.getSupportFragmentManager().findFragmentById(R.id.fragment);
-        if (f != null)
-            getSupportFragmentManager().putFragment(outState, "fragment", f);
-        outState.putInt(NAVIGATION_SELECTED, getSelectedItem());
         super.onSaveInstanceState(outState);
     }
 
     public void onRestoreInstanceState(Bundle inState) {
-        switch (inState.getInt(NAVIGATION_SELECTED)) {
-            case 0:
-                navigation.setSelectedItemId(R.id.navigation_home);
-                break;
-            case 1:
-                navigation.setSelectedItemId(R.id.navigation_search);
-                break;
-            case 2:
-                navigation.setSelectedItemId(R.id.navigation_categories);
-                break;
-            case 3:
-                navigation.setSelectedItemId(R.id.navigation_favorites);
-                break;
-            case 4:
-                navigation.setSelectedItemId(R.id.navigation_about);
-                break;
-        }
-
-        FragmentTransaction ft;
-        Fragment f = getSupportFragmentManager().getFragment(inState, "fragment");
-        if (f != null) {
-            ft = getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.replace(R.id.fragment, f).commit();
-        }
-
         if (navigation.getVisibility() != View.VISIBLE)
             navigation.setVisibility(View.VISIBLE);
+
+        super.onRestoreInstanceState(inState);
     }
 
 }
