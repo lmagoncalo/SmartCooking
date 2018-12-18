@@ -119,7 +119,8 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
                     InputMethodManager inputManager = (InputMethodManager)
                             getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                    if (getActivity().getCurrentFocus() != null)
+                    if (getActivity().getCurrentFocus() != null  &&  inputManager!=null)
+                        // tive que pôr a segunda condição deste IF porque estava a dar um warning de uma possível NULL POINTER EXCEPTION
                         inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     recipe_name_search.clearFocus();
                     return true;

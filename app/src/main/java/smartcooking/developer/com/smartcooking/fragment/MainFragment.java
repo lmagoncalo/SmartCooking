@@ -125,11 +125,12 @@ public class MainFragment extends Fragment {
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        int width = reduce_buttons.get(0).getWidth();
-                        add_button.setHeight(width);
+                        // aqui dava um warning estúpido por estarmos a passar o valor da variável "width" para uma função que define uma "height"
+                        int w = reduce_buttons.get(0).getWidth();
+                        add_button.setHeight(w);
                         for (int i = 0; i < 5; i++) {
-                            reduce_buttons.get(i).setHeight(width);
-                            spinners.get(i).setMinimumHeight(width);
+                            reduce_buttons.get(i).setHeight(w);
+                            spinners.get(i).setMinimumHeight(w);
 
                         }
                     }
