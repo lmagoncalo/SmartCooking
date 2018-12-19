@@ -37,7 +37,7 @@
     <string name="aboutus_title">acerca de nós</string>
     <string name="partners_title">parceiros</string>
     <string name="others_title">outros:</string>
-    <string name="aboutus_text">A equipa que criou a SmartCooking é composta por seis estudantes de Engenharia Informática da Universidade de Coimbra. \n Esta equipa tinha em mente criar uma aplicação que combata as dificuldades na escolha de receitas com os ingredientes disponíveis em casa.\n\tO objetivo da SmartCooking é ajudar todos os estudantes e todas as pessoas com dificuldades na escolha do que fazer para comer.\nBom apetite!</string>
+    <string name="aboutus_text">A equipa que criou a SmartCooking é composta por seis estudantes de Engenharia Informática da Universidade de Coimbra. \n Esta equipa tinha em mente criar uma aplicação para combater a dificuldade de escolher uma receita com os ingredientes disponíveis em casa.\n\tO objetivo da SmartCooking é ajudar as pessoas a escolher o que fazer para comer.\nBom apetite!</string>
     <string name="partners_text">Visitem as páginas dos nossos parceiros:</string>
     <string name="facebook_text">Facebook: </string>
     <string name="twitter_text">Twitter: </string>

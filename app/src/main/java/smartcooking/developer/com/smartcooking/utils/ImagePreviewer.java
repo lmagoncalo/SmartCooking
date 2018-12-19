@@ -17,7 +17,7 @@ import smartcooking.developer.com.smartcooking.R;
  */
 
 class ImagePreviewer {
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility", "InflateParams"})
     void show(Context context, ImageView source) {
         BitmapDrawable background = ImagePreviewerUtils.getBlurredScreenDrawable(context, source.getRootView());
 

@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView navigation;
     private SQLiteDatabase database;
-    private String NAVIGATION_SELECTED = "BottomNavigationSelected";
 
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -152,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onPause() {
-
         super.onPause();
     }
 
