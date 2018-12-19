@@ -27,14 +27,12 @@ import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
 import smartcooking.developer.com.smartcooking.fragment.SplashFragment;
 
 // TODO - Ecrã main - Landscape
-// TODO - Como vai ser só através da API que vamos inserir dados na database, a função de gerar os 'hash' (função "byteArray2Hex" que está no ficheiro 'OperationsDB') tem que passar para os ficheiros PYTHON da API
-// TODO - warning por resolver no ficheiro "ImagePreviewer" por cause do 2º parâmetro da função "LayoutInflater.from(context).inflate" ser NULL. Na documentação do Android, diz que esse parâmetro pode ser NULL
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView navigation;
     private SQLiteDatabase database;
-    //private String NAVIGATION_SELECTED = "BottomNavigationSelected";
+    private String NAVIGATION_SELECTED = "BottomNavigationSelected";
 
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -106,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String version = sharedPreferences.getString(PREFS_NAME, "-1");
 
-        if (getIntent().getData() != null && Integer.parseInt(version) != -1) {
+        if (getIntent().getData() != null && version != null && Integer.parseInt(version) != -1) {
             Uri uri = getIntent().getData();
             String id;
             if ((id = uri.getQueryParameter("id")) != null) {
