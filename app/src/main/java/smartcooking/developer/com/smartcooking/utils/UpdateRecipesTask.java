@@ -74,7 +74,10 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
         publishProgress(count++);
 
         String version = sharedPreferences.getString(PREFS_NAME, "-1");
-        int localVersion = Integer.parseInt(version);
+        int localVersion = 0;
+        if (version != null) {
+            localVersion = Integer.parseInt(version);
+        }
 
 
         publishProgress(count++);
