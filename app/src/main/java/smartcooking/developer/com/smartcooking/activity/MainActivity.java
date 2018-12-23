@@ -105,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
             Uri uri = getIntent().getData();
             String id;
             if ((id = uri.getQueryParameter("id")) != null) {
+                if (navigation.getVisibility() != View.VISIBLE)
+                    navigation.setVisibility(View.VISIBLE);
                 RecipeFragment recipeFragment = RecipeFragment.newInstance(Integer.parseInt(id));
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment, recipeFragment).commit();
                 return;
