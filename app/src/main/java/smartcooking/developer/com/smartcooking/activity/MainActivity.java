@@ -26,8 +26,6 @@ import smartcooking.developer.com.smartcooking.fragment.RecipeFragment;
 import smartcooking.developer.com.smartcooking.fragment.SearchFragment;
 import smartcooking.developer.com.smartcooking.fragment.SplashFragment;
 
-// TODO - Ecrã main - Landscape
-
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView navigation;

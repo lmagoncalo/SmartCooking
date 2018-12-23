@@ -18,144 +18,152 @@
         android:textSize="@dimen/title_size"
         android:textStyle="bold" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/search_btn"
         android:layout_below="@+id/main_title_textview"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
+        android:layout_marginTop="@dimen/activity_padding"
+        android:layout_marginBottom="@dimen/activity_padding">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_weight="0.05"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/main_btn_reduce1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:background="@drawable/main_reduce_btn"
-                android:fontFamily="@font/montserrat"
-                android:textColor="@color/colorPrimary"
-                android:text="@string/reduce_btn_main"
-                android:textSize="30sp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_weight="0.1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/main_btn_reduce2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:background="@drawable/main_reduce_btn"
-                android:fontFamily="@font/montserrat"
-                android:textColor="@color/colorPrimary"
-                android:text="@string/reduce_btn_main"
-                android:textSize="30sp" />
+                <Button
+                    android:id="@+id/main_btn_reduce1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/main_reduce_btn"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/reduce_btn_main"
+                    android:textSize="30sp" />
 
-            <Button
-                android:id="@+id/main_btn_reduce3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:background="@drawable/main_reduce_btn"
-                android:fontFamily="@font/montserrat"
-                android:textColor="@color/colorPrimary"
-                android:text="@string/reduce_btn_main"
-                android:textSize="30sp" />
+                <Button
+                    android:id="@+id/main_btn_reduce2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/main_reduce_btn"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/reduce_btn_main"
+                    android:textSize="30sp" />
 
-            <Button
-                android:id="@+id/main_btn_reduce4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:background="@drawable/main_reduce_btn"
-                android:fontFamily="@font/montserrat"
-                android:textColor="@color/colorPrimary"
-                android:text="@string/reduce_btn_main"
-                android:textSize="30sp" />
+                <Button
+                    android:id="@+id/main_btn_reduce3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/main_reduce_btn"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/reduce_btn_main"
+                    android:textSize="30sp" />
 
-            <Button
-                android:id="@+id/main_btn_reduce5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/main_reduce_btn"
-                android:fontFamily="@font/montserrat"
-                android:textColor="@color/colorPrimary"
-                android:text="@string/reduce_btn_main"
-                android:textSize="30sp" />
+                <Button
+                    android:id="@+id/main_btn_reduce4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/main_reduce_btn"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/reduce_btn_main"
+                    android:textSize="30sp" />
 
-            <Button
-                android:id="@+id/main_btn_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/main_add_btn"
-                android:fontFamily="@font/montserrat"
-                android:text="@string/add_btn_main"
-                android:textColor="@color/colorPrimary"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                <Button
+                    android:id="@+id/main_btn_reduce5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/main_reduce_btn"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/reduce_btn_main"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/main_btn_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/main_add_btn"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/add_btn_main"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/ingr_spinner1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/spinner_background"
+                    android:overlapAnchor="false"
+                    android:textSize="@dimen/text_size" />
+
+                <Spinner
+                    android:id="@+id/ingr_spinner2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/spinner_background"
+                    android:overlapAnchor="false"
+                    android:textSize="@dimen/text_size" />
+
+                <Spinner
+                    android:id="@+id/ingr_spinner3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:overlapAnchor="false"
+                    android:background="@drawable/spinner_background"
+                    android:textSize="@dimen/text_size" />
+
+                <Spinner
+                    android:id="@+id/ingr_spinner4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/spinner_background"
+                    android:overlapAnchor="false"
+                    android:textSize="@dimen/text_size" />
+
+                <Spinner
+                    android:id="@+id/ingr_spinner5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overlapAnchor="false"
+                    android:background="@drawable/spinner_background"
+                    android:textSize="@dimen/text_size" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <Spinner
-                android:id="@+id/ingr_spinner1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:background="@drawable/spinner_background"
-                android:overlapAnchor="false"
-                android:textSize="@dimen/text_size" />
-
-            <Spinner
-                android:id="@+id/ingr_spinner2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:background="@drawable/spinner_background"
-                android:overlapAnchor="false"
-                android:textSize="@dimen/text_size" />
-
-            <Spinner
-                android:id="@+id/ingr_spinner3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:overlapAnchor="false"
-                android:background="@drawable/spinner_background"
-                android:textSize="@dimen/text_size" />
-
-            <Spinner
-                android:id="@+id/ingr_spinner4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:background="@drawable/spinner_background"
-                android:overlapAnchor="false"
-                android:textSize="@dimen/text_size" />
-
-            <Spinner
-                android:id="@+id/ingr_spinner5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overlapAnchor="false"
-                android:background="@drawable/spinner_background"
-                android:textSize="@dimen/text_size" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/search_btn"
