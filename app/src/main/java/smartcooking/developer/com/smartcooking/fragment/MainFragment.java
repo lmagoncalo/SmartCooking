@@ -26,7 +26,7 @@ public class MainFragment extends Fragment {
     private final ArrayList<Spinner> spinners = new ArrayList<>(5);
     private final ArrayList<Button> reduce_buttons = new ArrayList<>(5);
     private Button add_button;
-    private ArrayList<Integer> ingredients_spinners = new ArrayList<>(5);
+    private final ArrayList<Integer> ingredients_spinners = new ArrayList<>(5);
     private int n_ingredients;
 
     @Override

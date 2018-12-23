@@ -21,7 +21,7 @@ public class SpinAdapter extends ArrayAdapter<Ingredient> {
     // Your custom values for the spinner (User)
     private final List<Ingredient> values;
     private final Context c;
-    private Typeface font;
+    private final Typeface font;
 
     public SpinAdapter(Context context, int textViewResourceId,
                        List<Ingredient> values, Context c) {

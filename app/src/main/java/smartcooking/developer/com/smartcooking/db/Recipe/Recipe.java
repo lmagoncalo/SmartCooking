@@ -260,7 +260,7 @@ public class Recipe implements Serializable, Comparable<Recipe> {
                 '}';
     }
 
-    public static Comparator<Recipe> RecipeNameComparator = new Comparator<Recipe>() {
+    public static final Comparator<Recipe> RecipeNameComparator = new Comparator<Recipe>() {
 
         public int compare(Recipe left, Recipe right) {
 

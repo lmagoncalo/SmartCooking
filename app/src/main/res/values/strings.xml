@@ -59,11 +59,5 @@
     <string name="recipe_image_preview_image_content">Image View for the recipe preview</string>
     <string name="swipe_icon_image_content">Icon in the backgroud of the swipe</string>
     <string name="splash_screen_image_content">Image on the Splash Screen</string>
-    <string name="remove_btn1_image_content">Remove Button 1 Icon</string>
-    <string name="remove_btn2_image_content">Remove Button 2 Icon</string>
-    <string name="remove_btn3_image_content">Remove Button 3 Icon</string>
-    <string name="remove_btn4_image_content">Remove Button 4 Icon</string>
-    <string name="remove_btn5_image_content">Remove Button 5 Icon</string>
-    <string name="add_btn_image_content">Add Ingredient Button</string>
 
 </resources>
