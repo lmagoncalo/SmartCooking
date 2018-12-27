@@ -1,6 +1,7 @@
 package smartcooking.developer.com.smartcooking.fragment;
 
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,6 +30,7 @@ public class RecipeFragment extends Fragment {
     private static final String RECIPE = "get_recipe";
 
     private FloatingActionButton favorite;
+    private FloatingActionButton share;
     private Recipe recipe;
 
     public static RecipeFragment newInstance(long id) {
@@ -85,6 +87,52 @@ public class RecipeFragment extends Fragment {
                                 favorite.setImageResource(R.drawable.ic_fav_off);
                             }
                         }
+                    }
+                });
+            }
+
+            share = result.findViewById(R.id.recipe_fab_share);
+            if (share != null) {
+                share.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        /*Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent
+                                .putExtra(Intent.EXTRA_TEXT,);
+                        sendIntent.setType("text/plain");
+                        sendIntent.setPackage("com.facebook.orca");
+                        try {
+                            startActivity(sendIntent);
+                        }
+                        catch (android.content.ActivityNotFoundException ex) {
+                            Toast.makeText(getContext(),"Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
+                        }*/
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, "www.smartcooking.com/recipe?id=" + recipe.getId());
+                        sendIntent.setType("text/plain");
+                        sendIntent.setPackage("com.facebook.orca");
+                        //sendIntent.setPackage("com.twitter.android");
+                        sendIntent.setPackage("com.instagram.android");
+                        //sendIntent.setPackage("com.pinterest");
+                        startActivity(sendIntent);
+                        /*String urlToShare = "www.smartcooking.com/recipe?id="+recipe.getId();
+                        try {
+                            Intent mIntentFacebook = new Intent();
+                            mIntentFacebook.setClassName("com.facebook.katana", "com.facebook.composer.shareintent.ImplicitShareIntentHandlerDefaultAlias");
+                            mIntentFacebook.setAction(Intent.ACTION_SEND);
+                            mIntentFacebook.setType("text/plain");
+                            mIntentFacebook.putExtra("android.intent.extra.TEXT", urlToShare);
+                            startActivity(mIntentFacebook);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Intent mIntentFacebookBrowser = new Intent(Intent.ACTION_SEND);
+                            String mStringURL = "https://www.facebook.com/sharer/sharer.php?u=" + urlToShare;
+                            mIntentFacebookBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(mStringURL));
+                            startActivity(mIntentFacebookBrowser);
+                        }*/
+
                     }
                 });
             }

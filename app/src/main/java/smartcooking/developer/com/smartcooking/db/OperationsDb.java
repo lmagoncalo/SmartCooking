@@ -170,8 +170,8 @@ public class OperationsDb {
         return list;
     }
 
-    /*
-    private static final char[] hex = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+    /*private static final char[] hex = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
     private static String byteArray2Hex(byte[] bytes) {
         StringBuilder sb = new StringBuilder(bytes.length * 2);
         for (final byte b : bytes) {
