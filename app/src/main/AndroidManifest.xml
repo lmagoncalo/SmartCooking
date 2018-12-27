@@ -27,7 +27,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="smartcooking-web.herokuapp.com"
+                    android:host="@string/redirect_url"
                     android:path="/recipe"
                     android:scheme="https" />
             </intent-filter>
