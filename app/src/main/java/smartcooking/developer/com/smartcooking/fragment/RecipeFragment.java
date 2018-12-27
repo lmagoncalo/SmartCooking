@@ -143,7 +143,8 @@ public class RecipeFragment extends Fragment {
                         fb.setClassName("com.facebook.katana", "com.facebook.katana.activity.composer.ImplicitShareIntentHandler");
                         fb.setAction("android.intent.action.SEND");
                         fb.setType("text/plain");
-                        fb.putExtra("android.intent.extra.TEXT", urlToShare);
+                        fb.putExtra("android.intent.extra.TEXT", "SOMETHING " + urlToShare);
+                        //fb.putExtra(Intent.EXTRA_)
                         //startActivity(fb);
 
                         Intent twitter = new Intent(Intent.ACTION_SEND);
