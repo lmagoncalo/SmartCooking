@@ -117,8 +117,8 @@ public class RecipeFragment extends Fragment {
                         sendIntent.setPackage("com.instagram.android");
                         //sendIntent.setPackage("com.pinterest");
                         startActivity(sendIntent);*/
-                        /*String urlToShare = "www.smartcooking.com/recipe?id="+recipe.getId();
-                        try {
+                        String urlToShare = "https://smartcooking-web.herokuapp.com/recipe?id="+recipe.getId();
+                        /*try {
                             Intent mIntentFacebook = new Intent();
                             mIntentFacebook.setClassName("com.facebook.katana", "com.facebook.composer.shareintent.ImplicitShareIntentHandlerDefaultAlias");
                             mIntentFacebook.setAction(Intent.ACTION_SEND);
@@ -133,9 +133,18 @@ public class RecipeFragment extends Fragment {
                             startActivity(mIntentFacebookBrowser);
                         }*/
 
-                        Intent fb = new Intent(Intent.ACTION_SEND);
-                        fb.setClassName("com.facebook.katana", "com.facebook.katana.ShareLinkActivity");
-                        fb.putExtra(Intent.EXTRA_TEXT, "message");
+                        /*Intent fb = new Intent();
+                        fb.setClassName("com.facebook.katana", "com.facebook.composer.shareintent.ImplicitShareIntentHandlerDefaultAlias");
+                        fb.setAction(Intent.ACTION_SEND);
+                        fb.setType("text/plain");
+                        fb.putExtra(Intent.EXTRA_TEXT, urlToShare);*/
+
+                        Intent fb = new Intent();
+                        fb.setClassName("com.facebook.katana", "com.facebook.katana.activity.composer.ImplicitShareIntentHandler");
+                        fb.setAction("android.intent.action.SEND");
+                        fb.setType("text/plain");
+                        fb.putExtra("android.intent.extra.TEXT", urlToShare);
+                        //startActivity(fb);
 
                         Intent twitter = new Intent(Intent.ACTION_SEND);
                         twitter.setClassName("com.twitter.android","com.twitter.android.PostActivity");
@@ -143,12 +152,12 @@ public class RecipeFragment extends Fragment {
 
                         Intent sendIntent = new Intent();
                         sendIntent.setAction(Intent.ACTION_SEND);
-                        sendIntent.putExtra(Intent.EXTRA_TEXT, "cenas");
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, urlToShare);
                         sendIntent.setType("text/plain");
 
                         Intent intent = Intent.createChooser(fb, "Share");
                         intent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {
-                                sendIntent, twitter, fb
+                                sendIntent, twitter
 });
                         startActivity(intent);
 
