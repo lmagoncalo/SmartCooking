@@ -108,7 +108,7 @@ public class RecipeFragment extends Fragment {
                         catch (android.content.ActivityNotFoundException ex) {
                             Toast.makeText(getContext(),"Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
                         }*/
-                        Intent sendIntent = new Intent();
+                        /*Intent sendIntent = new Intent();
                         sendIntent.setAction(Intent.ACTION_SEND);
                         sendIntent.putExtra(Intent.EXTRA_TEXT, "www.smartcooking.com/recipe?id=" + recipe.getId());
                         sendIntent.setType("text/plain");
@@ -116,7 +116,7 @@ public class RecipeFragment extends Fragment {
                         //sendIntent.setPackage("com.twitter.android");
                         sendIntent.setPackage("com.instagram.android");
                         //sendIntent.setPackage("com.pinterest");
-                        startActivity(sendIntent);
+                        startActivity(sendIntent);*/
                         /*String urlToShare = "www.smartcooking.com/recipe?id="+recipe.getId();
                         try {
                             Intent mIntentFacebook = new Intent();
@@ -132,6 +132,25 @@ public class RecipeFragment extends Fragment {
                             mIntentFacebookBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(mStringURL));
                             startActivity(mIntentFacebookBrowser);
                         }*/
+
+                        Intent fb = new Intent(Intent.ACTION_SEND);
+                        fb.setClassName("com.facebook.katana", "com.facebook.katana.ShareLinkActivity");
+                        fb.putExtra(Intent.EXTRA_TEXT, "message");
+
+                        Intent twitter = new Intent(Intent.ACTION_SEND);
+                        twitter.setClassName("com.twitter.android","com.twitter.android.PostActivity");
+                        twitter.putExtra(Intent.EXTRA_TEXT, "message");
+
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, "cenas");
+                        sendIntent.setType("text/plain");
+
+                        Intent intent = Intent.createChooser(fb, "Share");
+                        intent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {
+                                sendIntent, twitter, fb
+});
+                        startActivity(intent);
 
                     }
                 });
