@@ -96,6 +96,8 @@ public class RecipeFragment extends Fragment {
                 share.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        /* CÓDIGO BASEADO EM:   https://stackoverflow.com/questions/8771333/android-share-intent-for-facebook-share-text-and-link */
+
                         String urlToShare = getString(R.string.redirect_url_protocol) + "://" + getString(R.string.redirect_url) + "/recipe?id="+recipe.getId();
 
                         Intent facebook = new Intent(Intent.ACTION_SEND);
