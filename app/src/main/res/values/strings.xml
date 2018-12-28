@@ -61,5 +61,6 @@
     <string name="splash_screen_image_content">Image on the Splash Screen</string>
 
     <string name="redirect_url">smartcooking-web.herokuapp.com</string>
+    <string name="redirect_url_protocol">http</string>
 
 </resources>

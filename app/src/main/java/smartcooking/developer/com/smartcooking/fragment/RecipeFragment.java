@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -117,7 +118,8 @@ public class RecipeFragment extends Fragment {
                         sendIntent.setPackage("com.instagram.android");
                         //sendIntent.setPackage("com.pinterest");
                         startActivity(sendIntent);*/
-                        String urlToShare = "https://" + getString(R.string.redirect_url) + "/recipe?id="+recipe.getId();
+                        String urlToShare = getString(R.string.redirect_url_protocol) + "://" + getString(R.string.redirect_url) + "/recipe?id="+recipe.getId();
+                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> " + urlToShare);
                         /*try {
                             Intent mIntentFacebook = new Intent();
                             mIntentFacebook.setClassName("com.facebook.katana", "com.facebook.composer.shareintent.ImplicitShareIntentHandlerDefaultAlias");
@@ -152,13 +154,15 @@ public class RecipeFragment extends Fragment {
 
                         Intent sendIntent = new Intent();
                         sendIntent.setAction(Intent.ACTION_SEND);
-                        sendIntent.putExtra(Intent.EXTRA_TEXT, urlToShare);
                         sendIntent.setType("text/plain");
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, urlToShare);
 
                         Intent intent = Intent.createChooser(fb, "Share Smartcooking");
                         intent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {
                                 sendIntent, twitter
-});
+                        });
+
+
                         startActivity(intent);
 
                     }
