@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -97,70 +96,23 @@ public class RecipeFragment extends Fragment {
                 share.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-                        /* CÓDIGO BASEADO EM:   https://stackoverflow.com/questions/8771333/android-share-intent-for-facebook-share-text-and-link */
-
-                        /*Intent sendIntent = new Intent();
-                        sendIntent.setAction(Intent.ACTION_SEND);
-                        sendIntent
-                                .putExtra(Intent.EXTRA_TEXT,);
-                        sendIntent.setType("text/plain");
-                        sendIntent.setPackage("com.facebook.orca");
-                        try {
-                            startActivity(sendIntent);
-                        }
-                        catch (android.content.ActivityNotFoundException ex) {
-                            Toast.makeText(getContext(),"Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
-                        }*/
-                        /*Intent sendIntent = new Intent();
-                        sendIntent.setAction(Intent.ACTION_SEND);
-                        sendIntent.putExtra(Intent.EXTRA_TEXT, "www.smartcooking.com/recipe?id=" + recipe.getId());
-                        sendIntent.setType("text/plain");
-                        sendIntent.setPackage("com.facebook.orca");
-                        //sendIntent.setPackage("com.twitter.android");
-                        sendIntent.setPackage("com.instagram.android");
-                        //sendIntent.setPackage("com.pinterest");
-                        startActivity(sendIntent);*/
                         String urlToShare = getString(R.string.redirect_url_protocol) + "://" + getString(R.string.redirect_url) + "/recipe?id="+recipe.getId();
-                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> " + urlToShare);
-                        /*try {
-                            Intent mIntentFacebook = new Intent();
-                            mIntentFacebook.setClassName("com.facebook.katana", "com.facebook.composer.shareintent.ImplicitShareIntentHandlerDefaultAlias");
-                            mIntentFacebook.setAction(Intent.ACTION_SEND);
-                            mIntentFacebook.setType("text/plain");
-                            mIntentFacebook.putExtra("android.intent.extra.TEXT", urlToShare);
-                            startActivity(mIntentFacebook);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Intent mIntentFacebookBrowser = new Intent(Intent.ACTION_SEND);
-                            String mStringURL = "https://www.facebook.com/sharer/sharer.php?u=" + urlToShare;
-                            mIntentFacebookBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(mStringURL));
-                            startActivity(mIntentFacebookBrowser);
-                        }*/
 
-                        /*Intent fb = new Intent();
-                        fb.setClassName("com.facebook.katana", "com.facebook.composer.shareintent.ImplicitShareIntentHandlerDefaultAlias");
-                        fb.setAction(Intent.ACTION_SEND);
-                        fb.setType("text/plain");
-                        fb.putExtra(Intent.EXTRA_TEXT, urlToShare);*/
-
-                        Intent fb = new Intent();
-                        fb.setClassName("com.facebook.katana", "com.facebook.katana.activity.composer.ImplicitShareIntentHandler");
-                        fb.setAction("android.intent.action.SEND");
-                        fb.setType("text/plain");
-                        fb.putExtra("android.intent.extra.TEXT", urlToShare);
-                        //startActivity(fb);
+                        Intent facebook = new Intent(Intent.ACTION_SEND);
+                        facebook.setClassName("com.facebook.katana", "com.facebook.katana.activity.composer.ImplicitShareIntentHandler");
+                        facebook.setType("text/plain");
+                        facebook.putExtra(Intent.EXTRA_TEXT, urlToShare);
 
                         Intent twitter = new Intent(Intent.ACTION_SEND);
                         twitter.setClassName("com.twitter.android","com.twitter.android.PostActivity");
-                        twitter.putExtra(Intent.EXTRA_TEXT, "message");
+                        twitter.putExtra(Intent.EXTRA_TEXT, urlToShare);
 
                         Intent sendIntent = new Intent();
                         sendIntent.setAction(Intent.ACTION_SEND);
                         sendIntent.setType("text/plain");
                         sendIntent.putExtra(Intent.EXTRA_TEXT, urlToShare);
 
-                        Intent intent = Intent.createChooser(fb, "Share Smartcooking");
+                        Intent intent = Intent.createChooser(facebook, "Share Smartcooking");
                         intent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {
                                 sendIntent, twitter
                         });
