@@ -26,12 +26,12 @@ public class AboutFragment extends Fragment {
         View result = inflater.inflate(R.layout.fragment_about, container, false);
 
         ArrayList<Spanned> links = new ArrayList<>(6);
-        links.add(fromHtml("<a href=\'https://www.facebook.com/SmartCookingApp/'>SmartCookingApp</a>"));
         links.add(fromHtml("<a href=\'http://maisumsobreculinaria.blogspot.pt/'>Mais Um Sobre Culinária</a>"));
         links.add(fromHtml("<a href=\'http://hojeparajantar.blogspot.pt/'>Hoje para jantar</a>"));
         links.add(fromHtml("<a href=\'http://uc.pt/'>Universidade de Coimbra</a>"));
+        links.add(fromHtml("<a href=\'https://www.facebook.com/SmartCookingApp/'>SmartCookingApp</a>"));
         links.add(fromHtml("<a href=\'https://twitter.com/smartcookingapp'>@smartcookingapp</a>"));
-        links.add(fromHtml("<a href='https://smashicons.com/'>Smashicons</a>"));
+        links.add(fromHtml("<a href=\'https://smashicons.com/'>Smashicons</a>"));
 
         ArrayList<TextView> textViews = new ArrayList<>(6);
         textViews.add(0, (TextView) result.findViewById(R.id.partners_one_textview));
