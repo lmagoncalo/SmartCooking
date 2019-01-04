@@ -2,6 +2,8 @@ package smartcooking.developer.com.smartcooking.db;
 
 public class DatabaseScheme {
 
+    // define the name of the database, of each table and of the columns
+
     public static final int VERSION = 1;
     public static final String DATABASE_NAME = "smartcooking.db";
 

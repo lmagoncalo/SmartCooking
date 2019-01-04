@@ -32,6 +32,7 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
 
     private List<Recipe> recipeList;
 
+    // 2 methods to initialize the fragment because this is used in category search as well as in ingredients search
     public static RecipeListFragment newInstance_category(int category) {
         RecipeListFragment fragment = new RecipeListFragment();
         Bundle args = new Bundle();
@@ -78,6 +79,7 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
             database = ((MainActivity) getActivity()).getDatabase();
 
             switch (getCategory()) {
+                // get the recipes of the selected category (if it was a search by category)
                 case 0:
                     recipeList = OperationsDb.selectRecipeByCategory("Carne", database);
                     break;
@@ -97,6 +99,9 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
                     recipeList = OperationsDb.selectRecipeByCategory("Outros", database);
                     break;
                 case -1:
+                    // if the category is '-1', it means that this fragment was initialized for a search by ingredients
+
+                    // get the reciped that used the selected ingredients
                     ArrayList<Ingredient> selected_ingredients = getIngredients();
                     recipeList = OperationsDb.selectRecipesByIngredients(selected_ingredients, database);
                     break;
@@ -107,8 +112,11 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
 
         MyAdapter adapter = new MyAdapter(recipeList, this, getContext());
         list.setAdapter(adapter);
+
+        // set the RecyclerView to have a fixed size to improve performance
         list.setHasFixedSize(true);
 
+        // different display, depending on the screen orientation
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
@@ -118,6 +126,7 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
             list.setLayoutManager(new LinearLayoutManager(getActivity()));
         }
 
+        // to prevent the case when there's recipe to display
         if (adapter.getItemCount() == 0) {
             TextView empty = result.findViewById(R.id.empty_list);
             String s = "Ainda não há receitas aqui";
@@ -129,10 +138,12 @@ public class RecipeListFragment extends Fragment implements AdapterView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // open the screen  of the details of the selected recipe
         openDetails(position);
     }
 
     private void openDetails(int index) {
+        // initialize the "RecipeFragment" with the information about the selected recipe
         Recipe recipe = recipeList.get(index);
         RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getId());
         FragmentTransaction ft;

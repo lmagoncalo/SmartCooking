@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Objects;
 
 import smartcooking.developer.com.smartcooking.R;
 import smartcooking.developer.com.smartcooking.activity.MainActivity;
@@ -43,16 +45,22 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
 
         RecyclerView list = result.findViewById(R.id.list_recipes);
 
+        // get reference to database from activity
         SQLiteDatabase database;
         if (getActivity() != null) {
             database = ((MainActivity) getActivity()).getDatabase();
+
+            // get favorite list from database
             recipeList = OperationsDb.selectFavoriteRecipes(database);
         }
 
         adapter = new MyAdapter(recipeList, this, getContext());
         list.setAdapter(adapter);
+
+        // set the RecyclerView to have a fixed size to improve performance
         list.setHasFixedSize(true);
 
+        // different display, depending on the screen orientation
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
@@ -62,13 +70,14 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
             list.setLayoutManager(new LinearLayoutManager(getActivity()));
         }
 
+        // to prevent the case when there's recipe to display
         empty = result.findViewById(R.id.empty_list);
-
         if (adapter.getItemCount() == 0) {
             String s = "Ainda não há receitas aqui";
             empty.setText(s);
         }
 
+        // to swipe movement
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(list);
 
@@ -77,10 +86,12 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // the same as a "onClickListener"
         openDetails(position);
     }
 
     private void openDetails(int index) {
+        // presents the details of the selected recipe in a new "RecipeFragment"
         Recipe recipe = recipeList.get(index);
         RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getId());
         FragmentTransaction ft;
@@ -92,7 +103,9 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder) {
+        // called after swipping a element from the favorite list
         if (viewHolder instanceof MyViewHolder) {
+
             // backup of removed item for undo purpose
             final Recipe deletedRecipe = recipeList.get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
@@ -100,6 +113,7 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
             // remove the item from recycler view
             adapter.removeRecipe(viewHolder.getAdapterPosition());
 
+            // if the favorite list is now empty
             if (adapter.getItemCount() == 0) {
                 String s = "Ainda não há receitas aqui";
                 empty.setText(s);
@@ -113,12 +127,12 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemCli
                     @Override
                     public void onClick(View view) {
 
-                        // undo is selected, restore the deleted item
+                        // undo is selected, restore the deleted item on the same position
                         adapter.restoreItem(deletedRecipe, deletedIndex);
                         empty.setText(null);
                     }
                 });
-                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.setActionTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()),R.color.colorPrimary));
                 snackbar.show();
             }
         }

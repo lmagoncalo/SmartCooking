@@ -39,11 +39,17 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
 
     private int APIVersion;
 
+    /*
+        We use a weak reference because it is not strong enough to keep the object in memory, so
+        when the Activity stops existing it can be collected. Therefore no memory leaks will happen
+    */
     private final WeakReference<Context> contextRef;
     private final WeakReference<Activity> activityRef;
     private final WeakReference<ProgressBar> progressBar;
     private final Fragment fragment;
 
+    // this variable is used to check if there was any problem with any HTTP request (API)
+    // if there's any error, the app won't make any more HTTP requests (API)
     private boolean error = false;
 
     private final List<Recipe> list_recipes;
@@ -51,6 +57,13 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
     private final List<Relations> list_relations;
     private Integer count = 1;
 
+    /*
+        the arguments are:
+            1 --> "Context" from the activity for the Shared Preferences
+            2 --> "ProgressBar" for the rotating animation while stuff is being done
+            3 --> "Activity" for the "BottomNavigationBar" reference to make it visible, once the SplashScreen is completed
+            4 --> "Fragment" to access the "FragmentManager" to replace the current fragment
+    */
     public UpdateRecipesTask(Context context, ProgressBar progressBar, Activity activityRef, Fragment fragment) {
         this.list_recipes = new ArrayList<>();
         this.list_ingredients = new ArrayList<>();
@@ -67,8 +80,10 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
         String PREFS_NAME = "SmartCooking_PrefsName";
         SharedPreferences sharedPreferences = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
+        // increment the progress of the AssyncTask
         publishProgress(count++);
 
+        // get the versino from the remote database (from the API)
         getVersion();
 
         publishProgress(count++);
@@ -79,23 +94,32 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
             localVersion = Integer.parseInt(version);
         }
 
-
         publishProgress(count++);
 
+        // if there's a local version of the database, but there was some problem with the connection with the API
+        // "Success": because we can still use the app with the local version of the database; opens MainFragment
         if (localVersion != -1 && error) {
             return "Success";
         } else if (localVersion == -1 && error) {
+            // if there ISN'T a local version of the database and there was some problem with the connection with the API
+            // "First_Time": displays error because there's nothing to work with, on the local database
             return "First_Time";
         }
 
+        // if the localVersion is lower than the APIVersion
         if (localVersion < APIVersion) {
+            // get recipes from the API
             getRecipes();
 
             publishProgress(count++);
 
             if (!error) {
+                // if there wasn't any problem with the connection with the API so far
+
+                // get the ingredients list from the API
                 getIngredients();
             } else {
+                // "Net_Error": displays error because there was a problem with the API connection
                 return "Net_Error";
             }
 
@@ -103,8 +127,12 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
 
 
             if (!error) {
+                // if there wasn't any problem with the connection with the API so far
+
+                // get the relatinos list from the API
                 getRelations();
             } else {
+                // "Net_Error": displays error because there was a problem with the API connection
                 return "Net_Error";
             }
 
@@ -112,11 +140,15 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
 
 
             if(!error){
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(PREFS_NAME, Integer.toString(APIVersion));
-                editor.apply();
+                // if there wasn't any problem with the connection with the API so far
 
-                updateDatabase();
+                if(updateDatabase()){
+                    // saves the APIVersion as the new local database version
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(PREFS_NAME, Integer.toString(APIVersion));
+                    editor.apply();
+                }
+
             } else {
                 return "Net_Error";
             }
@@ -131,19 +163,23 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
 
     private void getVersion() {
         try {
+            // URL endpoint to get the version
             URL urlEndpoint = new URL(baseUrl + "version/");
 
-            // Create connection
+            // Create HTTP connection
             HttpURLConnection myConnection = (HttpURLConnection) urlEndpoint.openConnection();
             myConnection.setConnectTimeout(5000);
 
             if (myConnection.getResponseCode() == 200) {
-                // Success
+                // If the result is success
                 InputStream responseBody = myConnection.getInputStream();
                 InputStreamReader responseBodyReader =
                         new InputStreamReader(responseBody, "UTF-8");
+
+                // get JSON object from the response
                 JsonReader jsonReader = new JsonReader(responseBodyReader);
 
+                // read all the values from the JSON object
                 jsonReader.beginObject();
                 while (jsonReader.hasNext()) {
                     switch (jsonReader.nextName()) {
@@ -170,9 +206,10 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
 
     private void getRecipes() {
         try {
+            // URL endpoint to get the recipes
             URL urlEndpoint = new URL(baseUrl + "recipes/");
 
-            // Create connection
+            // Create HTTP connection
             HttpURLConnection myConnection = (HttpURLConnection) urlEndpoint.openConnection();
 
             if (myConnection.getResponseCode() == 200) {
@@ -189,11 +226,13 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            error = true;
         }
     }
 
     private void parseJsonRecipes(JsonReader jsonReader) {
         try {
+            // read all the values from the JSON object
             jsonReader.beginArray();
             while (jsonReader.hasNext()) {
                 Recipe new_recipe = new Recipe();
@@ -243,6 +282,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
                     }
                 }
                 jsonReader.endObject();
+                // add the new recipe to the list
                 list_recipes.add(new_recipe);
             }
             jsonReader.endArray();
@@ -253,9 +293,10 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
 
     private void getIngredients() {
         try {
+            // URL endpoint to get the ingredients
             URL urlEndpoint = new URL(baseUrl + "ingredients/");
 
-            // Create connection
+            // Create HTTP connection
             HttpURLConnection myConnection = (HttpURLConnection) urlEndpoint.openConnection();
 
             if (myConnection.getResponseCode() == 200) {
@@ -272,11 +313,13 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            error = true;
         }
     }
 
     private void parseJsonIngredients(JsonReader jsonReader) {
         try {
+            // read all the values from the JSON object
             jsonReader.beginArray();
             while (jsonReader.hasNext()) {
                 Ingredient new_ingredient = new Ingredient();
@@ -295,6 +338,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
                     }
                 }
                 jsonReader.endObject();
+                // add the new ingredient to the list
                 list_ingredients.add(new_ingredient);
             }
             jsonReader.endArray();
@@ -305,9 +349,10 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
 
     private void getRelations() {
         try {
+            // URL endpoint to get the relations
             URL urlEndpoint = new URL(baseUrl + "relations/");
 
-            // Create connection
+            // Create HTTP connection
             HttpURLConnection myConnection = (HttpURLConnection) urlEndpoint.openConnection();
 
             if (myConnection.getResponseCode() == 200) {
@@ -324,11 +369,13 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            error = true;
         }
     }
 
     private void parseJsonRelations(JsonReader jsonReader) {
         try {
+            // read all the values from the JSON object
             jsonReader.beginArray();
             while (jsonReader.hasNext()) {
                 Relations new_relation = new Relations();
@@ -347,6 +394,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
                     }
                 }
                 jsonReader.endObject();
+                // add the new relation to the list
                 list_relations.add(new_relation);
             }
             jsonReader.endArray();
@@ -355,20 +403,40 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
         }
     }
 
-    private void updateDatabase() {
+    private boolean updateDatabase() {
+
+        // update the database; if there's any error, stop the updates
+
         SQLiteDatabase database = new DatabaseBaseHelper(contextRef.get()).getWritableDatabase();
+        boolean flag = true;
 
         for (Recipe r : list_recipes) {
-            OperationsDb.recipeControlledInsert(r, database);
+            if(!OperationsDb.recipeControlledInsert(r, database)){
+                flag = false;
+                break;
+            }
         }
 
-        for (Ingredient i : list_ingredients) {
-            OperationsDb.insertIngredient(i, database);
+        if(flag){
+            for (Ingredient i : list_ingredients) {
+                if(OperationsDb.insertIngredient(i, database)==-1){
+                    flag = false;
+                    break;
+                }
+            }
         }
 
-        for (Relations rs : list_relations) {
-            OperationsDb.insertRelation(rs, database);
+        if(flag){
+            for (Relations rs : list_relations) {
+                if(OperationsDb.insertRelation(rs, database)==-1){
+                    flag = false;
+                    break;
+                }
+            }
         }
+
+        return flag;
+
     }
 
     @Override
@@ -376,6 +444,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
         progressBar.get().setVisibility(View.GONE);
         switch (result) {
             case "Success":
+                // if "success", initialize the MainFragment
                 MainFragment mainFragment = new MainFragment();
                 FragmentTransaction ft;
                 if (fragment.getFragmentManager() != null) {
@@ -386,9 +455,11 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
                 navigation.setVisibility(View.VISIBLE);
                 break;
             case "First_Time":
+                // if "First_Time", displays an error and closes the app
                 crash("É necessário estar ligado à Internet na primeira vez que abre a aplicação.");
                 break;
             case "Net_Error":
+                // if "Net_Error", displays an error and closes the app
                 crash("Ocorreu algum erro inesperado. Confirme a sua ligação à Internet.");
                 break;
         }
@@ -396,6 +467,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
 
     @Override
     protected void onPreExecute() {
+        // setup the "progressBar"
         progressBar.get().setProgress(0);
         progressBar.get().setMax(6);
     }
@@ -403,10 +475,13 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
+
+        // to make the rotating animation of the progress bar
         progressBar.get().setProgress(values[0]);
     }
 
     private void crash(String tipo) {
+        // create dialog
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(contextRef.get());
 
         // set title
@@ -418,8 +493,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
                 .setCancelable(false)
                 .setPositiveButton("Fechar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // if this button is clicked, close
-                        // current activity
+                        // if this button is clicked, close the activity
                         activityRef.get().finish();
                     }
                 });

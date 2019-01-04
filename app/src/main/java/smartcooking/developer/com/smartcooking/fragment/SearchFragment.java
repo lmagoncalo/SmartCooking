@@ -35,7 +35,7 @@ import smartcooking.developer.com.smartcooking.utils.MyAdapter;
 public class SearchFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private EditText recipe_name_search;
-    private Button cleat_btn;
+    private Button clear_btn;
     private MyAdapter adapter;
     private List<Recipe> recipeList;
     private SQLiteDatabase database;
@@ -48,16 +48,20 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
         if (getActivity() != null) {
             database = ((MainActivity) getActivity()).getDatabase();
+            // get all recipes from the database
             recipeList = OperationsDb.selectAllRecipes(database);
-            SortAlfabetic(recipeList);
+            // sort the recipes by name
+            SortAlphabetic(recipeList);
         }
 
         RecyclerView list = result.findViewById(R.id.list_recipes_search);
         recipe_name_search = result.findViewById(R.id.name_search_edittext);
 
-        cleat_btn = result.findViewById(R.id.clear_search_btn);
-        cleat_btn.setVisibility(View.GONE);
-        cleat_btn.setOnClickListener(new View.OnClickListener() {
+        clear_btn = result.findViewById(R.id.clear_search_btn);
+
+        // if there's nothing written, the clear button is not visible
+        clear_btn.setVisibility(View.GONE);
+        clear_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (recipe_name_search.getText().length() != 0) {
@@ -65,6 +69,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
                     InputMethodManager inputManager = (InputMethodManager)
                             getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
+                    // hide keyboard and remove focus from the edittext element
                     if (inputManager != null) {
                         if (getActivity().getCurrentFocus() != null) {
                             inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
@@ -78,8 +83,11 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
         adapter = new MyAdapter(recipeList, this, getContext());
         list.setAdapter(adapter);
+
+        // set the RecyclerView to have a fixed size to improve performance
         list.setHasFixedSize(true);
 
+        // different display, depending on the screen orientation
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
@@ -101,12 +109,15 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
             @Override
             public void afterTextChanged(Editable arg0) {
-                if (!recipe_name_search.getText().toString().isEmpty()) { //if edittext include text
-                    cleat_btn.setVisibility(View.VISIBLE);
-                } else { //not include text
-                    cleat_btn.setVisibility(View.GONE);
-                    // When user changed the Text
+                if (!recipe_name_search.getText().toString().isEmpty()) {
+                    // if edittext include text, make the clear button visible
+                    clear_btn.setVisibility(View.VISIBLE);
+                } else {
+                    // if there's nothing written, the clear button is invisible
+                    clear_btn.setVisibility(View.GONE);
                 }
+
+                // call name filter with the written text
                 String text = recipe_name_search.getText().toString().toLowerCase(Locale.getDefault());
                 adapter.filter(text);
             }
@@ -114,13 +125,12 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
         recipe_name_search.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
-                // If the keyevent is a key-down event on the "enter" button
+                // If the keyevent is a key-down event on the "enter" button, hide keyboard and remove focus from the EditText element
                 if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     InputMethodManager inputManager = (InputMethodManager)
                             getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
                     if (getActivity().getCurrentFocus() != null  &&  inputManager!=null)
-                        // tive que pôr a segunda condição deste IF porque estava a dar um warning de uma possível NULL POINTER EXCEPTION
                         inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     recipe_name_search.clearFocus();
                     return true;
@@ -133,6 +143,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // initialized the "RecipeFragment" with the selected recipe
         Recipe recipe = adapter.getRecipe(position);
         RecipeFragment recipeFragment = RecipeFragment.newInstance(recipe.getId());
         FragmentTransaction ft;
@@ -142,18 +153,19 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         }
     }
 
-    private void SortAlfabetic(List<Recipe> list) {
+    // sort the recipes alphabetically
+    private void SortAlphabetic(List<Recipe> list) {
         Collections.sort(list, Recipe.RecipeNameComparator);
     }
 
-    @Override
+    /*@Override
     public void onResume() {
         super.onResume();
 
         if (getActivity() != null && (recipeList == null || recipeList.isEmpty())) {
             database = ((MainActivity) getActivity()).getDatabase();
             recipeList = OperationsDb.selectAllRecipes(database);
-            SortAlfabetic(recipeList);
+            SortAlphabetic(recipeList);
 
             RecyclerView list = getActivity().findViewById(R.id.list_recipes_search);
             adapter = new MyAdapter(recipeList, this, getContext());
@@ -176,5 +188,5 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         }
 
 
-    }
+    }*/
 }

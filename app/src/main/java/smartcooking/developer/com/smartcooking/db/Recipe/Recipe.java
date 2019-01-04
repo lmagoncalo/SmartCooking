@@ -271,7 +271,7 @@ public class Recipe implements Serializable, Comparable<Recipe> {
             return leftName.compareTo(rightName);
 
             //descending order
-            //return fruitName2.compareTo(fruitName1);
+            //return rightName.compareTo(leftName);
 
             //Weight compare
             //return left.getPesoPesquisa() - right.getPesoPesquisa();

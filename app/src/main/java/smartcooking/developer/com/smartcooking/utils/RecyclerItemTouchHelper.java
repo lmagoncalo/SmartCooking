@@ -20,6 +20,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     private final RecyclerItemTouchHelperListener listener;
 
     public RecyclerItemTouchHelper(int dragDirs, int swipeDirs, RecyclerItemTouchHelperListener listener) {
+        // swipeDirs = allowed swipe directions
         super(dragDirs, swipeDirs);
         this.listener = listener;
     }
@@ -49,6 +50,8 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) foregroundView.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        // map the "dX" variable (movement variation on 'X' axis) from the interval [0, width} to [0, 255] and set it as the alpha of the background
         int width = displayMetrics.widthPixels;
         int alpha = Math.round(Math.abs(dX) * ((float) 255.0 / (float) width));
         String alpha_str = Integer.toHexString(alpha);
@@ -56,6 +59,8 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
 
         ((MyViewHolder) viewHolder).getViewBackground().setBackgroundColor(Color.parseColor(hexColor_final));
+
+        // only change the position of the foreground
         getDefaultUIUtil().onDrawOver(c, recyclerView, foregroundView, dX, dY,
                 actionState, isCurrentlyActive);
     }
@@ -78,6 +83,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+        // to call the "onSwiped" method of the "favorite fragment"
         listener.onSwiped(viewHolder);
     }
 

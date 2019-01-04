@@ -13,7 +13,7 @@ public class DatabaseBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        // atenção que em SQLite, os valores boolean são 1 (true) e 0 (false). Não existe uma class boolean com valores "true" e "false"
+        // here, we create the tables
 
         db.execSQL("create table " + DatabaseScheme.RecipesTable.NAME + "( " +
                 DatabaseScheme.RecipesTable.Cols.ID + " integer primary key autoincrement, " +

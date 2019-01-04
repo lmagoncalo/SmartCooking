@@ -24,6 +24,7 @@ public class CategoriesFragment extends Fragment {
         // Inflate the layout for this fragment
         View result = inflater.inflate(R.layout.fragment_categories, container, false);
 
+        // add the buttons for each category
         buttons.add(0, (Button) result.findViewById(R.id.meat_btn));
         buttons.add(1, (Button) result.findViewById(R.id.fish_btn));
         buttons.add(2, (Button) result.findViewById(R.id.vegan_btn));
@@ -31,6 +32,7 @@ public class CategoriesFragment extends Fragment {
         buttons.add(4, (Button) result.findViewById(R.id.snack_btn));
         buttons.add(5, (Button) result.findViewById(R.id.other_btn));
 
+        // set a tag, from 0 to 5, for the new fragment to know which category was chosen
         for (int i = 0; i < 6; i++) {
             buttons.get(i).setTag(i);
             buttons.get(i).setOnClickListener(new View.OnClickListener() {

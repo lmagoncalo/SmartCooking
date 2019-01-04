@@ -21,6 +21,8 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
     private final AdapterView.OnItemClickListener onItemClickListener;
 
     MyViewHolder(@NonNull final View itemView, AdapterView.OnItemClickListener _onItemClickListener, Context _c) {
+        // set all the information about the recipe
+
         super(itemView);
         name = itemView.findViewById(R.id.recipe_name);
         difficulty = itemView.findViewById(R.id.recipe_difficulty);
@@ -32,6 +34,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         this.viewForeground = itemView.findViewById(R.id.view_foreground);
         this.viewBackground = itemView.findViewById(R.id.view_background);
 
+        // the same clickListener for the text. Without this, we could only click on the image
         name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,6 +60,8 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
     public boolean onLongClick(View view) {
         // Handle long click
         // Return true to indicate the click was handled
+
+        // displays the image in bigger size
         new ImagePreviewer().show(c, (ImageView) view);
         return true;
     }
@@ -73,10 +78,12 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         return image;
     }
 
+    // returns the foreground of each element during swipe
     RelativeLayout getViewForeground() {
         return viewForeground;
     }
 
+    // returns the background of each element during swipe
     RelativeLayout getViewBackground() {
         return viewBackground;
     }

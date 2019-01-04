@@ -15,10 +15,15 @@ import java.util.List;
 import smartcooking.developer.com.smartcooking.R;
 import smartcooking.developer.com.smartcooking.db.Ingredient.Ingredient;
 
+/*
+
+CODE FROM:  https://stackoverflow.com/questions/1625249/android-how-to-bind-spinner-to-custom-object-list
+
+*/
+
 public class SpinAdapter extends ArrayAdapter<Ingredient> {
 
-    // Your sent context
-    // Your custom values for the spinner (User)
+    // the list of ingredients from the database
     private final List<Ingredient> values;
     private final Context c;
     private final Typeface font;
@@ -47,30 +52,30 @@ public class SpinAdapter extends ArrayAdapter<Ingredient> {
     }
 
 
-    // And the "magic" goes here
-    // This is for the "passive" state of the spinner
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
+
+        // to draw the spinner with the selected item, when the dropdown is closed
+
         TextView label = (TextView) super.getView(position, convertView, parent);
         label.setTextColor(ContextCompat.getColor(c, R.color.colorPrimary));
 
-        // Then you can get the current item using the values array (Users array) and the current position
-        // You can NOW reference each method you has created in your bean object (User class)
+        // Now, we can get the current item using the values array and the current position
         label.setText(values.get(position).getName());
         label.setTypeface(font);
         label.setTextSize(16);
 
-        // And finally return your dynamic (or custom) view for each spinner item
         return label;
     }
 
     // And here is when the "chooser" is popped up
-    // Normally is the same view, but you can customize it if you want
     @Override
     public View getDropDownView(int position, View convertView,
                                 @NonNull ViewGroup parent) {
+
+        // creates every spinner option
+
         TextView label = (TextView) super.getDropDownView(position, convertView, parent);
         label.setTextColor(ContextCompat.getColor(c, R.color.colorPrimary));
         label.setText(values.get(position).getName());

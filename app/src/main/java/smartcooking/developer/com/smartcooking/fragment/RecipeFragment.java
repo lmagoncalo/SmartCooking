@@ -34,6 +34,7 @@ public class RecipeFragment extends Fragment {
     private Recipe recipe;
 
     public static RecipeFragment newInstance(long id) {
+        // create new instance for this fragment and set the ID of the chosen recipe
         RecipeFragment fragment = new RecipeFragment();
         Bundle args = new Bundle();
         args.putLong(RECIPE, id);
@@ -55,31 +56,37 @@ public class RecipeFragment extends Fragment {
         // Inflate the layout for this fragment
         View result = inflater.inflate(R.layout.fragment_recipe, container, false);
 
+        // get reference of database from the activity
         SQLiteDatabase database = null;
         if (getActivity() != null) {
             database = ((MainActivity) getActivity()).getDatabase();
         }
+
         long id = getRecipe();
         if (getActivity() != null && database != null && id != -1) {
+            // get recipe from database
             recipe = OperationsDb.selectRecipeByID(id, database);
 
+            // loads the recipe image from the URL
             ImageView iv = result.findViewById(R.id.recipe_image);
-
             Picasso.get().load(recipe.getImage()).into(iv);
 
             favorite = result.findViewById(R.id.recipe_fab_favorite);
             if (favorite != null) {
 
+                // change de icon if the recipe is favorite or not
                 if (recipe.isFavorite()) {
                     favorite.setImageResource(R.drawable.ic_fav_on);
                 } else {
                     favorite.setImageResource(R.drawable.ic_fav_off);
                 }
 
+                // change de icon if the recipe is favorite or not, and the recipe on the database
                 favorite.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (OperationsDb.changeRecipeFavorite(recipe, ((MainActivity) getActivity()).getDatabase())) {
+                            // only changes the icon, if the update of the database was done ok
                             recipe = OperationsDb.selectRecipeByID(recipe.getId(), ((MainActivity) getActivity()).getDatabase());
                             if (recipe != null && recipe.isFavorite()) {
                                 favorite.setImageResource(R.drawable.ic_fav_on);
@@ -96,6 +103,7 @@ public class RecipeFragment extends Fragment {
                 share.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         /* CÓDIGO BASEADO EM:   https://stackoverflow.com/questions/8771333/android-share-intent-for-facebook-share-text-and-link */
 
                         String urlToShare = getString(R.string.redirect_url_protocol) + "://" + getString(R.string.redirect_url) + "/recipe?id="+recipe.getId();
@@ -126,6 +134,7 @@ public class RecipeFragment extends Fragment {
                 });
             }
 
+            // display all the information about the recipe
             TextView recipe_ingredients = result.findViewById(R.id.recipe_details_ingredients);
             TextView recipe_preparation = result.findViewById(R.id.recipe_details_preparation);
             TextView recipe_time = result.findViewById(R.id.recipe_time_text);
@@ -154,6 +163,8 @@ public class RecipeFragment extends Fragment {
             }
             recipe_difficulty.setText(difficulty);
 
+
+
             Toolbar toolbar;
             CollapsingToolbarLayout collapsingToolbarLayout;
 
@@ -162,9 +173,11 @@ public class RecipeFragment extends Fragment {
 
             collapsingToolbarLayout = result.findViewById(R.id.collapsing_toolbar_layout);
 
+            // if in landscape, there's no "CollapsingToolbarLayout"
             if (collapsingToolbarLayout != null) {
                 collapsingToolbarLayout.setTitle(recipe.getName());
 
+                // toolbar text margins, for this text to be align with the rest of the text
                 int horizontal_dim = Math.round(getActivity().getResources().getDimension(R.dimen.activity_horizontal_margin));
                 int vertical_dim = Math.round(getActivity().getResources().getDimension(R.dimen.activity_vertical_margin));
                 collapsingToolbarLayout.setExpandedTitleMarginStart(horizontal_dim);
@@ -189,6 +202,7 @@ public class RecipeFragment extends Fragment {
                     }
                 });
 
+                // when click on the back button of the toolbar, pop the fragment stack to go back to the previous fragment
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

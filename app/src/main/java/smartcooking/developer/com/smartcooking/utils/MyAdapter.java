@@ -26,7 +26,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     private final Context c;
 
     public MyAdapter(List<Recipe> recipes, AdapterView.OnItemClickListener onItemClickListener, Context c) {
+        // initialize with the recipes list, the listener and a context
         this.recipes = recipes;
+
+        // to have a backup of all recipes after filtering the recipes by name
         this.recipes_copy = new ArrayList<>(recipes);
         this.onItemClickListener = onItemClickListener;
         this.c = c;
@@ -40,6 +43,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
+        // to create each element of the list
+
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -52,6 +57,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int position) {
+        // to put all the information on each "ViewHolder"
+
         final Recipe recipe = recipes.get(position);
 
         // Set the results into TextViews
@@ -75,21 +82,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         }
         viewHolder.getDifficulty().setText(difficulty);
 
+        // to display the images from the URL's
         Picasso.get().load(recipe.getImage()).into(viewHolder.getImage());
     }
 
 
-    // Filter Class - Talvez mudar isto
+    // Filter Class to filter by name
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
+
+        // clear the list of displayed recipes
         recipes.clear();
 
         if (charText.isEmpty()) {
+            // when the user deletes the search "query", the list is created again from the backup
             recipes = new ArrayList<>(recipes_copy);
         } else {
             String[] search_array = charText.split(" ");
             for (Recipe r : recipes_copy) {
                 for (String s : search_array) {
+                    // if the recipe isn't already in the list to be displayed and the name of the recipe contains (at least partially) the query
                     if (!recipes.contains(r) && r.getName().toLowerCase(Locale.getDefault()).contains(s)) {
                         recipes.add(r);
                     }
@@ -100,8 +112,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     public void removeRecipe(int position) {
+        // remove recipe from favorite list
+
+        // change the favorite on the SQLite database
         OperationsDb.changeRecipeFavorite(recipes.get(position), ((MainActivity) c).getDatabase());
+
+        // remove the recipe from the list variable
         recipes.remove(position);
+
         // notify the item removed by position
         // to perform recycler view delete animations
         // NOTE: don't call notifyDataSetChanged()
@@ -109,12 +127,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     public void restoreItem(Recipe item, int position) {
+        // when undo from the SnackBar is called
+
+        // adds to list variable
         recipes.add(position, item);
-        // notify item added by position
+
+        // change the favorite on the SQLite database
         OperationsDb.changeRecipeFavorite(item, ((MainActivity) c).getDatabase());
+
+        // notify item added by position
         notifyItemInserted(position);
     }
 
+    //
     public Recipe getRecipe(int position) {
         return recipes.get(position);
     }

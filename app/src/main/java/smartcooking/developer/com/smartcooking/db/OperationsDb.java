@@ -17,23 +17,27 @@ import smartcooking.developer.com.smartcooking.db.Relation.Relations;
 public class OperationsDb {
     /*** CLASSE QUE VAI TER TODAS AS OPERAÇÕES DA BASE DE DADOS, PARA ISTO NÃO SE MISTURAR COM O RESTO DO CÓDIGO DA APP ***/
 
-    public static void recipeControlledInsert(Recipe new_recipe, SQLiteDatabase mDatabase) {
+    public static boolean recipeControlledInsert(Recipe new_recipe, SQLiteDatabase mDatabase) {
         Recipe old_recipe = recipeExists(new_recipe, mDatabase);
         if (old_recipe != null) {
-            // se já existe uma receita com o mesmo ID
+            // if there's a recipe with the same ID
             if (!old_recipe.getHash().equals(new_recipe.getHash())) {
-                updateRecipe(new_recipe, mDatabase);
+                // if the hash is different, updates the recipe
+                return updateRecipe(new_recipe, mDatabase);
             }
+            return true;
         } else {
-            // se a receita ainda não existe na base de dados
-            insertRecipe(new_recipe, mDatabase);
-
+            // if the recipe doesn't exist in the database, inserts the new database
+            return insertRecipe(new_recipe, mDatabase)!=-1;
         }
     }
 
 
     private static Recipe recipeExists(Recipe recipe, SQLiteDatabase mDatabase) {
-        // aqui, não meto o ID no argumento "selectionArgs" porque assim ia estar a convertê-lo para String e o ID é um 'serial'
+        // here, we don't put the ID as an argument of "selectionArgs" because it would be converted to a String
+        // and the ID is a 'serial'
+
+        // check if there's any recipe with the same ID as the argument recipe
 
         Cursor c = mDatabase.query(DatabaseScheme.RecipesTable.NAME,
                 null,
@@ -45,7 +49,7 @@ public class OperationsDb {
 
         RecipesCursorWrapper cursor = new RecipesCursorWrapper(c);
 
-        // esta função retorna 'false' se o cursor estiver vazio
+        // this method returns 'false' if the cursor is empty
         if (!cursor.moveToFirst()) {
             cursor.close();
             c.close();
@@ -60,11 +64,11 @@ public class OperationsDb {
         return r;
     }
 
-    private static void insertRecipe(Recipe recipe, SQLiteDatabase mDatabase) {
+    private static long insertRecipe(Recipe recipe, SQLiteDatabase mDatabase) {
         ContentValues values = getContentValuesRecipes(recipe);
-        mDatabase.insert(DatabaseScheme.RecipesTable.NAME, null, values);
+        return mDatabase.insert(DatabaseScheme.RecipesTable.NAME, null, values);
 
-        // o "insert" retorna '-1' se houver erro
+        // the "insert" returns '-1' if there was any error
     }
 
     private static boolean updateRecipe(Recipe recipe, SQLiteDatabase mDatabase) {
@@ -73,7 +77,7 @@ public class OperationsDb {
         ContentValues values = getContentValuesRecipes(recipe);
         return mDatabase.update(DatabaseScheme.RecipesTable.NAME, values, String.format(Locale.getDefault(), DatabaseScheme.RecipesTable.Cols.ID + " = %d", recipe.getId()), null) != 0;
 
-        // o "update" retorna o número de linhas afectadas, ou seja, se retornar '0', há algum problema
+        // the "update" returns the number of affected rows, which means that if it returns '0', there might be some problem
     }
 
     public static boolean changeRecipeFavorite(Recipe recipe, SQLiteDatabase mDatabase) {
@@ -81,31 +85,34 @@ public class OperationsDb {
         return updateRecipe(recipe, mDatabase);
     }
 
-    public static void insertIngredient(Ingredient ingredient, SQLiteDatabase mDatabase) {
+    public static long insertIngredient(Ingredient ingredient, SQLiteDatabase mDatabase) {
         ContentValues values = getContentValuesIngredients(ingredient);
-        mDatabase.insert(DatabaseScheme.IngredientsTable.NAME, null, values);
+        return mDatabase.insert(DatabaseScheme.IngredientsTable.NAME, null, values);
 
-        // o "insert" retorna '-1' se houver erro
+        // the "insert" returns '-1' if there was any error
     }
 
     /*public static boolean updateIngredient(Ingredient ingredient, SQLiteDatabase mDatabase) {
-        // aqui, não meto o ID no argumento "selectionArgs" porque assim ia estar a convertê-lo para String e o ID é um 'serial'
+        // here, we don't put the ID as an argument of "selectionArgs" because it would be converted to a String
+        // and the ID is a 'serial'
 
         ContentValues values = getContentValuesIngredients(ingredient);
         return mDatabase.update(DatabaseScheme.IngredientsTable.NAME, values, String.format(Locale.getDefault(), DatabaseScheme.IngredientsTable.Cols.ID + " = %d", ingredient.getId()), null) != 0;
 
-        // o "update" retorna o número de linhas afectadas, ou seja, se retornar '0', há algum problema
+        // the "update" returns the number of affected rows, which means that if it returns '0', there might be some problem
     }*/
 
-    public static void insertRelation(Relations relations, SQLiteDatabase mDatabase) {
+    public static long insertRelation(Relations relations, SQLiteDatabase mDatabase) {
         ContentValues values = getContentValuesRelations(relations);
-        mDatabase.insert(DatabaseScheme.RelationsTable.NAME, null, values);
+        return mDatabase.insert(DatabaseScheme.RelationsTable.NAME, null, values);
 
-        // o "insert" retorna '-1' se houver erro
+        // the "insert" returns '-1' if there was any error
     }
 
     public static ArrayList<Recipe> selectRecipeByCategory(String category, SQLiteDatabase mDatabase) {
         ArrayList<Recipe> list = new ArrayList<>();
+
+        // selects all the recipes from a specific category
 
         Cursor c = mDatabase.query(DatabaseScheme.RecipesTable.NAME,
                 null,
@@ -117,12 +124,14 @@ public class OperationsDb {
 
         RecipesCursorWrapper cursor = new RecipesCursorWrapper(c);
 
+        // this method returns 'false' if the cursor is empty
         if (!cursor.moveToFirst()) {
             cursor.close();
             c.close();
             return list;
         }
 
+        // while theres more elements in the cursor
         while (!cursor.isAfterLast()) {
             Recipe recipe = cursor.getRecipe();
             list.add(recipe);
@@ -138,6 +147,8 @@ public class OperationsDb {
     public static ArrayList<Recipe> selectAllRecipes(SQLiteDatabase mDatabase) {
         ArrayList<Recipe> list = new ArrayList<>();
 
+        // select all recipes
+
         Cursor c = mDatabase.query(DatabaseScheme.RecipesTable.NAME,
                 null,
                 null,
@@ -148,14 +159,16 @@ public class OperationsDb {
 
         RecipesCursorWrapper cursor = new RecipesCursorWrapper(c);
 
+        // this method returns 'false' if the cursor is empty
         if (!cursor.moveToFirst()) {
             cursor.close();
             c.close();
             return list;
         }
 
+        // while theres more elements in the cursor
         while (!cursor.isAfterLast()) {
-            Recipe recipe = cursor.getRecipe(); //10 8739591
+            Recipe recipe = cursor.getRecipe();
             list.add(recipe);
             cursor.moveToNext();
 
@@ -215,6 +228,7 @@ public class OperationsDb {
     public static ArrayList<Ingredient> selectAllIngredients(SQLiteDatabase mDatabase) {
         ArrayList<Ingredient> list = new ArrayList<>();
 
+        // selects all ingredients from the database
         Cursor c = mDatabase.query(DatabaseScheme.IngredientsTable.NAME,
                 null,
                 null,
@@ -225,12 +239,14 @@ public class OperationsDb {
 
         IngredientsCursorWrapper cursor = new IngredientsCursorWrapper(c);
 
+        // this method returns 'false' if the cursor is empty
         if (!cursor.moveToFirst()) {
             cursor.close();
             c.close();
             return list;
         }
 
+        // while theres more elements in the cursor
         while (!cursor.isAfterLast()) {
             Ingredient ingredient = cursor.getIngredient();
             list.add(ingredient);
@@ -277,7 +293,7 @@ public class OperationsDb {
     public static ArrayList<Recipe> selectFavoriteRecipes(SQLiteDatabase mDatabase) {
         ArrayList<Recipe> list = new ArrayList<>();
 
-        // atenção que em SQLite, os valores boolean são 1 (true) e 0 (false). Não existe uma class boolean com valores "true" e "false"
+        // select favorite recipes from the database
 
         Cursor c = mDatabase.query(DatabaseScheme.RecipesTable.NAME,
                 null,
@@ -289,12 +305,14 @@ public class OperationsDb {
 
         RecipesCursorWrapper cursor = new RecipesCursorWrapper(c);
 
+        // this method returns 'false' if the cursor is empty
         if (!cursor.moveToFirst()) {
             cursor.close();
             c.close();
             return list;
         }
 
+        // while theres more elements in the cursor
         while (!cursor.isAfterLast()) {
             Recipe recipe = cursor.getRecipe();
             list.add(recipe);
@@ -311,7 +329,7 @@ public class OperationsDb {
 
     private static ContentValues getContentValuesRecipes(Recipe recipe) {
 
-        // atenção que em SQLite, os valores boolean são 1 (true) e 0 (false). Não existe uma class boolean com valores "true" e "false"
+        // ContentValues work as a HashMap:  KEY (column name)  +  VALUE (value of that column)
 
         ContentValues values = new ContentValues();
         values.put(DatabaseScheme.RecipesTable.Cols.ID, recipe.getId());
@@ -331,7 +349,7 @@ public class OperationsDb {
 
     private static ContentValues getContentValuesIngredients(Ingredient ingredient) {
 
-        // atenção que em SQLite, os valores boolean são 1 (true) e 0 (false). Não existe uma class boolean com valores "true" e "false"
+        // ContentValues work as a HashMap:  KEY (column name)  +  VALUE (value of that column)
 
         ContentValues values = new ContentValues();
         values.put(DatabaseScheme.IngredientsTable.Cols.ID, ingredient.getId());
@@ -342,7 +360,7 @@ public class OperationsDb {
 
     private static ContentValues getContentValuesRelations(Relations relations) {
 
-        // atenção que em SQLite, os valores boolean são 1 (true) e 0 (false). Não existe uma class boolean com valores "true" e "false"
+        // ContentValues work as a HashMap:  KEY (column name)  +  VALUE (value of that column)
 
         ContentValues values = new ContentValues();
         values.put(DatabaseScheme.RelationsTable.Cols.ID_RECIPE, relations.getId_recipe());
@@ -353,33 +371,19 @@ public class OperationsDb {
 
     public static ArrayList<Recipe> selectRecipesByIngredients(ArrayList<Ingredient> ingrs, SQLiteDatabase mDatabase) {
 
-        /*TODO: falta fazer a verificação se o utilizador introduziu ingredientes repetidos
-               OPÇÕES:
-                    1 -->  na função "getIngredientArrayListToString" que é chamada aqui em baixo, ter em atenção para não repetir ingredientes
-                    2 -->  fazer uma verificação antes de chamar esta função, para não passar ingredientes repetidos
-                    3 -->  fazer uma verificação antes de chamar esta função, para aparecer uma mensagem de erro, caso haja ingredientes repetidos
-        */
+        // select all the recipes that use the selected ingredients and sort them
 
         ArrayList<Recipe> list = new ArrayList<>();
         String ingredientsQueryStr = getIngredientArrayListToString(ingrs);
-        // atenção que em SQLite, os valores boolean são 1 (true) e 0 (false). Não existe uma class boolean com valores "true" e "false"
 
-        // este hashMap vai fazer a contagem do número de ingredientes em comum entre as receitas e a lista de ingredientes pesquisados
-        /*Cursor c = mDatabase.query(DatabaseScheme.RelationsTable.NAME,
-                null,
-                DatabaseScheme.RelationsTable.Cols.ID_INGREDIENT + " IN " + ingredientsQueryStr,
-                null,
-                null,
-                null,
-                DatabaseScheme.RelationsTable.Cols.ID_RECIPE + " ASC");*/
 
         /*
 
-        A  =  ingrs em comum entre receita e pesquisa
-        B  =  ingrs da receita que não estão na pesquisa
-        C  =  nº total de ingrs da receita   (A + B)
+        A  =  ingredients in common between the recipe and the searched_list
+        B  =  ingredients of the recipe that were not selected
+        C  =  total number of ingredients of the recipe  (A + B)
 
-           A  DESC, B  ASC, tempo_preparecao ASC, dificuldade ASC, ID ASC
+           A  DESC, B  ASC, time ASC, difficulty ASC, ID ASC
 
         */
 
@@ -403,39 +407,42 @@ public class OperationsDb {
         , new String[]{});
 
         /*
-            Nesta query não podemos fazer com aquilo com os pontos de interrugação, porque depois o que ia substituir esse ponto de interrugação
-            [ (1, 2, 3), por exemplo] ia ser tratado como uma string e não como argumento, ou seja a query ia ficar assim:
+            In this query, we didn´t use the question mark '?' because what would replace it, would
+            [ (1, 2, 3), for example] be converted to a string, which means the query would be like:
 
                 SELECT *
                 FROM Relations
                 WHERE id_ingredient IN  "(1, 2, 3)"
                 ORDER BY id_recipe ASC
 
-           EM VEZ DE:
+           INSTEAD OF:
                 SELECT *
                 FROM Relations
                 WHERE id_ingredient IN  (1, 2, 3)
                 ORDER BY id_recipe ASC
 
-           (a diferença está nas aspas do WHERE)
+           (the difference is in the quotation marks of the WHERE clause)
 
 
         */
 
         RecipesCursorWrapper cursor = new RecipesCursorWrapper(c);
 
+        // this method returns 'false' if the cursor is empty
         if (!cursor.moveToFirst()) {
             cursor.close();
             c.close();
             return list;
         }
 
+        // while theres more elements in the cursor
         while (!cursor.isAfterLast()) {
-
-
             Recipe recipe = cursor.getRecipe();
 
-            // é feita esta verificação porque 1 receita pode ter mais do que 1 dos ingredientes pesquisados e assim ia ser adicionada mais do que 1 vez
+            /*
+                check is the current recipe already exists in the list, because 1 recipe might have more than 1 on the searched
+                ingredients and because of that it would be added multiple times
+            */
             if (!list.contains(recipe)) {
                 list.add(recipe);
             }
@@ -460,6 +467,7 @@ public class OperationsDb {
 
         RecipesCursorWrapper cursor = new RecipesCursorWrapper(c);
 
+        // this method returns 'false' if the cursor is empty
         if (!cursor.moveToFirst()) {
             cursor.close();
             c.close();
@@ -476,8 +484,10 @@ public class OperationsDb {
     private static String getIngredientArrayListToString(ArrayList<Ingredient> list) {
         StringBuilder res = new StringBuilder("(");
 
+        // convert a list of reciped ID's to a string
+
         for (Ingredient i : list) {
-            if (res.length() > 1) {  //aqui é >1 e não >0  por causa do parentisis inicial que é posto em cima. Caso contrário a string ficava com uma vírgula logo a seguir ao parentisis
+            if (res.length() > 1) {
                 res.append(", ");
             }
             res.append(i.getId());
