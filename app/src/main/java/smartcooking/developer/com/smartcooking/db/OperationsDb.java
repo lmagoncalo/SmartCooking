@@ -72,7 +72,8 @@ public class OperationsDb {
     }
 
     private static boolean updateRecipe(Recipe recipe, SQLiteDatabase mDatabase) {
-        // aqui, não meto o ID no argumento "selectionArgs" porque assim ia estar a convertê-lo para String e o ID é um 'serial'
+        // here, we don't put the ID as an argument of "selectionArgs" because it would be converted to a String
+        // and the ID is a 'serial'
 
         ContentValues values = getContentValuesRecipes(recipe);
         return mDatabase.update(DatabaseScheme.RecipesTable.NAME, values, String.format(Locale.getDefault(), DatabaseScheme.RecipesTable.Cols.ID + " = %d", recipe.getId()), null) != 0;

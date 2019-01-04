@@ -32,8 +32,8 @@ public class SplashFragment extends Fragment {
 
         setRandomPhrase(result);
 
-        // initialize the "UpdateRecipesTask" AssyncTask
-        // We use AssyncTasks because the API requests must be done inside an AssyncTask
+        // initialize the "UpdateRecipesTask" AsyncTask
+        // We use AssyncTasks because the API requests must be done inside an AsyncTask
         UpdateRecipesTask myTask = new UpdateRecipesTask(getContext(), progressBar, getActivity(), this);
         myTask.execute();
 

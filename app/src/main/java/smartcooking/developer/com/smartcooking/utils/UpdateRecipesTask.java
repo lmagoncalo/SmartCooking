@@ -80,7 +80,7 @@ public class UpdateRecipesTask extends AsyncTask<Integer, Integer, String> {
         String PREFS_NAME = "SmartCooking_PrefsName";
         SharedPreferences sharedPreferences = c.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
-        // increment the progress of the AssyncTask
+        // increment the progress of the AsyncTask
         publishProgress(count++);
 
         // get the versino from the remote database (from the API)
